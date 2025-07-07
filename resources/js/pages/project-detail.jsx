@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Calendar, Share2, Heart, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Share2, Heart, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
 
 export default function ProjectDetail({ project, relatedProjects = [] }) {
@@ -41,18 +41,18 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                     <div className="absolute top-1 left-1 w-6 h-6 bg-white transform rotate-45"></div>
                     <div className="absolute top-2 left-2 w-4 h-4 bg-gray-900 transform rotate-45"></div>
                   </div>
-                  <span className="text-2xl font-bold text-gray-900 tracking-wider">ARCH</span>
+                  <span className="text-2xl font-bold text-black tracking-wider">ARCH</span>
                 </Link>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-8">
-                  <Link href="/projects" className="text-gray-900 px-3 py-2 text-sm font-medium border-b-2 border-gray-900">
+                  <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
                     Projects
                   </Link>
-                  <Link href="/about" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                  <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                     About
                   </Link>
-                  <Link href="/contact" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                  <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                     Contact
                   </Link>
                 </div>
@@ -111,20 +111,86 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-light mb-6 text-gray-900">Project Overview</h2>
+                <h2 className="text-3xl font-light mb-6 text-black">Project Overview</h2>
                 <div className="prose prose-lg max-w-none">
-                  <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  <p className="text-lg text-black leading-relaxed mb-6">
                     {project.description}
                   </p>
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  <div className="text-black leading-relaxed whitespace-pre-wrap">
                     {project.details}
+                  </div>
+                </div>
+
+                {/* Project Specifications */}
+                <div className="mt-12">
+                  <h3 className="text-2xl font-light mb-6 text-black">Project Specifications</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {project.client && (
+                      <div className="flex items-start space-x-3">
+                        <User className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Client</h4>
+                          <p className="text-black">{project.client}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.area && (
+                      <div className="flex items-start space-x-3">
+                        <Ruler className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Total Area</h4>
+                          <p className="text-black">{project.area}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.duration && (
+                      <div className="flex items-start space-x-3">
+                        <Clock className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Project Duration</h4>
+                          <p className="text-black">{project.duration}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.budget && (
+                      <div className="flex items-start space-x-3">
+                        <Target className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Budget Range</h4>
+                          <p className="text-black">{project.budget}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.team && (
+                      <div className="flex items-start space-x-3">
+                        <Building className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Project Team</h4>
+                          <p className="text-black">{project.team}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {project.awards && (
+                      <div className="flex items-start space-x-3">
+                        <Award className="h-5 w-5 text-black mt-1" />
+                        <div>
+                          <h4 className="font-medium text-black">Awards & Recognition</h4>
+                          <p className="text-black">{project.awards}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Image Gallery */}
                 {allImages.length > 1 && (
                   <div className="mt-12">
-                    <h3 className="text-2xl font-light mb-6 text-gray-900">Project Gallery</h3>
+                    <h3 className="text-2xl font-light mb-6 text-black">Project Gallery</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {allImages.slice(1).map((image, index) => (
                         <img
@@ -143,26 +209,26 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
               {/* Sidebar */}
               <div className="lg:col-span-1">
                 <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-6">Project Information</h3>
+                  <h3 className="text-xl font-semibold text-black mb-6">Project Information</h3>
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                      <p className="text-gray-900">{project.category}</p>
+                      <label className="block text-sm font-medium text-black mb-1">Category</label>
+                      <p className="text-black">{project.category}</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                      <p className="text-gray-900">{project.location}</p>
+                      <label className="block text-sm font-medium text-black mb-1">Location</label>
+                      <p className="text-black">{project.location}</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
-                      <p className="text-gray-900">{project.year}</p>
+                      <label className="block text-sm font-medium text-black mb-1">Year</label>
+                      <p className="text-black">{project.year}</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                      <label className="block text-sm font-medium text-black mb-1">Status</label>
                       <Badge className={
                         project.status === 'active' ? 'bg-green-100 text-green-800' :
                         project.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
@@ -171,15 +237,36 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                         {project.status}
                       </Badge>
                     </div>
+
+                    {project.architect && (
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-1">Lead Architect</label>
+                        <p className="text-black">{project.architect}</p>
+                      </div>
+                    )}
+
+                    {project.contractor && (
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-1">Contractor</label>
+                        <p className="text-black">{project.contractor}</p>
+                      </div>
+                    )}
+
+                    {project.completion_date && (
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-1">Completion Date</label>
+                        <p className="text-black">{project.completion_date}</p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-8 pt-6 border-t border-gray-200">
                     <div className="flex space-x-3">
-                      <Button className="flex-1 bg-gray-900 hover:bg-gray-800">
+                      <Button className="flex-1 bg-black hover:bg-gray-800 text-white">
                         <Share2 className="h-4 w-4 mr-2" />
                         Share
                       </Button>
-                      <Button variant="outline" className="flex-1">
+                      <Button variant="outline" className="flex-1 text-black border-black hover:bg-black hover:text-white">
                         <Heart className="h-4 w-4 mr-2" />
                         Save
                       </Button>
@@ -188,7 +275,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                   <div className="mt-6">
                     <Link href="/contact">
-                      <Button className="w-full bg-gray-900 hover:bg-gray-800">
+                      <Button className="w-full bg-black hover:bg-gray-800 text-white">
                         Start Your Project
                       </Button>
                     </Link>
@@ -203,7 +290,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
         {relatedProjects.length > 0 && (
           <section className="py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-3xl font-light mb-12 text-gray-900 text-center">Related Projects</h2>
+              <h2 className="text-3xl font-light mb-12 text-black text-center">Related Projects</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedProjects.map((relatedProject) => (
@@ -218,14 +305,14 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                         <Badge variant="secondary" className="bg-gray-100 text-gray-800 mb-3">
                           {relatedProject.category}
                         </Badge>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">{relatedProject.title}</h3>
-                        <div className="flex items-center text-gray-600 text-sm mb-3">
+                        <h3 className="text-xl font-semibold text-black mb-2">{relatedProject.title}</h3>
+                        <div className="flex items-center text-black text-sm mb-3">
                           <MapPin className="h-4 w-4 mr-1" />
                           <span>{relatedProject.location}</span>
                           <span className="mx-2">•</span>
                           <span>{relatedProject.year}</span>
                         </div>
-                        <p className="text-gray-600 text-sm leading-relaxed">{relatedProject.description}</p>
+                        <p className="text-black text-sm leading-relaxed">{relatedProject.description}</p>
                       </div>
                     </div>
                   </Link>

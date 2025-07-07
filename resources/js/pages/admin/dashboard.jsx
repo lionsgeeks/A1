@@ -1,7 +1,12 @@
-import AdminLayout from '@/layouts/AdminLayout'
+import AppLayout from '@/layouts/app-layout'
 import { FolderOpen, MessageSquare, Eye, TrendingUp } from 'lucide-react'
+import { Head } from '@inertiajs/react'
 
 export default function AdminDashboard({ stats }) {
+  const breadcrumbs = [
+    { title: 'Admin', href: '/admin' },
+    { title: 'Dashboard', href: '/admin' }
+  ]
   const dashboardStats = [
     {
       name: 'Total Projects',
@@ -41,7 +46,8 @@ export default function AdminDashboard({ stats }) {
   const recentProjects = stats?.recentProjects || []
 
   return (
-    <AdminLayout title="Dashboard">
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Admin Dashboard" />
       <div className="space-y-6">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -52,11 +58,11 @@ export default function AdminDashboard({ stats }) {
                   <stat.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">{stat.name}</p>
+                  <p className="text-sm font-medium text-black">{stat.name}</p>
                   <div className="flex items-baseline">
-                    <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+                    <p className="text-2xl font-semibold text-black">{stat.value}</p>
                     <p className={`ml-2 text-sm font-medium ${
-                      stat.changeType === 'increase' ? 'text-green-600' : 
+                      stat.changeType === 'increase' ? 'text-green-600' :
                       stat.changeType === 'decrease' ? 'text-red-600' : 'text-gray-500'
                     }`}>
                       {stat.change}
@@ -68,11 +74,11 @@ export default function AdminDashboard({ stats }) {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Recent Messages */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Recent Messages</h3>
+              <h3 className="text-lg font-medium text-black">Recent Messages</h3>
             </div>
             <div className="p-6">
               {recentMessages.length > 0 ? (
@@ -81,10 +87,10 @@ export default function AdminDashboard({ stats }) {
                     <div key={message.id} className="flex items-start space-x-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">{message.name}</p>
-                        <p className="text-sm text-gray-500">{message.email}</p>
-                        <p className="text-sm text-gray-600 truncate">{message.message}</p>
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-sm font-medium text-black">{message.name}</p>
+                        <p className="text-sm text-black">{message.email}</p>
+                        <p className="text-sm text-black truncate">{message.message}</p>
+                        <p className="text-xs text-black mt-1">
                           {new Date(message.created_at).toLocaleDateString()}
                         </p>
                       </div>
@@ -92,7 +98,7 @@ export default function AdminDashboard({ stats }) {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-4">No recent messages</p>
+                <p className="text-black text-center py-4">No recent messages</p>
               )}
             </div>
           </div>
@@ -100,7 +106,7 @@ export default function AdminDashboard({ stats }) {
           {/* Recent Projects */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Recent Projects</h3>
+              <h3 className="text-lg font-medium text-black">Recent Projects</h3>
             </div>
             <div className="p-6">
               {recentProjects.length > 0 ? (
@@ -109,17 +115,17 @@ export default function AdminDashboard({ stats }) {
                     <div key={project.id} className="flex items-start space-x-3">
                       <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden">
                         {project.image_path && (
-                          <img 
-                            src={project.image_path} 
+                          <img
+                            src={project.image_path}
                             alt={project.title}
                             className="w-full h-full object-cover"
                           />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">{project.title}</p>
-                        <p className="text-sm text-gray-500">{project.category} • {project.location}</p>
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-sm font-medium text-black">{project.title}</p>
+                        <p className="text-sm text-black">{project.category} • {project.location}</p>
+                        <p className="text-xs text-black mt-1">
                           {new Date(project.created_at).toLocaleDateString()}
                         </p>
                       </div>
@@ -127,7 +133,7 @@ export default function AdminDashboard({ stats }) {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-4">No recent projects</p>
+                <p className="text-black text-center py-4">No recent projects</p>
               )}
             </div>
           </div>
@@ -135,32 +141,32 @@ export default function AdminDashboard({ stats }) {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="text-lg font-medium text-black mb-4">Quick Actions</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a
               href="/admin/projects/create"
               className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <FolderOpen className="h-5 w-5 mr-2 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Add New Project</span>
+              <FolderOpen className="h-5 w-5 mr-2 text-black" />
+              <span className="text-sm font-medium text-black">Add New Project</span>
             </a>
             <a
               href="/admin/messages"
               className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <MessageSquare className="h-5 w-5 mr-2 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">View Messages</span>
+              <MessageSquare className="h-5 w-5 mr-2 text-black" />
+              <span className="text-sm font-medium text-black">View Messages</span>
             </a>
             <a
               href="/admin/projects"
               className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <Eye className="h-5 w-5 mr-2 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Manage Projects</span>
+              <Eye className="h-5 w-5 mr-2 text-black" />
+              <span className="text-sm font-medium text-black">Manage Projects</span>
             </a>
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </AppLayout>
   )
 }

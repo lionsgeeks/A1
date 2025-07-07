@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import AdminLayout from '@/layouts/AdminLayout'
+import AppLayout from '@/layouts/app-layout'
+import { Head } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -17,6 +18,10 @@ import {
 import { router } from '@inertiajs/react'
 
 export default function MessagesIndex({ messages, filters, stats }) {
+  const breadcrumbs = [
+    { title: 'Admin', href: '/admin' },
+    { title: 'Messages', href: '/admin/messages' }
+  ]
   const [searchTerm, setSearchTerm] = useState(filters?.search || '')
   const [selectedStatus, setSelectedStatus] = useState(filters?.status || 'all')
   const [selectedMessage, setSelectedMessage] = useState(null)
@@ -64,7 +69,8 @@ export default function MessagesIndex({ messages, filters, stats }) {
   }
 
   return (
-    <AdminLayout title="Contact Messages">
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Contact Messages" />
       <div className="space-y-6">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -373,6 +379,6 @@ export default function MessagesIndex({ messages, filters, stats }) {
           </div>
         )}
       </div>
-    </AdminLayout>
+    </AppLayout>
   )
 }

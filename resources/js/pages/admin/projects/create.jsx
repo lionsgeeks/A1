@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import AdminLayout from '@/layouts/AdminLayout'
+import AppLayout from '@/layouts/app-layout'
+import { Head } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import {
   Upload,
@@ -12,6 +13,11 @@ import { Link, router, useForm } from '@inertiajs/react'
 
 export default function ProjectCreate({ project = null }) {
   const isEditing = !!project
+  const breadcrumbs = [
+    { title: 'Admin', href: '/admin' },
+    { title: 'Projects', href: '/admin/projects' },
+    { title: isEditing ? 'Edit Project' : 'Create Project', href: '#' }
+  ]
   const [imagePreview, setImagePreview] = useState(project?.image_path || null)
   const [galleryPreviews, setGalleryPreviews] = useState(project?.gallery_images || [])
 
@@ -93,7 +99,8 @@ export default function ProjectCreate({ project = null }) {
   }
 
   return (
-    <AdminLayout title={isEditing ? 'Edit Project' : 'Create Project'}>
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title={isEditing ? 'Edit Project' : 'Create Project'} />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -359,6 +366,6 @@ export default function ProjectCreate({ project = null }) {
           </div>
         </form>
       </div>
-    </AdminLayout>
+    </AppLayout>
   )
 }

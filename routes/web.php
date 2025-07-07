@@ -23,8 +23,16 @@ Route::get('/contact', function () {
     return Inertia::render('contact');
 })->name('contact');
 
-// Project detail route (temporarily commented out)
-// Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'show'])->name('projects.show');
+Route::get('/test', function () {
+    return 'Test route works!';
+});
+
+Route::get('/admin-test', function () {
+    return 'Admin test route works!';
+})->withoutMiddleware(['web']);
+
+// Project detail route
+Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'show'])->name('projects.show');
 
 // Contact form submission
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');

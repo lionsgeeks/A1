@@ -1,22 +1,32 @@
 import { useState } from 'react'
-import AdminLayout from '@/layouts/AdminLayout'
+import AppLayout from '@/layouts/app-layout'
+import { Head } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Plus,
-  Edit,
   Trash2,
   Eye,
   Search,
   Filter,
-  MoreVertical,
-  FolderOpen
+  FolderOpen,
+  X,
+  Calendar,
+  MapPin,
+  Tag,
+  FileText
 } from 'lucide-react'
 import { Link, router } from '@inertiajs/react'
 
 export default function ProjectsIndex({ projects, filters }) {
+  const breadcrumbs = [
+    { title: 'Admin', href: '/admin' },
+    { title: 'Projects', href: '/admin/projects' }
+  ]
   const [searchTerm, setSearchTerm] = useState(filters?.search || '')
   const [selectedCategory, setSelectedCategory] = useState(filters?.category || 'all')
+  const [selectedProject, setSelectedProject] = useState(null)
+  const [showDetails, setShowDetails] = useState(false)
 
   const categories = ['all', 'residential', 'commercial', 'cultural', 'mixed-use', 'educational']
 
@@ -34,6 +44,16 @@ export default function ProjectsIndex({ projects, filters }) {
     }
   }
 
+  const handleShowDetails = (project) => {
+    setSelectedProject(project)
+    setShowDetails(true)
+  }
+
+  const handleCloseDetails = () => {
+    setSelectedProject(null)
+    setShowDetails(false)
+  }
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800'
@@ -44,16 +64,17 @@ export default function ProjectsIndex({ projects, filters }) {
   }
 
   return (
-    <AdminLayout title="Projects Management">
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Projects Management" />
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Projects</h2>
-            <p className="text-gray-600">Manage your architectural projects</p>
+            <h2 className="text-2xl font-bold text-black">Projects</h2>
+            <p className="text-black">Manage your architectural projects</p>
           </div>
           <Link href="/admin/projects/create">
-            <Button className="bg-gray-900 hover:bg-gray-800">
+            <Button className="bg-black hover:bg-gray-800 text-white">
               <Plus className="h-4 w-4 mr-2" />
               Add Project
             </Button>
@@ -88,7 +109,7 @@ export default function ProjectsIndex({ projects, filters }) {
                 ))}
               </select>
             </div>
-            <Button type="submit" className="bg-gray-900 hover:bg-gray-800">
+            <Button type="submit" className="bg-black hover:bg-gray-800 text-white">
               <Filter className="h-4 w-4 mr-2" />
               Filter
             </Button>
@@ -114,37 +135,35 @@ export default function ProjectsIndex({ projects, filters }) {
 
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 truncate">{project.title}</h3>
-                  <div className="relative">
-                    <button className="text-gray-400 hover:text-gray-600">
-                      <MoreVertical className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <h3 className="text-lg font-semibold text-black truncate">{project.title}</h3>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-2">{project.category} • {project.location}</p>
-                <p className="text-sm text-gray-500 mb-4 line-clamp-2">{project.description}</p>
+                <p className="text-sm text-black mb-2">{project.category} • {project.location}</p>
+                <p className="text-sm text-black mb-4 line-clamp-2">{project.description}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">{project.year}</span>
+                  <span className="text-xs text-black">{project.year}</span>
                   <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleShowDetails(project)}
+                      className="text-black border-black hover:bg-black hover:text-white"
+                    >
+                      <Eye className="h-3 w-3 mr-1" />
+                      Details
+                    </Button>
                     <Link href={`/projects/${project.id}`}>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="text-black border-black hover:bg-black hover:text-white">
                         <Eye className="h-3 w-3 mr-1" />
                         View
-                      </Button>
-                    </Link>
-                    <Link href={`/admin/projects/${project.id}/edit`}>
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-3 w-3 mr-1" />
-                        Edit
                       </Button>
                     </Link>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => handleDelete(project)}
-                      className="text-red-600 hover:text-red-700 hover:border-red-300"
+                      className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>
@@ -158,11 +177,11 @@ export default function ProjectsIndex({ projects, filters }) {
         {/* Empty State */}
         {projects.data?.length === 0 && (
           <div className="bg-white rounded-lg shadow p-12 text-center">
-            <FolderOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No projects found</h3>
-            <p className="text-gray-600 mb-6">Get started by creating your first project.</p>
+            <FolderOpen className="h-12 w-12 text-black mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-black mb-2">No projects found</h3>
+            <p className="text-black mb-6">Get started by creating your first project.</p>
             <Link href="/admin/projects/create">
-              <Button className="bg-gray-900 hover:bg-gray-800">
+              <Button className="bg-black hover:bg-gray-800 text-white">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Project
               </Button>
@@ -174,7 +193,7 @@ export default function ProjectsIndex({ projects, filters }) {
         {projects.links && (
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-black">
                 Showing {projects.from} to {projects.to} of {projects.total} results
               </div>
               <div className="flex space-x-2">
@@ -185,9 +204,9 @@ export default function ProjectsIndex({ projects, filters }) {
                     disabled={!link.url}
                     className={`px-3 py-1 text-sm rounded ${
                       link.active
-                        ? 'bg-gray-900 text-white'
+                        ? 'bg-black text-white'
                         : link.url
-                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-gray-100 text-black hover:bg-gray-200'
                           : 'bg-gray-50 text-gray-400 cursor-not-allowed'
                     }`}
                     dangerouslySetInnerHTML={{ __html: link.label }}
@@ -197,7 +216,104 @@ export default function ProjectsIndex({ projects, filters }) {
             </div>
           </div>
         )}
+
+        {/* Project Details Modal */}
+        {showDetails && selectedProject && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold text-black">Project Details</h2>
+                  <button
+                    onClick={handleCloseDetails}
+                    className="text-black hover:text-gray-600"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Project Image */}
+                  <div className="aspect-video rounded-lg overflow-hidden">
+                    <img
+                      src={selectedProject.image_path || '/placeholder.svg'}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Project Info */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-black mb-2">{selectedProject.title}</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center text-black">
+                          <Tag className="h-4 w-4 mr-2" />
+                          <span className="text-sm">{selectedProject.category}</span>
+                        </div>
+                        <div className="flex items-center text-black">
+                          <MapPin className="h-4 w-4 mr-2" />
+                          <span className="text-sm">{selectedProject.location}</span>
+                        </div>
+                        <div className="flex items-center text-black">
+                          <Calendar className="h-4 w-4 mr-2" />
+                          <span className="text-sm">{selectedProject.year}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mb-4">
+                        <Badge className={getStatusColor(selectedProject.status)}>
+                          {selectedProject.status}
+                        </Badge>
+                      </div>
+                      {selectedProject.client && (
+                        <div className="mb-2">
+                          <span className="text-sm font-medium text-black">Client: </span>
+                          <span className="text-sm text-black">{selectedProject.client}</span>
+                        </div>
+                      )}
+                      {selectedProject.area && (
+                        <div className="mb-2">
+                          <span className="text-sm font-medium text-black">Area: </span>
+                          <span className="text-sm text-black">{selectedProject.area}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <div className="flex items-center mb-2">
+                      <FileText className="h-4 w-4 mr-2 text-black" />
+                      <h4 className="font-medium text-black">Description</h4>
+                    </div>
+                    <p className="text-black leading-relaxed">{selectedProject.description}</p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex justify-end space-x-3 pt-4 border-t">
+                    <Link href={`/projects/${selectedProject.id}`}>
+                      <Button className="bg-black hover:bg-gray-800 text-white">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Public Page
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="outline"
+                      onClick={handleCloseDetails}
+                      className="text-black border-black hover:bg-black hover:text-white"
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </AdminLayout>
+    </AppLayout>
   )
 }
