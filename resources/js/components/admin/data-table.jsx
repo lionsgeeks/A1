@@ -115,7 +115,7 @@ export function DataTable({
                 <img
                     src={item[column.key] || '/placeholder.svg'}
                     alt={column.alt || ''}
-                    className="w-12 h-12 object-cover rounded-lg"
+                    className="w-20 h-20 object-cover rounded-lg"
                 />
             )
         }
@@ -222,18 +222,20 @@ export function DataTable({
                     {sortedData.map((item, index) => (
                         <div key={item.id || index} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
                             {/* Grid card content will be customized per use case */}
-                            <div className="p-6">
+                            <div className="p-6 relative">
                                 {columns.map((column) => (
-                                    <div key={column.key} className="mb-2">
-                                        <span className="text-sm font-medium text-gray-600">{column.label}: </span>
+                                    <div key={column.key} className="mb-2 flex items-center gap-2">
+                                        <span className="text-sm font-medium text-gray-600">{column.label == 'Image' ? '' : column.label + ':'} </span>
                                         <span className="text-sm text-gray-900">{renderCell(item, column)}</span>
                                     </div>
                                 ))}
-                                {actions.length > 0 && (
-                                    <div className="mt-4 pt-4 border-t border-gray-100">
-                                        {renderActions(item)}
-                                    </div>
-                                )}
+                                <div className='absolute top-0 right-[20px]'>
+                                    {actions.length > 0 && (
+                                        <div className="mt-4 pt-4 border-t border-gray-100">
+                                            {renderActions(item)}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ))}
