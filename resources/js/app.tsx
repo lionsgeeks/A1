@@ -10,23 +10,21 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
-        // Try .jsx first, then .tsx as fallback
-        const jsxPages = import.meta.glob('./pages/**/*.jsx');
-        const tsxPages = import.meta.glob('./pages/**/*.tsx');
-        const allPages = { ...jsxPages, ...tsxPages };
+        // Create a comprehensive glob that includes both jsx and tsx
+        const pages = import.meta.glob('./pages/**/*.{jsx,tsx}');
 
-        // Prefer .jsx over .tsx
+        // Try .jsx first, then .tsx
         const jsxPath = `./pages/${name}.jsx`;
         const tsxPath = `./pages/${name}.tsx`;
 
-        if (allPages[jsxPath]) {
-            return allPages[jsxPath]();
-        } else if (allPages[tsxPath]) {
-            return allPages[tsxPath]();
+        if (pages[jsxPath]) {
+            return pages[jsxPath]();
+        } else if (pages[tsxPath]) {
+            return pages[tsxPath]();
         }
 
-        // Fallback to original resolver
-        return resolvePageComponent(`./pages/${name}.jsx`, allPages);
+        // If neither found, throw a helpful error
+        throw new Error(`Page not found: ${name} (looked for ${jsxPath} and ${tsxPath})`);
     },
     setup({ el, App, props }) {
         const root = createRoot(el);

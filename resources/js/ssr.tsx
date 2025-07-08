@@ -11,7 +11,23 @@ createServer((page) =>
         page,
         render: ReactDOMServer.renderToString,
         title: (title) => `${title} - ${appName}`,
-        resolve: (name) => resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob('./pages/**/*.{jsx,tsx}')),
+        resolve: (name) => {
+            // Create a comprehensive glob that includes both jsx and tsx
+            const pages = import.meta.glob('./pages/**/*.{jsx,tsx}');
+
+            // Try .jsx first, then .tsx
+            const jsxPath = `./pages/${name}.jsx`;
+            const tsxPath = `./pages/${name}.tsx`;
+
+            if (pages[jsxPath]) {
+                return pages[jsxPath]();
+            } else if (pages[tsxPath]) {
+                return pages[tsxPath]();
+            }
+
+            // If neither found, throw a helpful error
+            throw new Error(`Page not found: ${name} (looked for ${jsxPath} and ${tsxPath})`);
+        },
         setup: ({ App, props }) => {
             /* eslint-disable */
             // @ts-expect-error
