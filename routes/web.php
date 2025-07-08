@@ -8,7 +8,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/about', function () {
-    return Inertia::render('about');
+    $milestones = \App\Models\Milestone::active()->ordered()->get();
+    return Inertia::render('about', [
+        'milestones' => $milestones
+    ]);
 })->name('about');
 
 Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'index'])->name('projects');
@@ -43,12 +46,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::patch('/messages/{message}/read', [App\Http\Controllers\Admin\ContactMessageController::class, 'markAsRead'])->name('messages.read');
     Route::patch('/messages/{message}/unread', [App\Http\Controllers\Admin\ContactMessageController::class, 'markAsUnread'])->name('messages.unread');
     Route::delete('/messages/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('messages.destroy');
+
+    // Timeline milestones CRUD
+    Route::resource('milestones', App\Http\Controllers\Admin\MilestoneController::class);
 });
 
+// Redirect dashboard to admin dashboard
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::redirect('/dashboard', '/admin')->name('dashboard');
 });
 
 require __DIR__.'/settings.php';

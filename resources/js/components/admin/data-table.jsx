@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Search, 
-  Filter, 
-  SortAsc, 
-  SortDesc, 
+import {
+  Search,
+  Filter,
+  SortAsc,
+  SortDesc,
   MoreHorizontal,
   Eye,
   Edit,
@@ -21,9 +21,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export function DataTable({ 
-  data = [], 
-  columns = [], 
+export function DataTable({
+  data = [],
+  columns = [],
   searchable = true,
   filterable = true,
   sortable = true,
@@ -41,8 +41,45 @@ export function DataTable({
   const [sortDirection, setSortDirection] = useState('asc')
   const [viewMode, setViewMode] = useState(viewModes[0])
 
+  // Client-side filtering and searching
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data
+
+    return data.filter(item => {
+      // Search across all searchable fields
+      const searchableFields = columns
+        .filter(col => col.searchable !== false)
+        .map(col => col.key)
+
+      return searchableFields.some(field => {
+        const value = getNestedValue(item, field)
+        return value && value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      })
+    })
+  }, [data, searchTerm, columns])
+
+  // Client-side sorting
+  const sortedData = useMemo(() => {
+    if (!sortField) return filteredData
+
+    return [...filteredData].sort((a, b) => {
+      const aVal = getNestedValue(a, sortField)
+      const bVal = getNestedValue(b, sortField)
+
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1
+      return 0
+    })
+  }, [filteredData, sortField, sortDirection])
+
+  // Helper function to get nested object values
+  const getNestedValue = (obj, path) => {
+    return path.split('.').reduce((current, key) => current?.[key], obj)
+  }
+
   const handleSearch = (value) => {
     setSearchTerm(value)
+    // Still call onSearch for backward compatibility, but don't rely on it
     onSearch?.(value)
   }
 
@@ -62,7 +99,7 @@ export function DataTable({
     if (column.render) {
       return column.render(item[column.key], item)
     }
-    
+
     if (column.type === 'badge') {
       return (
         <Badge variant={column.variant?.(item[column.key]) || 'default'}>
@@ -70,17 +107,17 @@ export function DataTable({
         </Badge>
       )
     }
-    
+
     if (column.type === 'image') {
       return (
-        <img 
-          src={item[column.key] || '/placeholder.svg'} 
+        <img
+          src={item[column.key] || '/placeholder.svg'}
           alt={column.alt || ''}
           className="w-12 h-12 object-cover rounded-lg"
         />
       )
     }
-    
+
     return item[column.key]
   }
 
@@ -96,7 +133,7 @@ export function DataTable({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {actions.map((action, index) => (
-            <DropdownMenuItem 
+            <DropdownMenuItem
               key={index}
               onClick={() => action.onClick(item)}
               className={action.destructive ? 'text-red-600' : ''}
@@ -142,7 +179,7 @@ export function DataTable({
               />
             </div>
           )}
-          
+
           {filterable && (
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4 mr-2" />
@@ -169,7 +206,7 @@ export function DataTable({
       </div>
 
       {/* Data Display */}
-      {data.length === 0 ? (
+      {sortedData.length === 0 ? (
         <div className="text-center py-12">
           {emptyState || (
             <div>
@@ -180,7 +217,7 @@ export function DataTable({
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.map((item, index) => (
+          {sortedData.map((item, index) => (
             <div key={item.id || index} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
               {/* Grid card content will be customized per use case */}
               <div className="p-6">
@@ -206,7 +243,7 @@ export function DataTable({
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
                   {columns.map((column) => (
-                    <th 
+                    <th
                       key={column.key}
                       className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
@@ -220,8 +257,8 @@ export function DataTable({
                             className="h-4 w-4 p-0 hover:bg-transparent"
                           >
                             {sortField === column.key ? (
-                              sortDirection === 'asc' ? 
-                                <SortAsc className="h-3 w-3" /> : 
+                              sortDirection === 'asc' ?
+                                <SortAsc className="h-3 w-3" /> :
                                 <SortDesc className="h-3 w-3" />
                             ) : (
                               <SortAsc className="h-3 w-3 opacity-50" />
@@ -239,7 +276,7 @@ export function DataTable({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {data.map((item, index) => (
+                {sortedData.map((item, index) => (
                   <tr key={item.id || index} className="hover:bg-gray-50 transition-colors">
                     {columns.map((column) => (
                       <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

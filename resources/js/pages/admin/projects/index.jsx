@@ -167,7 +167,7 @@ export default function ProjectsIndex({ projects }) {
 
           {/* Project Details Modal */}
           {showDetails && selectedProject && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-30 flex items-center justify-center p-4 z-50">
               <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">

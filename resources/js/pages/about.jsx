@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Phone, MapPin, Users, Award, Calendar, Target } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
 
-export default function About() {
+export default function About({ milestones = [] }) {
   const team = [
     {
       id: 1,
@@ -58,15 +58,7 @@ export default function About() {
     }
   ]
 
-  const milestones = [
-    { year: "2003", event: "ARCH Studio founded with a vision to transform architectural design" },
-    { year: "2008", event: "Completed our first major commercial project - Downtown Business Center" },
-    { year: "2012", event: "Received our first international architecture award for sustainable design" },
-    { year: "2015", event: "Expanded operations to include urban planning and landscape architecture" },
-    { year: "2018", event: "Reached milestone of 100 completed projects across residential and commercial sectors" },
-    { year: "2021", event: "Launched our green building certification program" },
-    { year: "2024", event: "Celebrating 20+ years of architectural excellence with 150+ completed projects" }
-  ]
+
 
   return (
     <>
@@ -248,17 +240,23 @@ export default function About() {
             <div className="relative">
               <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-200"></div>
 
-              {milestones.map((milestone, index) => (
-                <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              {milestones.length > 0 ? milestones.map((milestone, index) => (
+                <div key={milestone.id} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                       <div className="text-2xl font-bold text-gray-900 mb-2">{milestone.year}</div>
-                      <p className="text-gray-600 leading-relaxed">{milestone.event}</p>
+                      <div className="text-lg font-semibold text-gray-800 mb-2">{milestone.title}</div>
+                      <p className="text-gray-600 leading-relaxed">{milestone.description}</p>
                     </div>
                   </div>
                   <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-900 rounded-full border-4 border-white"></div>
                 </div>
-              ))}
+              )) : (
+                <div className="text-center py-12">
+                  <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600">No milestones available yet.</p>
+                </div>
+              )}
             </div>
           </div>
         </section>

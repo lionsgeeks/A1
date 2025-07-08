@@ -1,245 +1,189 @@
+import { useState } from 'react'
 import AppLayout from '@/layouts/app-layout'
-import { FolderOpen, MessageSquare, Eye, TrendingUp, Plus, ArrowUpRight, Clock, Users } from 'lucide-react'
 import { Head, Link } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import {
+  Plus,
+  Users,
+  FolderOpen,
+  Mail,
+  BarChart3,
+  TrendingUp,
+  Calendar,
+  Settings
+} from 'lucide-react'
+import { 
+  StatsCard, 
   StatsGrid,
-  PageHeader,
-  PageContent,
-  PageContainer,
-  createAction
+  PageHeader, 
+  PageContent, 
+  PageContainer 
 } from '@/components/admin'
 
 export default function AdminDashboard({ stats }) {
   const breadcrumbs = [
-    { title: 'Admin', href: '/admin' },
-    { title: 'Dashboard', href: '/admin' }
+    { title: 'Admin', href: '/admin' }
   ]
 
   const dashboardStats = [
     {
-      key: 'projects',
       title: 'Total Projects',
-      value: stats?.projects || 0,
+      value: stats?.projects?.total || 0,
+      change: stats?.projects?.change || 0,
+      trend: stats?.projects?.trend || 'up',
       icon: FolderOpen,
-      color: 'bg-blue-500',
-      change: '+12%',
-      changeType: 'increase',
-      description: 'All projects',
+      color: 'blue',
       href: '/admin/projects'
     },
     {
-      key: 'messages',
-      title: 'Contact Messages',
-      value: stats?.messages || 0,
-      icon: MessageSquare,
-      color: 'bg-green-500',
-      change: '+5%',
-      changeType: 'increase',
-      description: 'Total messages',
-      href: '/admin/messages'
-    },
-    {
-      key: 'unread',
-      title: 'Unread Messages',
-      value: stats?.unreadMessages || 0,
-      icon: Eye,
-      color: 'bg-yellow-500',
-      change: '0%',
-      changeType: 'neutral',
-      description: 'Need attention',
-      href: '/admin/messages'
-    },
-    {
-      key: 'active',
       title: 'Active Projects',
-      value: stats?.activeProjects || 0,
-      icon: TrendingUp,
-      color: 'bg-purple-500',
-      change: '+8%',
-      changeType: 'increase',
-      description: 'Published projects',
-      href: '/admin/projects'
+      value: stats?.projects?.active || 0,
+      change: stats?.projects?.activeChange || 0,
+      trend: stats?.projects?.activeTrend || 'up',
+      icon: BarChart3,
+      color: 'green',
+      href: '/admin/projects?status=active'
+    },
+    {
+      title: 'Contact Messages',
+      value: stats?.messages?.total || 0,
+      change: stats?.messages?.change || 0,
+      trend: stats?.messages?.trend || 'up',
+      icon: Mail,
+      color: 'yellow',
+      href: '/admin/messages'
+    },
+    {
+      title: 'Unread Messages',
+      value: stats?.messages?.unread || 0,
+      change: stats?.messages?.unreadChange || 0,
+      trend: stats?.messages?.unreadTrend || 'down',
+      icon: Users,
+      color: 'red',
+      href: '/admin/messages?status=unread'
     }
   ]
 
-  const recentMessages = stats?.recentMessages || []
-  const recentProjects = stats?.recentProjects || []
+  const quickActions = [
+    {
+      title: 'Add New Project',
+      description: 'Create a new architectural project',
+      icon: Plus,
+      href: '/admin/projects/create',
+      color: 'bg-blue-500 hover:bg-blue-600'
+    },
+    {
+      title: 'Manage Projects',
+      description: 'View and edit existing projects',
+      icon: FolderOpen,
+      href: '/admin/projects',
+      color: 'bg-green-500 hover:bg-green-600'
+    },
+    {
+      title: 'View Messages',
+      description: 'Check contact form submissions',
+      icon: Mail,
+      href: '/admin/messages',
+      color: 'bg-yellow-500 hover:bg-yellow-600'
+    },
+    {
+      title: 'Timeline Milestones',
+      description: 'Manage about page timeline',
+      icon: Calendar,
+      href: '/admin/milestones',
+      color: 'bg-purple-500 hover:bg-purple-600'
+    }
+  ]
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Admin Dashboard" />
-
+      
       <PageContainer>
         <PageHeader
           title="Admin Dashboard"
-          description="Manage your projects, messages, and content from here"
+          description="Manage your architectural portfolio and content"
           actions={[
-            createAction('/admin/projects/create', 'New Project'),
             {
-              href: '/admin/messages',
-              label: 'View Messages',
-              icon: MessageSquare,
+              label: 'View Site',
+              icon: TrendingUp,
+              href: '/',
+              variant: 'outline'
+            },
+            {
+              label: 'Settings',
+              icon: Settings,
+              href: '/settings',
               variant: 'outline'
             }
           ]}
         />
-
+        
         <PageContent>
-          <div className="space-y-8">
+          {/* Stats Grid */}
+          <StatsGrid stats={dashboardStats} />
 
-            {/* Enhanced Stats Grid */}
-            <StatsGrid stats={dashboardStats} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Messages */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-black">Recent Messages</h3>
-                <Link href="/admin/messages">
-                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-black">
-                    View All
-                    <ArrowUpRight className="h-4 w-4 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="p-6">
-              {recentMessages.length > 0 ? (
-                <div className="space-y-4">
-                  {recentMessages.map((message) => (
-                    <div key={message.id} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="flex-shrink-0">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Users className="h-5 w-5 text-blue-600" />
-                        </div>
+          {/* Quick Actions */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {quickActions.map((action, index) => (
+                <Link key={index} href={action.href}>
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 p-6 group">
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-3 rounded-lg ${action.color} text-white group-hover:scale-110 transition-transform`}>
+                        <action.icon className="h-6 w-6" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-black">{message.name}</p>
-                          <Badge variant={message.status === 'unread' ? 'default' : 'secondary'} className="text-xs">
-                            {message.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600">{message.email}</p>
-                        <p className="text-sm text-gray-700 truncate mt-1">{message.message}</p>
-                        <div className="flex items-center mt-2 text-xs text-gray-500">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {new Date(message.created_at).toLocaleDateString()}
-                        </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 group-hover:text-gray-700">
+                          {action.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {action.description}
+                        </p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <MessageSquare className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">No recent messages</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Recent Projects */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-black">Recent Projects</h3>
-                <Link href="/admin/projects">
-                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-black">
-                    View All
-                    <ArrowUpRight className="h-4 w-4 ml-1" />
-                  </Button>
+                  </div>
                 </Link>
-              </div>
-            </div>
-            <div className="p-6">
-              {recentProjects.length > 0 ? (
-                <div className="space-y-4">
-                  {recentProjects.map((project) => (
-                    <div key={project.id} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden">
-                          {project.image_path ? (
-                            <img
-                              src={project.image_path}
-                              alt={project.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                              <FolderOpen className="h-6 w-6 text-gray-400" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-black">{project.title}</p>
-                          <Badge variant="outline" className="text-xs">
-                            {project.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600">{project.category} • {project.location}</p>
-                        <div className="flex items-center mt-2 text-xs text-gray-500">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {new Date(project.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <FolderOpen className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">No recent projects</p>
-                </div>
-              )}
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-lg font-semibold text-black mb-6">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link href="/admin/projects/create">
-              <div className="group flex items-center justify-center px-6 py-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-200 transition-colors">
-                    <Plus className="h-6 w-6 text-blue-600" />
+          {/* Recent Activity */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4 py-3 border-b border-gray-100 last:border-b-0">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900">New project created</p>
+                    <p className="text-xs text-gray-500">2 hours ago</p>
                   </div>
-                  <span className="text-sm font-medium text-black">Add New Project</span>
-                  <p className="text-xs text-gray-500 mt-1">Create a new project</p>
+                </div>
+                <div className="flex items-center space-x-4 py-3 border-b border-gray-100 last:border-b-0">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900">Contact message received</p>
+                    <p className="text-xs text-gray-500">4 hours ago</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4 py-3 border-b border-gray-100 last:border-b-0">
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900">Timeline milestone updated</p>
+                    <p className="text-xs text-gray-500">1 day ago</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4 py-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900">Project status updated</p>
+                    <p className="text-xs text-gray-500">2 days ago</p>
+                  </div>
                 </div>
               </div>
-            </Link>
-            <Link href="/admin/messages">
-              <div className="group flex items-center justify-center px-6 py-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-green-200 transition-colors">
-                    <MessageSquare className="h-6 w-6 text-green-600" />
-                  </div>
-                  <span className="text-sm font-medium text-black">View Messages</span>
-                  <p className="text-xs text-gray-500 mt-1">Check contact messages</p>
-                </div>
-              </div>
-            </Link>
-            <Link href="/admin/projects">
-              <div className="group flex items-center justify-center px-6 py-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-200 transition-colors">
-                    <FolderOpen className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <span className="text-sm font-medium text-black">Manage Projects</span>
-                  <p className="text-xs text-gray-500 mt-1">View all projects</p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
+            </div>
           </div>
         </PageContent>
       </PageContainer>

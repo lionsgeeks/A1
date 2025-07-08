@@ -61,17 +61,6 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
           </div>
         </nav>
 
-        {/* Back Button */}
-        <div className="pt-20 pb-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Link href="/projects">
-              <Button variant="outline" className="mb-6">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Projects
-              </Button>
-            </Link>
-          </div>
-        </div>
 
         {/* Hero Image */}
         <section className="relative h-screen">
