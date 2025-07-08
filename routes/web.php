@@ -11,13 +11,7 @@ Route::get('/about', function () {
     return Inertia::render('about');
 })->name('about');
 
-Route::get('/projects', function () {
-    return Inertia::render('projects', [
-        'projects' => [
-            'data' => []
-        ]
-    ]);
-})->name('projects');
+Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'index'])->name('projects');
 
 Route::get('/contact', function () {
     return Inertia::render('contact');

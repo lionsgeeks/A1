@@ -4,98 +4,16 @@ import { ArrowRight, MapPin, Calendar, Filter, Grid, List } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
 import { useState } from 'react'
 
-export default function Projects() {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+export default function Projects({ projects }) {
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const [viewMode, setViewMode] = useState('grid')
 
-  const categories = ['All', 'Residential', 'Commercial', 'Cultural', 'Mixed-Use', 'Educational']
+  // Get unique categories from database projects
+  const categories = ['all', ...new Set(projects?.data?.map(project => project.category) || [])]
 
-  const projects = [
-    {
-      id: 1,
-      title: "Modern Residential Complex",
-      category: "Residential",
-      location: "New York, NY",
-      year: "2024",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-      description: "A contemporary residential development featuring sustainable design principles and innovative living spaces.",
-      details: "This 150-unit residential complex showcases modern architectural design with emphasis on sustainability and community living. Features include green rooftops, energy-efficient systems, and shared community spaces."
-    },
-    {
-      id: 2,
-      title: "Corporate Headquarters",
-      category: "Commercial",
-      location: "San Francisco, CA",
-      year: "2023",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-      description: "A striking office building that redefines the modern workplace with flexible spaces and natural light.",
-      details: "A 40-story corporate headquarters designed to promote collaboration and innovation. The building features flexible workspaces, abundant natural light, and state-of-the-art technology infrastructure."
-    },
-    {
-      id: 3,
-      title: "Cultural Arts Center",
-      category: "Cultural",
-      location: "Chicago, IL",
-      year: "2023",
-      image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop",
-      description: "An iconic cultural landmark that brings together community spaces and artistic expression.",
-      details: "A multi-purpose cultural facility housing galleries, performance spaces, and educational facilities. The design emphasizes accessibility and community engagement while creating inspiring spaces for artistic expression."
-    },
-    {
-      id: 4,
-      title: "Sustainable Housing Project",
-      category: "Residential",
-      location: "Portland, OR",
-      year: "2024",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-      description: "Eco-friendly housing development showcasing renewable energy and green building technologies.",
-      details: "A pioneering sustainable housing project featuring solar panels, rainwater harvesting, and passive heating/cooling systems. The development serves as a model for environmentally responsible residential design."
-    },
-    {
-      id: 5,
-      title: "Urban Mixed-Use Development",
-      category: "Mixed-Use",
-      location: "Austin, TX",
-      year: "2023",
-      image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop",
-      description: "A vibrant mixed-use complex combining retail, office, and residential spaces in the heart of the city.",
-      details: "This mixed-use development creates a vibrant urban community with ground-floor retail, office spaces, and residential units. The design promotes walkability and creates a sense of place in the urban environment."
-    },
-    {
-      id: 6,
-      title: "Educational Campus",
-      category: "Educational",
-      location: "Boston, MA",
-      year: "2024",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=600&fit=crop",
-      description: "A modern educational facility designed to inspire learning through innovative architectural solutions.",
-      details: "A state-of-the-art educational campus featuring flexible learning spaces, advanced technology integration, and sustainable design elements. The architecture supports various learning methodologies and promotes student collaboration."
-    },
-    {
-      id: 7,
-      title: "Luxury Resort Complex",
-      category: "Commercial",
-      location: "Miami, FL",
-      year: "2022",
-      image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
-      description: "An exclusive resort destination that seamlessly blends luxury with natural surroundings.",
-      details: "A luxury resort complex designed to harmonize with the coastal environment. Features include sustainable materials, energy-efficient systems, and spaces that maximize ocean views while respecting the natural landscape."
-    },
-    {
-      id: 8,
-      title: "Community Library",
-      category: "Cultural",
-      location: "Seattle, WA",
-      year: "2022",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop",
-      description: "A contemporary library that serves as a community hub for learning and social interaction.",
-      details: "A modern library design that reimagines the traditional library concept. Features include flexible spaces for various activities, advanced technology integration, and areas designed to foster community interaction and lifelong learning."
-    }
-  ]
-
-  const filteredProjects = selectedCategory === 'All'
-    ? projects
-    : projects.filter(project => project.category === selectedCategory)
+  const filteredProjects = selectedCategory === 'all'
+    ? projects?.data || []
+    : projects?.data?.filter(project => project.category === selectedCategory) || []
 
   return (
     <>
@@ -170,7 +88,7 @@ export default function Projects() {
                         : 'bg-white text-gray-700 hover:bg-gray-100'
                     }`}
                   >
-                    {category}
+                    {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
                   </button>
                 ))}
               </div>
@@ -202,7 +120,7 @@ export default function Projects() {
                 {filteredProjects.map((project) => (
                   <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     <img
-                      src={project.image}
+                      src={project.image_path || '/placeholder.svg'}
                       alt={project.title}
                       className="w-full h-64 object-cover"
                     />
@@ -219,10 +137,12 @@ export default function Projects() {
                         <span>{project.location}</span>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed mb-4">{project.description}</p>
-                      <Button className="w-full bg-gray-900 hover:bg-gray-800">
-                        View Details
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
+                      <Link href={`/projects/${project.id}`}>
+                        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white">
+                          View Details
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -234,7 +154,7 @@ export default function Projects() {
                     <div className="md:flex">
                       <div className="md:w-1/3">
                         <img
-                          src={project.image}
+                          src={project.image_path || '/placeholder.svg'}
                           alt={project.title}
                           className="w-full h-64 md:h-full object-cover"
                         />
@@ -251,11 +171,13 @@ export default function Projects() {
                           <MapPin className="h-4 w-4 mr-1" />
                           <span>{project.location}</span>
                         </div>
-                        <p className="text-gray-600 leading-relaxed mb-4">{project.details}</p>
-                        <Button className="bg-gray-900 hover:bg-gray-800">
-                          View Details
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
+                        <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
+                        <Link href={`/projects/${project.id}`}>
+                          <Button className="bg-gray-900 hover:bg-gray-800 text-white">
+                            View Details
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>
