@@ -11,7 +11,7 @@ export function formatAdminDate(date, options = {}) {
     hour: '2-digit',
     minute: '2-digit'
   }
-  
+
   return new Date(date).toLocaleDateString('en-US', { ...defaultOptions, ...options })
 }
 
@@ -20,11 +20,11 @@ export function formatAdminDate(date, options = {}) {
  */
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
@@ -67,7 +67,7 @@ export function getStatusColor(status, type = 'badge') {
       dot: 'bg-gray-500'
     }
   }
-  
+
   return colors[status]?.[type] || colors.inactive[type]
 }
 
@@ -77,23 +77,23 @@ export function getStatusColor(status, type = 'badge') {
 export function generateAdminBreadcrumbs(path, customLabels = {}) {
   const segments = path.split('/').filter(Boolean)
   const breadcrumbs = []
-  
+
   // Always start with Admin
   breadcrumbs.push({ title: 'Admin', href: '/admin' })
-  
+
   let currentPath = '/admin'
-  
+
   for (let i = 1; i < segments.length; i++) {
     const segment = segments[i]
     currentPath += `/${segment}`
-    
+
     // Skip numeric IDs
     if (!isNaN(segment)) continue
-    
+
     const label = customLabels[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
     breadcrumbs.push({ title: label, href: currentPath })
   }
-  
+
   return breadcrumbs
 }
 
@@ -121,7 +121,7 @@ export function sortBy(array, ...fields) {
       const [key, direction = 'asc'] = field.split(':')
       const aVal = getNestedValue(a, key)
       const bVal = getNestedValue(b, key)
-      
+
       if (aVal < bVal) return direction === 'asc' ? -1 : 1
       if (aVal > bVal) return direction === 'asc' ? 1 : -1
     }
@@ -141,10 +141,10 @@ function getNestedValue(obj, path) {
  */
 export function searchFilter(array, searchTerm, fields) {
   if (!searchTerm) return array
-  
+
   const term = searchTerm.toLowerCase()
-  
-  return array.filter(item => 
+
+  return array.filter(item =>
     fields.some(field => {
       const value = getNestedValue(item, field)
       return value && value.toString().toLowerCase().includes(term)
@@ -158,7 +158,7 @@ export function searchFilter(array, searchTerm, fields) {
 export function paginate(array, page = 1, perPage = 10) {
   const start = (page - 1) * perPage
   const end = start + perPage
-  
+
   return {
     data: array.slice(start, end),
     current_page: page,
@@ -236,13 +236,13 @@ export function downloadJSON(data, filename = 'data.json') {
  */
 export function downloadCSV(data, filename = 'data.csv') {
   if (!data.length) return
-  
+
   const headers = Object.keys(data[0])
   const csvContent = [
     headers.join(','),
     ...data.map(row => headers.map(header => `"${row[header] || ''}"`).join(','))
   ].join('\n')
-  
+
   const blob = new Blob([csvContent], { type: 'text/csv' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')

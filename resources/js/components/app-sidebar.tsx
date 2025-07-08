@@ -4,16 +4,16 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, FolderOpen, MessageSquare } from 'lucide-react';
+import { LayoutGrid, FolderOpen, MessageSquare, Milestone } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+// const mainNavItems: NavItem[] = [
+//     {
+//         title: 'Dashboard',
+//         href: '/dashboard',
+//         icon: LayoutGrid,
+//     },
+// ];
 
 const adminNavItems: NavItem[] = [
     {
@@ -30,6 +30,11 @@ const adminNavItems: NavItem[] = [
         title: 'Messages',
         href: '/admin/messages',
         icon: MessageSquare,
+    },
+    {
+        title: 'Milestones',
+        href: '/admin/milestones',
+        icon: Milestone,
     },
 
 ];
@@ -50,7 +55,7 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
     const page = usePage();
     const isAdminPage = page.url.startsWith('/admin');
-    const navItems = isAdminPage ? adminNavItems : mainNavItems;
+    // const navItems = isAdminPage ? adminNavItems : mainNavItems;
     const logoHref = isAdminPage ? '/admin' : '/dashboard';
 
     return (
@@ -68,7 +73,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={navItems} />
+                <NavMain items={adminNavItems} />
             </SidebarContent>
 
             <SidebarFooter>

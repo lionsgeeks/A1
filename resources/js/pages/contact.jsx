@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Phone, MapPin, Clock, Send, MessageSquare } from "lucide-react"
 import { Head, Link, useForm } from '@inertiajs/react'
+import logo from "../../assets/images/A1.png"
 
 export default function Contact() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -74,17 +75,16 @@ export default function Contact() {
       <Head title="Contact Us - ARCH Studio" />
       <div className="min-h-screen bg-white">
         {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
+        <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
                 <Link href="/" className="flex items-center space-x-2">
-                  <div className="relative">
-                    <div className="w-8 h-8 bg-gray-900 transform rotate-45"></div>
-                    <div className="absolute top-1 left-1 w-6 h-6 bg-white transform rotate-45"></div>
-                    <div className="absolute top-2 left-2 w-4 h-4 bg-gray-900 transform rotate-45"></div>
-                  </div>
-                  <span className="text-2xl font-bold text-gray-900 tracking-wider">ARCH</span>
+                  <Link href="/" className="flex items-center space-x-2">
+                                    <img src={logo}
+                                    className='w-[55px] aspect-square object-cover'
+                                    alt="" />
+                                </Link>
                 </Link>
               </div>
               <div className="hidden md:block">
