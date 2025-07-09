@@ -29,10 +29,13 @@ class ProjectController extends Controller
         }
 
         if ($request->category) {
-            $query->where('category', $request->category);
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
         }
 
-        $projects = $query->orderBy('sort_order')
+        $projects = $query->with('category')
+                         ->orderBy('sort_order')
                          ->orderBy('created_at', 'desc')
                          ->paginate(12);
 
@@ -55,7 +58,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'location' => 'required|string|max:255',
             'year' => 'required|string|max:4',
             'description' => 'required|string|max:500',
@@ -95,7 +98,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'location' => 'required|string|max:255',
             'year' => 'required|string|max:4',
             'description' => 'required|string|max:500',

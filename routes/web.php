@@ -4,15 +4,16 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    // Get featured projects for the carousel (limit to 5 most recent active projects)
-    $featuredProjects = \App\Models\Project::where('status', 'active')
-        ->orderBy('sort_order')
-        ->orderBy('created_at', 'desc')
-        ->limit(5)
-        ->get();
+    // Get all active categories for the carousel with project counts
+    $featuredCategories = \App\Models\Category::active()
+        ->ordered()
+        ->withCount(['projects' => function ($query) {
+            $query->where('status', 'active');
+        }])
+        ->get(); // Show all categories, not just those with projects
 
     return Inertia::render('architectural-website', [
-        'featuredProjects' => $featuredProjects
+        'featuredCategories' => $featuredCategories->values() // Reset array keys
     ]);
 })->name('home');
 
@@ -64,6 +65,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Categories CRUD
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    Route::post('/categories/{category}/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update-with-files');
+    Route::delete('/categories/{category}/image', [App\Http\Controllers\Admin\CategoryController::class, 'deleteImage'])->name('categories.delete-image');
 });
 
 // Redirect dashboard to admin dashboard

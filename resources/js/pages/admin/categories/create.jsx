@@ -2,29 +2,54 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Head, Link, useForm } from '@inertiajs/react'
+import { route } from 'ziggy-js'
 import { useState } from 'react'
-import { ArrowLeft, Save, Palette, Eye, EyeOff } from 'lucide-react'
+import { ArrowLeft, Save, Palette, Eye, EyeOff, Upload, X, Image as ImageIcon } from 'lucide-react'
 import AppLayout from '@/layouts/app-layout'
+import { ImageUpload } from '@/components/admin/form-section'
+import { useModal } from '@/components/ui/modal'
 
 export default function CategoryCreate({ category }) {
   const isEditing = !!category
   const [colorPreview, setColorPreview] = useState(category?.color || '#a3845b')
+  const { showConfirm, ModalComponent } = useModal()
 
   const { data, setData, post, put, processing, errors } = useForm({
     name: category?.name || '',
     description: category?.description || '',
     color: category?.color || '#a3845b',
     sort_order: category?.sort_order || 0,
-    is_active: category?.is_active ?? true
+    is_active: category?.is_active ?? true,
+    image: null
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
     if (isEditing) {
-      put(route('admin.categories.update', category.id))
+      // Use dedicated POST route for updates with files
+      post(route('admin.categories.update-with-files', category.id))
     } else {
       post(route('admin.categories.store'))
+    }
+  }
+
+  const handleDeleteImage = async () => {
+    try {
+      const response = await fetch(route('admin.categories.delete-image', category.id), {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Accept': 'application/json',
+        }
+      })
+
+      if (response.ok) {
+        // Refresh the page to show updated category
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Error deleting image:', error)
     }
   }
 
@@ -79,7 +104,7 @@ export default function CategoryCreate({ category }) {
 
           {/* Form */}
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6" encType="multipart/form-data">
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
@@ -125,6 +150,56 @@ export default function CategoryCreate({ category }) {
                   className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${errors.description ? 'border-red-500' : ''}`}
                 />
                 {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+              </div>
+
+              {/* Category Image */}
+              <div className="space-y-4">
+                <Label>Category Image</Label>
+
+                {/* Current Image (Edit Mode) */}
+                {isEditing && category.image_path && (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600">Current Image:</p>
+                    <div className="relative inline-block">
+                      <img
+                        src={`/${category.image_path}`}
+                        alt={category.name}
+                        className="w-32 h-24 object-cover rounded-lg border border-gray-300"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute -top-2 -right-2 w-6 h-6 p-0 rounded-full"
+                        onClick={() => {
+                          showConfirm(
+                            'Delete Image',
+                            'Are you sure you want to delete this image?',
+                            handleDeleteImage
+                          )
+                        }}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Image Upload */}
+                <div className="space-y-2">
+                  <Label htmlFor="image">{isEditing && category.image_path ? 'Replace Image' : 'Upload Image'}</Label>
+                  <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setData('image', e.target.files[0])}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  />
+                  {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+                  <p className="text-gray-500 text-sm">
+                    Recommended: 800x600px or larger. Max file size: 10MB. Formats: JPG, PNG, GIF
+                  </p>
+                </div>
               </div>
 
               {/* Color Selection */}
@@ -250,6 +325,9 @@ export default function CategoryCreate({ category }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      <ModalComponent />
     </AppLayout>
   )
 }

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Phone, MapPin, Clock, Send, MessageSquare } from "lucide-react"
 import { Head, Link, useForm } from '@inertiajs/react'
+import { useModal } from '@/components/ui/modal'
 import logo from "../../assets/images/A1.png"
 
 export default function Contact() {
@@ -14,12 +15,17 @@ export default function Contact() {
     message: ''
   })
 
+  const { showSuccess, ModalComponent } = useModal()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     post('/contact', {
       onSuccess: () => {
         reset()
-        alert('Thank you for your message! We will get back to you soon.')
+        showSuccess(
+          'Message Sent Successfully!',
+          'Thank you for your message! We will get back to you soon.'
+        )
       }
     })
   }
@@ -427,6 +433,9 @@ export default function Contact() {
           </div>
         </footer>
       </div>
+
+      {/* Modal Component */}
+      <ModalComponent />
     </>
   )
 }

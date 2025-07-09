@@ -13,6 +13,7 @@ import {
     ArrowDown
 } from 'lucide-react'
 import { router } from '@inertiajs/react'
+import { useModal } from '@/components/ui/modal'
 import {
     DataTable,
     PageHeader,
@@ -22,6 +23,7 @@ import {
 
 export default function MilestonesIndex({ milestones }) {
     const [selectedMilestone, setSelectedMilestone] = useState(null)
+    const { showConfirm, ModalComponent } = useModal()
 
     const breadcrumbs = [
         { title: 'Admin', href: '/admin' },
@@ -94,9 +96,13 @@ export default function MilestonesIndex({ milestones }) {
             icon: Trash2,
             destructive: true,
             onClick: (milestone) => {
-                if (confirm(`Are you sure you want to delete the milestone "${milestone.title}"?`)) {
-                    router.delete(`/admin/milestones/${milestone.id}`)
-                }
+                showConfirm(
+                    'Delete Milestone',
+                    `Are you sure you want to delete the milestone "${milestone.title}"? This action cannot be undone.`,
+                    () => {
+                        router.delete(`/admin/milestones/${milestone.id}`)
+                    }
+                )
             }
         }
     ]
@@ -206,10 +212,14 @@ export default function MilestonesIndex({ milestones }) {
                                                 <Button
                                                     variant="destructive"
                                                     onClick={() => {
-                                                        if (confirm(`Are you sure you want to delete "${selectedMilestone.title}"?`)) {
-                                                            router.delete(`/admin/milestones/${selectedMilestone.id}`)
-                                                            handleCloseDetails()
-                                                        }
+                                                        showConfirm(
+                                                            'Delete Milestone',
+                                                            `Are you sure you want to delete "${selectedMilestone.title}"? This action cannot be undone.`,
+                                                            () => {
+                                                                router.delete(`/admin/milestones/${selectedMilestone.id}`)
+                                                                handleCloseDetails()
+                                                            }
+                                                        )
                                                     }}
                                                 >
                                                     <Trash2 className="h-4 w-4 mr-2" />
@@ -224,6 +234,9 @@ export default function MilestonesIndex({ milestones }) {
                     )}
                 </PageContent>
             </PageContainer>
+
+            {/* Modal Component */}
+            <ModalComponent />
         </AppLayout>
     )
 }

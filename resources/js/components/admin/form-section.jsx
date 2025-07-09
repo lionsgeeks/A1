@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select'
 import { Upload, X, Image as ImageIcon, File } from 'lucide-react'
 import { useState } from 'react'
+import { useModal } from '@/components/ui/modal'
 
 export function FormSection({ title, description, children, className = '' }) {
   return (
@@ -28,11 +29,11 @@ export function FormSection({ title, description, children, className = '' }) {
   )
 }
 
-export function FormField({ 
-  label, 
-  required = false, 
-  error, 
-  description, 
+export function FormField({
+  label,
+  required = false,
+  error,
+  description,
   children,
   className = ''
 }) {
@@ -55,9 +56,9 @@ export function FormField({
   )
 }
 
-export function ImageUpload({ 
-  value, 
-  onChange, 
+export function ImageUpload({
+  value,
+  onChange,
   onRemove,
   multiple = false,
   accept = "image/*",
@@ -66,12 +67,16 @@ export function ImageUpload({
 }) {
   const [dragActive, setDragActive] = useState(false)
   const [previews, setPreviews] = useState(value ? (Array.isArray(value) ? value : [value]) : [])
+  const { showError, ModalComponent } = useModal()
 
   const handleFiles = (files) => {
     const fileArray = Array.from(files)
     const validFiles = fileArray.filter(file => {
       if (file.size > maxSize) {
-        alert(`File ${file.name} is too large. Maximum size is ${maxSize / 1024 / 1024}MB`)
+        showError(
+          'File Too Large',
+          `File ${file.name} is too large. Maximum size is ${maxSize / 1024 / 1024}MB`
+        )
         return false
       }
       return true
@@ -79,7 +84,7 @@ export function ImageUpload({
 
     if (validFiles.length > 0) {
       const newPreviews = validFiles.map(file => URL.createObjectURL(file))
-      
+
       if (multiple) {
         setPreviews(prev => [...prev, ...newPreviews])
         onChange([...previews, ...validFiles])
@@ -104,7 +109,7 @@ export function ImageUpload({
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFiles(e.dataTransfer.files)
     }
@@ -120,8 +125,8 @@ export function ImageUpload({
     <div className={`space-y-4 ${className}`}>
       <div
         className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-          dragActive 
-            ? 'border-blue-400 bg-blue-50' 
+          dragActive
+            ? 'border-blue-400 bg-blue-50'
             : 'border-gray-300 hover:border-gray-400'
         }`}
         onDragEnter={handleDrag}
@@ -136,7 +141,7 @@ export function ImageUpload({
           onChange={(e) => handleFiles(e.target.files)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        
+
         <div className="space-y-2">
           <Upload className="mx-auto h-8 w-8 text-gray-400" />
           <div>
@@ -180,6 +185,9 @@ export function ImageUpload({
           ))}
         </div>
       )}
+
+      {/* Modal Component */}
+      <ModalComponent />
     </div>
   )
 }
@@ -224,10 +232,10 @@ export function StatusSelect({ value, onChange, options = [], className = '' }) 
   )
 }
 
-export function FormActions({ 
-  onCancel, 
-  onSubmit, 
-  submitLabel = 'Save', 
+export function FormActions({
+  onCancel,
+  onSubmit,
+  submitLabel = 'Save',
   cancelLabel = 'Cancel',
   loading = false,
   className = ''

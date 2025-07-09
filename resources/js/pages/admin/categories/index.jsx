@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Head, Link, router } from '@inertiajs/react'
+import { route } from 'ziggy-js'
 import { useState } from 'react'
 import { Search, Plus, Edit, Trash2, Palette, Eye, EyeOff } from 'lucide-react'
 import AppLayout from '@/layouts/app-layout'
+import { useModal } from '@/components/ui/modal'
 
 export default function CategoriesIndex({ categories, filters }) {
   const [search, setSearch] = useState(filters.search || '')
+  const { showConfirm, ModalComponent } = useModal()
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -18,9 +21,13 @@ export default function CategoriesIndex({ categories, filters }) {
   }
 
   const handleDelete = (category) => {
-    if (confirm(`Are you sure you want to delete the category "${category.name}"?`)) {
-      router.delete(route('admin.categories.destroy', category.id))
-    }
+    showConfirm(
+      'Delete Category',
+      `Are you sure you want to delete the category "${category.name}"? This action cannot be undone and will affect all projects in this category.`,
+      () => {
+        router.delete(route('admin.categories.destroy', category.id))
+      }
+    )
   }
 
   return (
@@ -76,10 +83,21 @@ export default function CategoriesIndex({ categories, filters }) {
                       {/* Category Header */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center space-x-3">
-                          <div
-                            className="w-4 h-4 rounded-full border-2 border-gray-300"
-                            style={{ backgroundColor: category.color }}
-                          ></div>
+                          {/* Category Image or Color Indicator */}
+                          {category.image_path ? (
+                            <img
+                              src={`/${category.image_path}`}
+                              alt={category.name}
+                              className="w-12 h-12 object-cover rounded-lg border border-gray-300"
+                            />
+                          ) : (
+                            <div
+                              className="w-12 h-12 rounded-lg border-2 border-gray-300 flex items-center justify-center"
+                              style={{ backgroundColor: category.color }}
+                            >
+                              <Palette className="h-6 w-6 text-white" />
+                            </div>
+                          )}
                           <div>
                             <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
                             <p className="text-sm text-gray-500">#{category.slug}</p>
@@ -190,6 +208,9 @@ export default function CategoriesIndex({ categories, filters }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      <ModalComponent />
     </AppLayout>
   )
 }

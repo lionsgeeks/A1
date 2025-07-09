@@ -7,7 +7,9 @@ import {
     X,
     Save,
     ArrowLeft,
-    Image as ImageIcon
+    Image as ImageIcon,
+    AlertTriangle,
+    CheckCircle
 } from 'lucide-react'
 import { Link, router, useForm } from '@inertiajs/react'
 
@@ -25,7 +27,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
 
   const { data, setData, post, put, processing, errors } = useForm({
     title: project?.title || '',
-    category: project?.category || '',
+    category_id: project?.category_id || '',
     location: project?.location || '',
     year: project?.year || new Date().getFullYear().toString(),
     description: project?.description || '',
@@ -36,13 +38,20 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     gallery_images: []
   })
 
-  const categories = [
-    'residential',
-    'commercial',
-    'cultural',
-    'mixed-use',
-    'educational'
-  ]
+  // Modal states
+  const [showModal, setShowModal] = useState(false)
+  const [modalConfig, setModalConfig] = useState({
+    type: 'error', // 'error', 'success', 'warning'
+    title: '',
+    message: '',
+    onConfirm: null
+  })
+
+  // Helper function to show modal instead of alert
+  const showModalDialog = (type, title, message, onConfirm = null) => {
+    setModalConfig({ type, title, message, onConfirm })
+    setShowModal(true)
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -113,11 +122,11 @@ export default function ProjectCreate({ project = null, categories = [] }) {
           setGalleryPreviews(newPreviews)
         } else {
           const errorData = await response.json()
-          alert(`Failed to delete image: ${errorData.message || 'Unknown error'}`)
+          showModalDialog('error', 'Delete Failed', `Failed to delete image: ${errorData.message || 'Unknown error'}`)
         }
       } catch (error) {
         console.error('Error deleting image:', error)
-        alert('Failed to delete image')
+        showModalDialog('error', 'Delete Failed', 'Failed to delete image')
       }
     } else {
       // Removing a new image (not yet uploaded)
@@ -159,11 +168,11 @@ export default function ProjectCreate({ project = null, categories = [] }) {
         setGalleryPreviews(result.gallery_images)
       } else {
         const errorData = await response.json()
-        alert(`Failed to upload image: ${errorData.message || 'Unknown error'}`)
+        showModalDialog('error', 'Upload Failed', `Failed to upload image: ${errorData.message || 'Unknown error'}`)
       }
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Failed to upload image')
+      showModalDialog('error', 'Upload Failed', 'Failed to upload image')
     }
   }
 
@@ -226,19 +235,19 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 </label>
                 <select
                   id="category"
-                  value={data.category}
-                  onChange={(e) => setData('category', e.target.value)}
+                  value={data.category_id}
+                  onChange={(e) => setData('category_id', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   required
                 >
                   <option value="">Select a category</option>
                   {categories.map(category => (
-                    <option key={category.id} value={category.name}>
+                    <option key={category.id} value={category.id}>
                       {category.name}
                     </option>
                   ))}
                 </select>
-                {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category}</p>}
+                {errors.category_id && <p className="text-red-600 text-sm mt-1">{errors.category_id}</p>}
               </div>
 
               <div>
@@ -449,6 +458,50 @@ export default function ProjectCreate({ project = null, categories = [] }) {
           </div>
         </form>
       </div>
+
+      {/* Modal Dialog */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center mb-4">
+              {modalConfig.type === 'error' && (
+                <AlertTriangle className="h-6 w-6 text-red-500 mr-3" />
+              )}
+              {modalConfig.type === 'success' && (
+                <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+              )}
+              {modalConfig.type === 'warning' && (
+                <AlertTriangle className="h-6 w-6 text-yellow-500 mr-3" />
+              )}
+              <h3 className="text-lg font-semibold text-gray-900">
+                {modalConfig.title}
+              </h3>
+            </div>
+            <p className="text-gray-600 mb-6">
+              {modalConfig.message}
+            </p>
+            <div className="flex justify-end space-x-3">
+              <Button
+                onClick={() => setShowModal(false)}
+                variant="outline"
+              >
+                Close
+              </Button>
+              {modalConfig.onConfirm && (
+                <Button
+                  onClick={() => {
+                    modalConfig.onConfirm()
+                    setShowModal(false)
+                  }}
+                  className="bg-primary-600 hover:bg-primary-700 text-white"
+                >
+                  Confirm
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   )
 }

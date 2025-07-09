@@ -14,6 +14,7 @@ import {
   X
 } from 'lucide-react'
 import { router } from '@inertiajs/react'
+import { useModal } from '@/components/ui/modal'
 import {
   DataTable,
   PageHeader,
@@ -29,6 +30,7 @@ export default function MessagesIndex({ messages, filters, stats }) {
   ]
   const [selectedStatus, setSelectedStatus] = useState(filters?.status || 'all')
   const [selectedMessage, setSelectedMessage] = useState(null)
+  const { showConfirm, ModalComponent } = useModal()
 
   // Table columns configuration
   const columns = [
@@ -103,9 +105,13 @@ export default function MessagesIndex({ messages, filters, stats }) {
       icon: Trash2,
       destructive: true,
       onClick: (message) => {
-        if (confirm(`Are you sure you want to delete this message from ${message.name}?`)) {
-          router.delete(`/admin/messages/${message.id}`)
-        }
+        showConfirm(
+          'Delete Message',
+          `Are you sure you want to delete this message from ${message.name}? This action cannot be undone.`,
+          () => {
+            router.delete(`/admin/messages/${message.id}`)
+          }
+        )
       }
     }
   ]
@@ -253,10 +259,14 @@ export default function MessagesIndex({ messages, filters, stats }) {
                         <Button
                           variant="destructive"
                           onClick={() => {
-                            if (confirm(`Are you sure you want to delete this message from ${selectedMessage.name}?`)) {
-                              router.delete(`/admin/messages/${selectedMessage.id}`)
-                              handleCloseDetails()
-                            }
+                            showConfirm(
+                              'Delete Message',
+                              `Are you sure you want to delete this message from ${selectedMessage.name}? This action cannot be undone.`,
+                              () => {
+                                router.delete(`/admin/messages/${selectedMessage.id}`)
+                                handleCloseDetails()
+                              }
+                            )
                           }}
                         >
                           <Trash2 className="h-4 w-4 mr-2" />
@@ -271,6 +281,9 @@ export default function MessagesIndex({ messages, filters, stats }) {
           )}
         </PageContent>
       </PageContainer>
+
+      {/* Modal Component */}
+      <ModalComponent />
     </AppLayout>
   )
 }

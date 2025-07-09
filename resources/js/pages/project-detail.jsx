@@ -73,8 +73,12 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-8">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-white">
-                                <Badge variant="secondary" className="bg-white/20 text-white border-white/30 mb-4">
-                                    {project.category}
+                                <Badge
+                                    variant="secondary"
+                                    className="text-white border-white/30 mb-4 font-medium"
+                                    style={{ backgroundColor: project.category?.color || '#a3845b' }}
+                                >
+                                    {project.category?.name || project.category || 'Uncategorized'}
                                 </Badge>
                                 <h1 className="text-5xl md:text-7xl font-light mb-4 leading-tight">
                                     {project.title.split(" ").slice(0, -1).join(" ")}
@@ -201,7 +205,12 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                     <div className="space-y-4">
                                         <div>
                                             <label className="block text-sm font-medium text-black mb-1">Category</label>
-                                            <p className="text-black">{project.category}</p>
+                                            <Badge
+                                                className="text-white font-medium"
+                                                style={{ backgroundColor: project.category?.color || '#a3845b' }}
+                                            >
+                                                {project.category?.name || project.category || 'Uncategorized'}
+                                            </Badge>
                                         </div>
 
                                         <div>
@@ -289,8 +298,12 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 className="w-full h-64 object-cover"
                                             />
                                             <div className="p-6">
-                                                <Badge variant="secondary" className="bg-gray-100 text-gray-800 mb-3">
-                                                    {relatedProject.category}
+                                                <Badge
+                                                    variant="secondary"
+                                                    className="text-white font-medium mb-3"
+                                                    style={{ backgroundColor: relatedProject.category?.color || '#a3845b' }}
+                                                >
+                                                    {relatedProject.category?.name || relatedProject.category || 'Uncategorized'}
                                                 </Badge>
                                                 <h3 className="text-xl font-semibold text-black mb-2">{relatedProject.title}</h3>
                                                 <div className="flex items-center text-black text-sm mb-3">

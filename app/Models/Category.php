@@ -11,6 +11,7 @@ class Category extends Model
         'name',
         'slug',
         'description',
+        'image_path',
         'color',
         'sort_order',
         'is_active'
@@ -53,12 +54,42 @@ class Category extends Model
     // Relationship with projects
     public function projects()
     {
-        return $this->hasMany(Project::class, 'category', 'name');
+        return $this->hasMany(Project::class, 'category_id', 'id');
+    }
+
+    // Relationship with active projects only
+    public function activeProjects()
+    {
+        return $this->hasMany(Project::class, 'category_id', 'id')->where('status', 'active');
     }
 
     // Get projects count
     public function getProjectsCountAttribute()
     {
         return $this->projects()->where('status', 'active')->count();
+    }
+
+    // Get all projects count (including inactive)
+    public function getAllProjectsCountAttribute()
+    {
+        return $this->projects()->count();
+    }
+
+    // Get featured projects (first 3 active projects)
+    public function getFeaturedProjectsAttribute()
+    {
+        return $this->activeProjects()->orderBy('sort_order')->limit(3)->get();
+    }
+
+    // Check if category has projects
+    public function hasProjects()
+    {
+        return $this->projects()->exists();
+    }
+
+    // Check if category has active projects
+    public function hasActiveProjects()
+    {
+        return $this->activeProjects()->exists();
     }
 }

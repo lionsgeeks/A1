@@ -12,6 +12,7 @@ import {
   MapPin
 } from 'lucide-react'
 import { Link, router } from '@inertiajs/react'
+import { useModal } from '@/components/ui/modal'
 import {
   DataTable,
   PageHeader,
@@ -28,6 +29,7 @@ export default function ProjectsIndex({ projects }) {
   ]
   const [selectedProject, setSelectedProject] = useState(null)
   const [showDetails, setShowDetails] = useState(false)
+  const { showConfirm, ModalComponent } = useModal()
 
   // Table columns configuration
   const columns = [
@@ -45,16 +47,17 @@ export default function ProjectsIndex({ projects }) {
     {
       key: 'category',
       label: 'Category',
-      type: 'badge',
-      variant: (value) => {
-        const variants = {
-          residential: 'default',
-          commercial: 'secondary',
-          cultural: 'outline',
-          'mixed-use': 'destructive',
-          educational: 'default'
-        }
-        return variants[value] || 'default'
+      render: (_, project) => {
+        const categoryName = project.category?.name || 'Uncategorized';
+        const categoryColor = project.category?.color || '#a3845b';
+        return (
+          <Badge
+            className="text-white"
+            style={{ backgroundColor: categoryColor }}
+          >
+            {categoryName}
+          </Badge>
+        );
       }
     },
     {
@@ -107,9 +110,13 @@ export default function ProjectsIndex({ projects }) {
       icon: Trash2,
       destructive: true,
       onClick: (project) => {
-        if (confirm('Are you sure you want to delete this project?')) {
-          router.delete(`/admin/projects/${project.id}`)
-        }
+        showConfirm(
+          'Delete Project',
+          `Are you sure you want to delete "${project.title}"? This action cannot be undone.`,
+          () => {
+            router.delete(`/admin/projects/${project.id}`)
+          }
+        )
       }
     }
   ]
@@ -192,8 +199,11 @@ export default function ProjectsIndex({ projects }) {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2">Category</h4>
-                        <Badge className={getStatusColor(selectedProject.category)}>
-                          {selectedProject.category}
+                        <Badge
+                          className="text-white"
+                          style={{ backgroundColor: selectedProject.category?.color || '#a3845b' }}
+                        >
+                          {selectedProject.category?.name || 'Uncategorized'}
                         </Badge>
                       </div>
                       <div>
@@ -255,6 +265,9 @@ export default function ProjectsIndex({ projects }) {
           )}
         </PageContent>
       </PageContainer>
+
+      {/* Modal Component */}
+      <ModalComponent />
     </AppLayout>
   )
 }

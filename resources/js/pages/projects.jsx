@@ -5,16 +5,26 @@ import { Head, Link } from '@inertiajs/react'
 import { useState } from 'react'
 import logo from "../../assets/images/A1.png"
 
-export default function Projects({ projects }) {
-  const [selectedCategory, setSelectedCategory] = useState('all')
+export default function Projects({ projects, categories = [], selectedCategory = null }) {
   const [viewMode, setViewMode] = useState('grid')
 
-  // Get unique categories from database projects
-  const categories = ['all', ...new Set(projects?.data?.map(project => project.category) || [])]
+  // Set initial category from URL parameter
+  const [activeCategory, setActiveCategory] = useState(selectedCategory || 'all')
 
-  const filteredProjects = selectedCategory === 'all'
+  const filteredProjects = activeCategory === 'all'
     ? projects?.data || []
-    : projects?.data?.filter(project => project.category === selectedCategory) || []
+    : projects?.data?.filter(project => {
+        // Handle both new relationship and old string format for backward compatibility
+        const categoryName = project.category?.name || project.category;
+        return categoryName === activeCategory;
+      }) || []
+
+  const handleCategoryChange = (categorySlug) => {
+    setActiveCategory(categorySlug)
+    // Update URL without page reload
+    const url = categorySlug === 'all' ? '/projects' : `/projects?category=${categorySlug}`
+    window.history.pushState({}, '', url)
+  }
 
   return (
     <>
@@ -77,17 +87,36 @@ export default function Projects({ projects }) {
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               {/* Category Filter */}
               <div className="flex flex-wrap gap-3">
+                {/* All Categories Button */}
+                <button
+                  onClick={() => handleCategoryChange('all')}
+                  className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase ${
+                    activeCategory === 'all'
+                      ? 'bg-primary-600 text-white shadow-lg'
+                      : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
+                  }`}
+                >
+                  All Projects
+                </button>
+
+                {/* Category Buttons */}
                 {categories.map((category) => (
                   <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase ${
-                      selectedCategory === category
-                        ? 'bg-primary-600 text-white shadow-lg'
+                    key={category.id}
+                    onClick={() => handleCategoryChange(category.name)}
+                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase relative ${
+                      activeCategory === category.name
+                        ? 'text-white shadow-lg'
                         : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
                     }`}
+                    style={{
+                      backgroundColor: activeCategory === category.name ? category.color : undefined
+                    }}
                   >
-                    {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
+                    {category.name}
+                    <span className="ml-2 text-xs opacity-75">
+                      ({category.projects_count})
+                    </span>
                   </button>
                 ))}
               </div>
@@ -114,7 +143,47 @@ export default function Projects({ projects }) {
         {/* Projects Grid/List */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {viewMode === 'grid' ? (
+            {/* Results Header */}
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl font-bold text-secondary-900 mb-4">
+                {activeCategory === 'all'
+                  ? 'All Projects'
+                  : `${activeCategory} Projects`
+                }
+              </h2>
+              <p className="text-secondary-600">
+                {filteredProjects.length === 0
+                  ? 'No projects found in this category'
+                  : `Showing ${filteredProjects.length} project${filteredProjects.length !== 1 ? 's' : ''}`
+                }
+              </p>
+            </div>
+            {filteredProjects.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="max-w-md mx-auto">
+                  <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    No projects found
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    {activeCategory === 'all'
+                      ? 'No projects have been added yet.'
+                      : `No projects found in the "${activeCategory}" category.`
+                    }
+                  </p>
+                  <Button
+                    onClick={() => handleCategoryChange('all')}
+                    className="bg-primary-600 hover:bg-primary-700"
+                  >
+                    View All Projects
+                  </Button>
+                </div>
+              </div>
+            ) : viewMode === 'grid' ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredProjects.map((project) => (
                   <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
@@ -128,8 +197,12 @@ export default function Projects({ projects }) {
                     </div>
                     <div className="p-8">
                       <div className="flex items-center justify-between mb-4">
-                        <Badge variant="secondary" className="bg-primary-100 text-primary-700 font-medium tracking-wide uppercase text-xs">
-                          {project.category}
+                        <Badge
+                          variant="secondary"
+                          className="font-medium tracking-wide uppercase text-xs text-white"
+                          style={{ backgroundColor: project.category?.color || '#a3845b' }}
+                        >
+                          {project.category?.name || 'Uncategorized'}
                         </Badge>
                         <span className="text-sm text-secondary-500 font-light">{project.year}</span>
                       </div>
@@ -163,8 +236,12 @@ export default function Projects({ projects }) {
                       </div>
                       <div className="md:w-2/3 p-6">
                         <div className="flex items-center justify-between mb-3">
-                          <Badge variant="secondary" className="bg-gray-100 text-gray-800">
-                            {project.category}
+                          <Badge
+                            variant="secondary"
+                            className="text-white font-medium"
+                            style={{ backgroundColor: project.category?.color || '#a3845b' }}
+                          >
+                            {project.category?.name || project.category || 'Uncategorized'}
                           </Badge>
                           <span className="text-sm text-gray-500">{project.year}</span>
                         </div>

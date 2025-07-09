@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -52,8 +55,29 @@ class CategoryController extends Controller
             'description' => 'nullable|string|max:1000',
             'color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
             'sort_order' => 'integer|min:0',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            // Create directory if it doesn't exist
+            $uploadPath = public_path('storage/categories');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Resize and save image
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($image);
+            $img->scaleDown(800, 600);
+            $img->save($uploadPath . '/' . $filename, 85);
+
+            $validated['image_path'] = 'storage/categories/' . $filename;
+        }
 
         Category::create($validated);
 
@@ -80,8 +104,34 @@ class CategoryController extends Controller
             'description' => 'nullable|string|max:1000',
             'color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
             'sort_order' => 'integer|min:0',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image_path && file_exists(public_path($category->image_path))) {
+                unlink(public_path($category->image_path));
+            }
+
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            // Create directory if it doesn't exist
+            $uploadPath = public_path('storage/categories');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Resize and save image
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($image);
+            $img->scaleDown(800, 600);
+            $img->save($uploadPath . '/' . $filename, 85);
+
+            $validated['image_path'] = 'storage/categories/' . $filename;
+        }
 
         $category->update($validated);
 
@@ -101,8 +151,27 @@ class CategoryController extends Controller
                 ->with('error', "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first.");
         }
 
+        // Delete image if exists
+        if ($category->image_path && file_exists(public_path($category->image_path))) {
+            unlink(public_path($category->image_path));
+        }
+
         $category->delete();
 
         return Redirect::route('admin.categories.index')->with('success', 'Category deleted successfully!');
+    }
+
+    /**
+     * Delete category image
+     */
+    public function deleteImage(Category $category)
+    {
+        if ($category->image_path && file_exists(public_path($category->image_path))) {
+            unlink(public_path($category->image_path));
+        }
+
+        $category->update(['image_path' => null]);
+
+        return response()->json(['success' => true, 'message' => 'Image deleted successfully']);
     }
 }
