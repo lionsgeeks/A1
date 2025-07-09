@@ -12,6 +12,7 @@ import {
 import { Link, router, useForm } from '@inertiajs/react'
 
 export default function ProjectCreate({ project = null }) {
+<<<<<<< Updated upstream
     const isEditing = !!project
     const breadcrumbs = [
         { title: 'Admin', href: '/admin' },
@@ -33,6 +34,79 @@ export default function ProjectCreate({ project = null }) {
         image: null,
         gallery_images: []
     })
+=======
+  const isEditing = !!project
+  const breadcrumbs = [
+    { title: 'Admin', href: '/admin' },
+    { title: 'Projects', href: '/admin/projects' },
+    { title: isEditing ? 'Edit Project' : 'Create Project', href: '#' }
+  ]
+  const [imagePreview, setImagePreview] = useState(project?.image_path || null)
+  const [galleryPreviews, setGalleryPreviews] = useState(project?.gallery_images || [])
+  const [existingGalleryImages, setExistingGalleryImages] = useState(project?.gallery_images || [])
+  const [newGalleryImages, setNewGalleryImages] = useState([])
+
+  const { data, setData, post, put, processing, errors } = useForm({
+    title: project?.title || '',
+    category: project?.category || '',
+    location: project?.location || '',
+    year: project?.year || new Date().getFullYear().toString(),
+    description: project?.description || '',
+    details: project?.details || '',
+    status: project?.status || 'active',
+    sort_order: project?.sort_order || 0,
+    image: null,
+    gallery_images: []
+  })
+
+  const categories = [
+    'residential',
+    'commercial',
+    'cultural',
+    'mixed-use',
+    'educational'
+  ]
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setData('image', file)
+      const reader = new FileReader()
+      reader.onload = (e) => setImagePreview(e.target.result)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleGalleryChange = async (e) => {
+    const files = Array.from(e.target.files)
+
+    if (isEditing) {
+      // For editing, upload each image individually
+      for (const file of files) {
+        await addGalleryImage(file)
+      }
+    } else {
+      // For creating, handle as before
+      setData('gallery_images', files)
+
+      // Create previews for new files
+      const previews = []
+      files.forEach(file => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          previews.push(e.target.result)
+          if (previews.length === files.length) {
+            setGalleryPreviews(previews)
+          }
+        }
+        reader.readAsDataURL(file)
+      })
+    }
+
+    // Clear the input so the same file can be selected again
+    e.target.value = ''
+  }
+>>>>>>> Stashed changes
 
     const categories = [
         'residential',
@@ -42,6 +116,7 @@ export default function ProjectCreate({ project = null }) {
         'educational'
     ]
 
+<<<<<<< Updated upstream
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         if (file) {
@@ -50,6 +125,83 @@ export default function ProjectCreate({ project = null }) {
             reader.onload = (e) => setImagePreview(e.target.result)
             reader.readAsDataURL(file)
         }
+=======
+  const removeGalleryImage = async (index) => {
+    if (isEditing && index < existingGalleryImages.length) {
+      // Removing an existing image - call API to delete from server
+      try {
+        const response = await fetch(`/admin/projects/${project.id}/gallery/${index}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials: 'same-origin',
+        })
+
+        if (response.ok) {
+          // Remove from existing images
+          const newExistingImages = existingGalleryImages.filter((_, i) => i !== index)
+          setExistingGalleryImages(newExistingImages)
+
+          // Update previews
+          const newPreviews = galleryPreviews.filter((_, i) => i !== index)
+          setGalleryPreviews(newPreviews)
+        } else {
+          const errorData = await response.json()
+          alert(`Failed to delete image: ${errorData.message || 'Unknown error'}`)
+        }
+      } catch (error) {
+        console.error('Error deleting image:', error)
+        alert('Failed to delete image')
+      }
+    } else {
+      // Removing a new image (not yet uploaded)
+      const adjustedIndex = index - existingGalleryImages.length
+      const newPreviews = galleryPreviews.filter((_, i) => i !== index)
+      setGalleryPreviews(newPreviews)
+
+      if (isEditing) {
+        const newFiles = newGalleryImages.filter((_, i) => i !== adjustedIndex)
+        setNewGalleryImages(newFiles)
+      } else {
+        const newFiles = Array.from(data.gallery_images).filter((_, i) => i !== index)
+        setData('gallery_images', newFiles)
+      }
+    }
+  }
+
+  const addGalleryImage = async (file) => {
+    if (!isEditing) return
+
+    const formData = new FormData()
+    formData.append('gallery_image', file)
+
+    try {
+      const response = await fetch(`/admin/projects/${project.id}/gallery`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Accept': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: formData
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        // Update existing gallery images
+        setExistingGalleryImages(result.gallery_images)
+        setGalleryPreviews(result.gallery_images)
+      } else {
+        const errorData = await response.json()
+        alert(`Failed to upload image: ${errorData.message || 'Unknown error'}`)
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      alert('Failed to upload image')
+>>>>>>> Stashed changes
     }
 
     const handleGalleryChange = (e) => {

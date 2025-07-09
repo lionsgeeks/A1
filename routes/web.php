@@ -35,11 +35,14 @@ Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
 // Admin routes
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('dashboard');
 
     // Projects management
     Route::resource('projects', App\Http\Controllers\Admin\ProjectController::class);
+    Route::delete('/projects/{project}/gallery/{index}', [App\Http\Controllers\Admin\ProjectController::class, 'deleteGalleryImage'])->name('projects.gallery.delete');
+    Route::post('/projects/{project}/gallery', [App\Http\Controllers\Admin\ProjectController::class, 'addGalleryImage'])->name('projects.gallery.add');
+    Route::delete('/projects/{project}/gallery/{index}', [App\Http\Controllers\Admin\ProjectController::class, 'deleteGalleryImage'])->name('projects.gallery.delete');
 
     // Contact messages
     Route::get('/messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('messages.index');
