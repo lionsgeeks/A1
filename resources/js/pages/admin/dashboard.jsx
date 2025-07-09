@@ -10,14 +10,15 @@ import {
   BarChart3,
   TrendingUp,
   Calendar,
-  Settings
+  Settings,
+  Tags
 } from 'lucide-react'
-import { 
-  StatsCard, 
+import {
+  StatsCard,
   StatsGrid,
-  PageHeader, 
-  PageContent, 
-  PageContainer 
+  PageHeader,
+  PageContent,
+  PageContainer
 } from '@/components/admin'
 
 export default function AdminDashboard({ stats }) {
@@ -92,13 +93,20 @@ export default function AdminDashboard({ stats }) {
       icon: Calendar,
       href: '/admin/milestones',
       color: 'bg-purple-500 hover:bg-purple-600'
+    },
+    {
+      title: 'Manage Categories',
+      description: 'Organize projects by categories',
+      icon: Tags,
+      href: '/admin/categories',
+      color: 'bg-indigo-500 hover:bg-indigo-600'
     }
   ]
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Admin Dashboard" />
-      
+
       <PageContainer>
         <PageHeader
           title="Admin Dashboard"
@@ -118,7 +126,7 @@ export default function AdminDashboard({ stats }) {
             }
           ]}
         />
-        
+
         <PageContent>
           {/* Stats Grid */}
           <StatsGrid stats={dashboardStats} />

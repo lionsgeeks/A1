@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { Link, router, useForm } from '@inertiajs/react'
 
-export default function ProjectCreate({ project = null }) {
+export default function ProjectCreate({ project = null, categories = [] }) {
   const isEditing = !!project
   const breadcrumbs = [
     { title: 'Admin', href: '/admin' },
@@ -233,8 +233,8 @@ export default function ProjectCreate({ project = null }) {
                 >
                   <option value="">Select a category</option>
                   {categories.map(category => (
-                    <option key={category} value={category}>
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    <option key={category.id} value={category.name}>
+                      {category.name}
                     </option>
                   ))}
                 </select>
@@ -441,7 +441,7 @@ export default function ProjectCreate({ project = null }) {
             <Button
               type="submit"
               disabled={processing}
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-primary-600 hover:bg-primary-700 text-white"
             >
               <Save className="h-4 w-4 mr-2" />
               {processing ? 'Saving...' : (isEditing ? 'Update Project' : 'Create Project')}

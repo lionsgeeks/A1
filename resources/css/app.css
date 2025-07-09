@@ -15,6 +15,32 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
+    /* Primary color palette - Warm Bronze (#a3845b) */
+    --color-primary-50: oklch(0.97 0.02 65);
+    --color-primary-100: oklch(0.94 0.04 65);
+    --color-primary-200: oklch(0.88 0.08 65);
+    --color-primary-300: oklch(0.82 0.12 65);
+    --color-primary-400: oklch(0.75 0.16 65);
+    --color-primary-500: oklch(0.68 0.08 65); /* Main primary color #a3845b */
+    --color-primary-600: oklch(0.61 0.07 65);
+    --color-primary-700: oklch(0.54 0.06 65);
+    --color-primary-800: oklch(0.47 0.05 65);
+    --color-primary-900: oklch(0.40 0.04 65);
+    --color-primary-950: oklch(0.33 0.03 65);
+
+    /* Secondary color palette - Deep Charcoal (#1c1c1d) */
+    --color-secondary-50: oklch(0.98 0 0);
+    --color-secondary-100: oklch(0.95 0 0);
+    --color-secondary-200: oklch(0.90 0 0);
+    --color-secondary-300: oklch(0.85 0 0);
+    --color-secondary-400: oklch(0.70 0 0);
+    --color-secondary-500: oklch(0.55 0 0);
+    --color-secondary-600: oklch(0.45 0 0);
+    --color-secondary-700: oklch(0.35 0 0);
+    --color-secondary-800: oklch(0.25 0 0);
+    --color-secondary-900: oklch(0.20 0 0);
+    --color-secondary-950: oklch(0.15 0 0); /* Main secondary color #1c1c1d */
+
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
@@ -79,38 +105,38 @@
 
 :root {
     --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+    --foreground: oklch(0.15 0 0); /* Using secondary-950 for text */
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
+    --card-foreground: oklch(0.15 0 0);
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.15 0 0);
+    --primary: oklch(0.68 0.08 65); /* Primary bronze color #a3845b */
+    --primary-foreground: oklch(0.98 0 0); /* Light text on primary */
+    --secondary: oklch(0.15 0 0); /* Secondary charcoal color #1c1c1d */
+    --secondary-foreground: oklch(0.98 0 0); /* Light text on secondary */
+    --muted: oklch(0.95 0 0); /* Light muted background */
+    --muted-foreground: oklch(0.55 0 0); /* Muted text */
+    --accent: oklch(0.82 0.12 65); /* Lighter bronze for accents */
+    --accent-foreground: oklch(0.15 0 0); /* Dark text on accent */
     --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.90 0 0); /* Subtle borders */
+    --input: oklch(0.98 0 0); /* Input backgrounds */
+    --ring: oklch(0.68 0.08 65); /* Focus rings using primary */
+    --chart-1: oklch(0.68 0.08 65); /* Primary bronze */
+    --chart-2: oklch(0.75 0.16 65); /* Lighter bronze */
+    --chart-3: oklch(0.61 0.07 65); /* Darker bronze */
+    --chart-4: oklch(0.35 0 0); /* Secondary dark */
+    --chart-5: oklch(0.55 0 0); /* Medium gray */
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    --sidebar: oklch(0.98 0 0); /* Light sidebar background */
+    --sidebar-foreground: oklch(0.15 0 0); /* Dark sidebar text */
+    --sidebar-primary: oklch(0.68 0.08 65); /* Primary bronze for active items */
+    --sidebar-primary-foreground: oklch(0.98 0 0); /* Light text on primary */
+    --sidebar-accent: oklch(0.94 0.04 65); /* Light bronze for hover */
+    --sidebar-accent-foreground: oklch(0.15 0 0); /* Dark text on accent */
+    --sidebar-border: oklch(0.90 0 0); /* Subtle sidebar borders */
+    --sidebar-ring: oklch(0.68 0.08 65); /* Focus rings using primary */
 }
 
 /* .dark {

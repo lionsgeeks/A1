@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, FolderOpen, MessageSquare, Milestone } from 'lucide-react';
+import { LayoutGrid, FolderOpen, MessageSquare, Milestone, Tags } from 'lucide-react';
 import AppLogo from './app-logo';
 
 // const mainNavItems: NavItem[] = [
@@ -25,6 +25,11 @@ const adminNavItems: NavItem[] = [
         title: 'Projects',
         href: '/admin/projects',
         icon: FolderOpen,
+    },
+    {
+        title: 'Categories',
+        href: '/admin/categories',
+        icon: Tags,
     },
     {
         title: 'Messages',

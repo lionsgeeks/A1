@@ -2,9 +2,147 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Phone, MapPin, Instagram, Twitter, Linkedin } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
+import { useState, useEffect } from 'react'
 import logo from "../../assets/images/A1.png"
 
-export default function ArchitecturalWebsite() {
+// Inject custom styles for enhanced carousel
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement('style')
+  styleSheet.textContent = `
+    .carousel-container {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+
+    .carousel-slide {
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .shadow-3xl {
+      box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Smooth hardware acceleration */
+    .carousel-container * {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    /* Ultra smooth transitions */
+    .carousel-container .flex {
+      transform-origin: center center;
+    }
+
+    /* Optimized hover effects */
+    .carousel-slide:hover {
+      transform: translateY(-4px) scale(1.02);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Smooth image scaling */
+    .carousel-slide img {
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    @keyframes smoothSlide {
+      0% {
+        opacity: 0.8;
+        transform: translateX(20px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .slide-in {
+      animation: smoothSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Prevent layout shifts */
+    .carousel-container {
+      contain: layout style paint;
+    }
+  `
+  if (!document.head.querySelector('style[data-carousel-styles]')) {
+    styleSheet.setAttribute('data-carousel-styles', 'true')
+    document.head.appendChild(styleSheet)
+  }
+}
+
+export default function ArchitecturalWebsite({ featuredProjects = [] }) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(true)
+
+  // Use CRUD-managed projects for the carousel
+  const highlights = featuredProjects.length > 0 ? featuredProjects.map(project => ({
+    id: project.id,
+    image: project.image_path,
+    title: project.title,
+    subtitle: `${project.category} • ${project.location} • ${project.year}`,
+    category: project.category,
+    location: project.location,
+    year: project.year,
+    description: project.description
+  })) : [
+    // Fallback data if no projects are available
+    {
+      id: 1,
+      image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
+      title: "Featured Project",
+      subtitle: "Architecture • Location • 2024",
+      category: "Architecture",
+      location: "Location",
+      year: "2024",
+      description: "Add projects from the admin panel to showcase your work here."
+    }
+  ]
+
+  // Create extended array for infinite loop effect
+  const extendedHighlights = [
+    ...highlights.slice(-2), // Last 2 items at the beginning
+    ...highlights,
+    ...highlights.slice(0, 2), // First 2 items at the end
+  ]
+
+  const slideWidth = 400 // Width of each slide including gap
+  const gap = 32 // Gap between slides
+
+  // Auto-slide effect with infinite loop - smoother timing
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => prev + 1)
+    }, 3500) // Slightly faster for better flow
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Handle infinite loop reset - smoother transitions
+  useEffect(() => {
+    if (currentSlide === highlights.length + 2) {
+      setTimeout(() => {
+        setIsTransitioning(false)
+        setCurrentSlide(2)
+        setTimeout(() => setIsTransitioning(true), 20) // Faster reset
+      }, 600) // Wait for transition to complete
+    } else if (currentSlide === -1) {
+      setTimeout(() => {
+        setIsTransitioning(false)
+        setCurrentSlide(highlights.length + 1)
+        setTimeout(() => setIsTransitioning(true), 20)
+      }, 600)
+    }
+  }, [currentSlide, highlights.length])
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index + 2) // Offset by 2 because of the extended array
+  }
+
   const projects = [
     {
       id: 1,
@@ -71,36 +209,34 @@ export default function ArchitecturalWebsite() {
       <Head title="ARCH Studio - Designing the Future" />
       <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-50">
+      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200/30 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                {/* Logo Design */}
-               <Link href="/" className="flex items-center space-x-2">
-                                    <img src={logo}
-                                    className='w-[55px] aspect-square object-cover'
-                                    alt="" />
-                                </Link>
+              <Link href="/" className="flex items-center space-x-3">
+                <img src={logo}
+                  className='w-[60px] aspect-square object-cover'
+                  alt="ARCH Studio" />
+                <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
               </Link>
             </div>
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
+              <div className="ml-10 flex items-baseline space-x-10">
                 <Link
                   href="/projects"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
                 >
                   Projects
                 </Link>
                 <Link
                   href="/about"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
                 >
                   About
                 </Link>
                 <Link
                   href="/contact"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
                 >
                   Contact
                 </Link>
@@ -118,25 +254,26 @@ export default function ArchitecturalWebsite() {
             alt="Modern Architecture"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-secondary-950/50" />
         </div>
 
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
+        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
+          <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
             Designing the
-            <span className="block font-bold">Future</span>
+            <span className="block font-light text-primary-300">Future</span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
-            We create architectural masterpieces that blend innovation, sustainability, and timeless design
+          <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
+            We create architectural masterpieces that blend innovation, sustainability, and timeless elegance
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button size="lg" className="bg-primary-500 text-white hover:bg-primary-600 px-10 py-4 text-lg font-medium tracking-wide transition-all duration-300">
               View Our Work
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
             <Button
               size="lg"
-              className="bg-white/10 text-white hover:bg-white hover:text-black px-8 py-3 text-lg backdrop-blur-sm"
+              variant="outline"
+              className="border-2 border-white/30 text-black hover:bg-white hover:text-secondary-950 px-10 py-4 text-lg font-medium tracking-wide backdrop-blur-sm transition-all duration-300"
             >
               Get In Touch
             </Button>
@@ -145,34 +282,34 @@ export default function ArchitecturalWebsite() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 bg-gray-50">
+      <section id="about" className="py-32 bg-primary-50/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
+              <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
                 Crafting Spaces That
-                <span className="block font-bold">Inspire</span>
+                <span className="block font-light text-primary-600">Inspire</span>
               </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-lg text-secondary-700 mb-8 leading-relaxed">
                 For over two decades, we have been at the forefront of architectural innovation, creating spaces that
-                not only serve their purpose but elevate the human experience.
+                not only serve their purpose but elevate the human experience through thoughtful design.
               </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              <p className="text-lg text-secondary-700 mb-12 leading-relaxed">
                 Our approach combines cutting-edge design with sustainable practices, ensuring that every project
-                contributes positively to its environment and community.
+                contributes positively to its environment and community while maintaining timeless elegance.
               </p>
               <div className="grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">150+</div>
-                  <div className="text-sm text-gray-600">Projects Completed</div>
+                  <div className="text-4xl font-light text-primary-600 mb-2">150+</div>
+                  <div className="text-sm text-secondary-600 uppercase tracking-wide">Projects Completed</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">25+</div>
-                  <div className="text-sm text-gray-600">Awards Won</div>
+                  <div className="text-4xl font-light text-primary-600 mb-2">25+</div>
+                  <div className="text-sm text-secondary-600 uppercase tracking-wide">Awards Won</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">20+</div>
-                  <div className="text-sm text-gray-600">Years Experience</div>
+                  <div className="text-4xl font-light text-primary-600 mb-2">20+</div>
+                  <div className="text-sm text-secondary-600 uppercase tracking-wide">Years Experience</div>
                 </div>
               </div>
             </div>
@@ -182,67 +319,140 @@ export default function ArchitecturalWebsite() {
                 alt="Architectural Detail"
                 className="w-full h-auto rounded-lg shadow-2xl"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary-950/20 to-transparent rounded-lg"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Carousel Section */}
-      <section className="py-24">
+      <section className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
               Recent
-              <span className="block font-bold">Highlights</span>
+              <span className="block font-light text-primary-600">Highlights</span>
             </h2>
           </div>
 
-          <div className="relative overflow-hidden">
-            <div className="flex space-x-6 animate-scroll">
-              {[
-                {
-                  image:
-                    "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-                  title: "Award-Winning Design",
-                  subtitle: "International Architecture Prize 2024",
-                },
-                {
-                  image:
-                    "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-                  title: "Sustainable Innovation",
-                  subtitle: "Green Building Certification",
-                },
-                {
-                  image:
-                    "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-                  title: "Community Impact",
-                  subtitle: "Local Development Project",
-                },
-                {
-                  image:
-                    "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-                  title: "Modern Living",
-                  subtitle: "Residential Excellence",
-                },
-                {
-                  image:
-                    "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-                  title: "Urban Planning",
-                  subtitle: "City Center Revitalization",
-                },
-              ].map((item, index) => (
-                <div key={index} className="flex-shrink-0 w-80">
-                  <div className="relative overflow-hidden rounded-lg aspect-[4/3]">
-                    <img src={item.image || "/placeholder.svg"} alt={item.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                      <p className="text-sm text-gray-200">{item.subtitle}</p>
+          <div className="carousel-container relative overflow-hidden rounded-3xl bg-transparent p-8">
+            {/* Main carousel container */}
+            <div
+              className={`flex ${isTransitioning ? 'transition-transform duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]' : ''}`}
+              style={{
+                transform: `translateX(-${currentSlide * slideWidth}px)`,
+                gap: `${gap}px`,
+                willChange: 'transform'
+              }}
+            >
+              {extendedHighlights.map((item, index) => (
+                <div
+                  key={`${item.title}-${index}`}
+                  className="flex-shrink-0 group cursor-pointer carousel-slide"
+                  style={{ width: `${slideWidth - gap}px` }}
+                >
+                  {item.id ? (
+                    <Link href={`/projects/${item.id}`} className="block">
+                      <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
+                        {/* Image with overlay */}
+                        <img
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.title}
+                          className="w-full h-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110"
+                        />
+
+                        {/* Gradient overlays for depth */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
+
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-8">
+                          <div className="transform transition-all duration-700 group-hover:translate-y-[-12px]">
+                            <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
+                              {item.title}
+                            </h3>
+                            <p className="text-lg text-gray-200 font-medium opacity-95 leading-relaxed">
+                              {item.subtitle}
+                            </p>
+
+                            {/* Decorative line with animation */}
+                            <div className="relative mt-6">
+                              <div className="w-20 h-1 bg-primary-600 rounded-full transform transition-all duration-700 group-hover:w-32"></div>
+                              <div className="absolute top-0 left-0 w-20 h-1 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Hover overlay with subtle animation */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary-600/20 via-transparent to-transparent opacity-0 transition-all duration-700 group-hover:opacity-100" />
+
+                        {/* Corner accent */}
+                        <div className="absolute top-6 right-6 w-12 h-12 border-2 border-white/30 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:rotate-180"></div>
+
+                        {/* View Project indicator */}
+                        <div className="absolute top-6 left-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2">
+                          <span className="text-white text-sm font-medium">View Project</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
+                      {/* Fallback content for items without ID */}
+                      <img
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110"
+                      />
+
+                      {/* Gradient overlays for depth */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
+
+                      {/* Content */}
+                      <div className="absolute bottom-0 left-0 right-0 p-8">
+                        <div className="transform transition-all duration-700 group-hover:translate-y-[-12px]">
+                          <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
+                            {item.title}
+                          </h3>
+                          <p className="text-lg text-gray-200 font-medium opacity-95 leading-relaxed">
+                            {item.subtitle}
+                          </p>
+
+                          {/* Decorative line with animation */}
+                          <div className="relative mt-6">
+                            <div className="w-20 h-1 bg-primary-600 rounded-full transform transition-all duration-700 group-hover:w-32"></div>
+                            <div className="absolute top-0 left-0 w-20 h-1 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hover overlay with subtle animation */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary-600/20 via-transparent to-transparent opacity-0 transition-all duration-700 group-hover:opacity-100" />
+
+                      {/* Corner accent */}
+                      <div className="absolute top-6 right-6 w-12 h-12 border-2 border-white/30 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:rotate-180"></div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
+
+            {/* Enhanced indicators with better styling */}
+            {/* <div className="flex justify-center mt-16 space-x-4">
+              {highlights.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`carousel-indicator relative transition-all duration-500 transform hover:scale-110 ${
+                    index === ((currentSlide - 2 + highlights.length) % highlights.length)
+                      ? 'w-12 h-4 bg-gradient-to-r from-primary-500 to-primary-700 shadow-lg'
+                      : 'w-4 h-4 bg-gray-400 hover:bg-gray-500 shadow-md'
+                  } rounded-full`}
+                >
+                  <span className="sr-only">Go to slide {index + 1}</span>
+                </button>
+              ))}
+            </div> */}
           </div>
         </div>
       </section>
@@ -444,7 +654,7 @@ export default function ArchitecturalWebsite() {
               <h3 className="text-lg font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-gray-300">
                 <li>
-                  <Link href="#" className="hover:text-white transition-colors">
+                  <Link href="/about" className="hover:text-white transition-colors">
                     About Us
                   </Link>
                 </li>

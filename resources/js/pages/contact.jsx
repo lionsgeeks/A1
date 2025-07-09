@@ -75,27 +75,26 @@ export default function Contact() {
       <Head title="Contact Us - ARCH Studio" />
       <div className="min-h-screen bg-white">
         {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-50">
+        <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200/30 z-50 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-20">
               <div className="flex items-center">
-                <Link href="/" className="flex items-center space-x-2">
-                  <Link href="/" className="flex items-center space-x-2">
-                                    <img src={logo}
-                                    className='w-[55px] aspect-square object-cover'
-                                    alt="" />
-                                </Link>
+                <Link href="/" className="flex items-center space-x-3">
+                  <img src={logo}
+                    className='w-[60px] aspect-square object-cover'
+                    alt="ARCH Studio" />
+                  <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
                 </Link>
               </div>
               <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-8">
-                  <Link href="/projects" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                <div className="ml-10 flex items-baseline space-x-10">
+                  <Link href="/projects" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
                     Projects
                   </Link>
-                  <Link href="/about" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                  <Link href="/about" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
                     About
                   </Link>
-                  <Link href="/contact" className="text-gray-900 px-3 py-2 text-sm font-medium border-b-2 border-gray-900">
+                  <Link href="/contact" className="text-primary-600 px-4 py-2 text-sm font-medium border-b-2 border-primary-600 tracking-wide uppercase">
                     Contact
                   </Link>
                 </div>
@@ -142,7 +141,7 @@ export default function Contact() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {contactInfo.map((info, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow">
-                  <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <info.icon className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{info.title}</h3>
@@ -284,7 +283,7 @@ export default function Contact() {
                     type="submit"
                     size="lg"
                     disabled={processing}
-                    className="w-full bg-gray-900 hover:bg-gray-800 px-8 py-3 text-lg"
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 text-lg font-medium tracking-wide transition-all duration-300"
                   >
                     {processing ? 'Sending...' : 'Send Message'}
                     <Send className="ml-2 h-5 w-5" />
@@ -312,23 +311,23 @@ export default function Contact() {
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">Why Choose ARCH Studio?</h3>
                     <ul className="space-y-3 text-gray-600">
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                         <span>20+ years of architectural excellence</span>
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                         <span>150+ successful projects completed</span>
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                         <span>Award-winning sustainable design approach</span>
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                         <span>Collaborative design process</span>
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                         <span>Full-service architectural solutions</span>
                       </li>
                     </ul>
@@ -387,17 +386,15 @@ export default function Contact() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white py-16">
+        <footer className="bg-secondary-950 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="md:col-span-2">
-                <Link href="/" className="flex items-center space-x-2 mb-4">
-                  <div className="relative">
-                    <div className="w-8 h-8 bg-white transform rotate-45"></div>
-                    <div className="absolute top-1 left-1 w-6 h-6 bg-gray-900 transform rotate-45"></div>
-                    <div className="absolute top-2 left-2 w-4 h-4 bg-white transform rotate-45"></div>
-                  </div>
-                  <span className="text-3xl font-bold tracking-wider">ARCH</span>
+                <Link href="/" className="flex items-center space-x-3 mb-6">
+                  <img src={logo}
+                    className='w-[50px] aspect-square object-cover'
+                    alt="ARCH Studio" />
+                  <span className="text-3xl font-light tracking-wider text-primary-300">ARCH</span>
                 </Link>
                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                   Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.

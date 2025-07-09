@@ -4,7 +4,16 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('architectural-website');
+    // Get featured projects for the carousel (limit to 5 most recent active projects)
+    $featuredProjects = \App\Models\Project::where('status', 'active')
+        ->orderBy('sort_order')
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+    return Inertia::render('architectural-website', [
+        'featuredProjects' => $featuredProjects
+    ]);
 })->name('home');
 
 Route::get('/about', function () {
@@ -52,6 +61,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Timeline milestones CRUD
     Route::resource('milestones', App\Http\Controllers\Admin\MilestoneController::class);
+
+    // Categories CRUD
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
 });
 
 // Redirect dashboard to admin dashboard

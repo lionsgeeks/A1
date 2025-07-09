@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Calendar, Share2, Heart, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target } from "lucide-react"
 import { Head, Link } from '@inertiajs/react';
 import logo from "../../assets/images/A1.png"
 
@@ -254,8 +254,8 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 Share
                                             </Button>
                                             <Button variant="outline" className="flex-1 text-black border-black hover:bg-black hover:text-white">
-                                                <Heart className="h-4 w-4 mr-2" />
-                                                Save
+                                                <Download className="h-4 w-4 mr-2" />
+                                                Download PDF
                                             </Button>
                                         </div>
                                     </div>

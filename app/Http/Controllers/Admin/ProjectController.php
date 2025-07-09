@@ -44,7 +44,11 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/projects/create');
+        $categories = \App\Models\Category::active()->ordered()->get();
+
+        return Inertia::render('admin/projects/create', [
+            'categories' => $categories
+        ]);
     }
 
     public function store(Request $request)
@@ -79,8 +83,11 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+        $categories = \App\Models\Category::active()->ordered()->get();
+
         return Inertia::render('admin/projects/create', [
-            'project' => $project
+            'project' => $project,
+            'categories' => $categories
         ]);
     }
 

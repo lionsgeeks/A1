@@ -21,27 +21,26 @@ export default function Projects({ projects }) {
       <Head title="Our Projects - ARCH Studio" />
       <div className="min-h-screen bg-white">
         {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-50">
+        <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200/30 z-50 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-20">
               <div className="flex items-center">
-                <Link href="/" className="flex items-center space-x-2">
-                  <Link href="/" className="flex items-center space-x-2">
-                                    <img src={logo}
-                                    className='w-[55px] aspect-square object-cover'
-                                    alt="" />
-                                </Link>
+                <Link href="/" className="flex items-center space-x-3">
+                  <img src={logo}
+                    className='w-[60px] aspect-square object-cover'
+                    alt="ARCH Studio" />
+                  <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
                 </Link>
               </div>
               <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-8">
-                  <Link href="/projects" className="text-gray-900 px-3 py-2 text-sm font-medium border-b-2 border-gray-900">
+                <div className="ml-10 flex items-baseline space-x-10">
+                  <Link href="/projects" className="text-primary-600 px-4 py-2 text-sm font-medium border-b-2 border-primary-600 tracking-wide uppercase">
                     Projects
                   </Link>
-                  <Link href="/about" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                  <Link href="/about" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
                     About
                   </Link>
-                  <Link href="/contact" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+                  <Link href="/contact" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
                     Contact
                   </Link>
                 </div>
@@ -58,34 +57,34 @@ export default function Projects({ projects }) {
               alt="Our Projects"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-secondary-950/50" />
           </div>
 
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
+          <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
+            <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
               Our
-              <span className="block font-bold">Projects</span>
+              <span className="block font-light text-primary-300">Projects</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
-              Explore our portfolio of innovative architectural solutions that have transformed communities
+            <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
+              Explore our portfolio of innovative architectural solutions that have transformed communities and redefined spaces
             </p>
           </div>
         </section>
 
         {/* Filter and Controls Section */}
-        <section className="py-12 bg-gray-50">
+        <section className="py-16 bg-primary-50/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               {/* Category Filter */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase ${
                       selectedCategory === category
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                        ? 'bg-primary-600 text-white shadow-lg'
+                        : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
                     }`}
                   >
                     {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
@@ -94,16 +93,16 @@ export default function Projects({ projects }) {
               </div>
 
               {/* View Mode Toggle */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 bg-white rounded-full p-1 shadow-sm">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded ${viewMode === 'grid' ? 'bg-gray-900 text-white' : 'bg-white text-gray-700'}`}
+                  className={`p-3 rounded-full transition-all duration-300 ${viewMode === 'grid' ? 'bg-primary-600 text-white shadow-md' : 'text-secondary-600 hover:bg-primary-100'}`}
                 >
                   <Grid className="h-5 w-5" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${viewMode === 'list' ? 'bg-gray-900 text-white' : 'bg-white text-gray-700'}`}
+                  className={`p-3 rounded-full transition-all duration-300 ${viewMode === 'list' ? 'bg-primary-600 text-white shadow-md' : 'text-secondary-600 hover:bg-primary-100'}`}
                 >
                   <List className="h-5 w-5" />
                 </button>
@@ -113,32 +112,35 @@ export default function Projects({ projects }) {
         </section>
 
         {/* Projects Grid/List */}
-        <section className="py-16">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredProjects.map((project) => (
-                  <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <img
-                      src={project.image_path || '/placeholder.svg'}
-                      alt={project.title}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge variant="secondary" className="bg-gray-100 text-gray-800">
+                  <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={project.image_path || '/placeholder.svg'}
+                        alt={project.title}
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-secondary-950/20 group-hover:bg-secondary-950/10 transition-all duration-300"></div>
+                    </div>
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <Badge variant="secondary" className="bg-primary-100 text-primary-700 font-medium tracking-wide uppercase text-xs">
                           {project.category}
                         </Badge>
-                        <span className="text-sm text-gray-500">{project.year}</span>
+                        <span className="text-sm text-secondary-500 font-light">{project.year}</span>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.title}</h3>
-                      <div className="flex items-center text-gray-600 text-sm mb-3">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        <span>{project.location}</span>
+                      <h3 className="text-xl font-light text-secondary-950 mb-3 leading-tight">{project.title}</h3>
+                      <div className="flex items-center text-secondary-600 text-sm mb-4">
+                        <MapPin className="h-4 w-4 mr-2 text-primary-600" />
+                        <span className="font-light">{project.location}</span>
                       </div>
-                      <p className="text-gray-600 text-sm leading-relaxed mb-4">{project.description}</p>
+                      <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light">{project.description}</p>
                       <Link href={`/projects/${project.id}`}>
-                        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white">
+                        <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
                           View Details
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
