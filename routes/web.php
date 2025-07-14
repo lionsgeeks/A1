@@ -12,8 +12,16 @@ Route::get('/', function () {
         }])
         ->get(); // Show all categories, not just those with projects
 
+    // Get the last 5 active projects for the featured section
+    $featuredProjects = \App\Models\Project::with('category')
+        ->where('status', 'active')
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
+
     return Inertia::render('architectural-website', [
-        'featuredCategories' => $featuredCategories->values() // Reset array keys
+        'featuredCategories' => $featuredCategories->values(), // Reset array keys
+        'featuredProjects' => $featuredProjects
     ]);
 })->name('home');
 

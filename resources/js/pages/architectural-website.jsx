@@ -75,7 +75,7 @@ if (typeof document !== 'undefined') {
     }
 }
 
-export default function ArchitecturalWebsite({ featuredCategories = [] }) {
+export default function ArchitecturalWebsite({ featuredCategories = [], featuredProjects = [] }) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const [isTransitioning, setIsTransitioning] = useState(true)
 
@@ -145,66 +145,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [] }) {
         setCurrentSlide(index + 2) // Offset by 2 because of the extended array
     }
 
-    const projects = [
-        {
-            id: 1,
-            title: "Modern Residential Complex",
-            category: "Residential",
-            location: "New York, NY",
-            year: "2024",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description:
-                "A contemporary residential development featuring sustainable design principles and innovative living spaces.",
-        },
-        {
-            id: 2,
-            title: "Corporate Headquarters",
-            category: "Commercial",
-            location: "San Francisco, CA",
-            year: "2023",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description:
-                "A striking office building that redefines the modern workplace with flexible spaces and natural light.",
-        },
-        {
-            id: 3,
-            title: "Cultural Arts Center",
-            category: "Cultural",
-            location: "Chicago, IL",
-            year: "2023",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description: "An iconic cultural landmark that brings together community spaces and artistic expression.",
-        },
-        {
-            id: 4,
-            title: "Sustainable Housing Project",
-            category: "Residential",
-            location: "Portland, OR",
-            year: "2024",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description: "Eco-friendly housing development showcasing renewable energy and green building technologies.",
-        },
-        {
-            id: 5,
-            title: "Urban Mixed-Use Development",
-            category: "Mixed-Use",
-            location: "Austin, TX",
-            year: "2023",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description:
-                "A vibrant mixed-use complex combining retail, office, and residential spaces in the heart of the city.",
-        },
-        {
-            id: 6,
-            title: "Educational Campus",
-            category: "Educational",
-            location: "Boston, MA",
-            year: "2024",
-            image: "https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556",
-            description:
-                "A modern educational facility designed to inspire learning through innovative architectural solutions.",
-        },
-    ]
+    // Use dynamic featured projects from database
+    const projects = featuredProjects.length > 0 ? featuredProjects : []
 
     return (
         <>
@@ -268,17 +210,21 @@ export default function ArchitecturalWebsite({ featuredCategories = [] }) {
                             We create architectural masterpieces that blend innovation, sustainability, and timeless elegance
                         </p>
                         <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                            <Button size="lg" className="bg-primary-500 text-white hover:bg-primary-600 px-10 py-4 text-lg font-medium tracking-wide transition-all duration-300">
-                                View Our Work
-                                <ArrowRight className="ml-3 h-5 w-5" />
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-2 border-white/30 text-black hover:bg-white hover:text-secondary-950 px-10 py-4 text-lg font-medium tracking-wide backdrop-blur-sm transition-all duration-300"
-                            >
-                                Get In Touch
-                            </Button>
+                            <Link href="/projects">
+                                <Button size="lg" className="bg-primary-500 text-white hover:bg-primary-600 px-10 py-4 text-lg font-medium tracking-wide transition-all duration-300">
+                                    View Our Work
+                                    <ArrowRight className="ml-3 h-5 w-5" />
+                                </Button>
+                            </Link>
+                            <Link href="/contact">
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="border-2 border-white/30 text-black hover:bg-white hover:text-secondary-950 px-10 py-4 text-lg font-medium tracking-wide backdrop-blur-sm transition-all duration-300"
+                                >
+                                    Get In Touch
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </section>
@@ -510,41 +456,104 @@ export default function ArchitecturalWebsite({ featuredCategories = [] }) {
                             Featured
                             <span className="block font-bold">Projects</span>
                         </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
                             Explore our portfolio of innovative architectural solutions that have transformed communities and redefined
                             skylines.
                         </p>
+                        {projects.length > 0 && (
+                            <Link href="/projects">
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white"
+                                >
+                                    View All Projects
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                            </Link>
+                        )}
                     </div>
 
                     {/* Individual Project Sections */}
-                    {projects.map((project, index) => (
-                        <div key={project.id} className="relative h-screen flex items-center overflow-hidden mb-16">
-                            <div className="absolute inset-0 z-0">
-                                <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/30" />
-                            </div>
+                    {projects.length > 0 ? (
+                        projects.map((project, index) => (
+                            <div key={project.id} className="relative h-screen flex items-center overflow-hidden mb-16">
+                                <div className="absolute inset-0 z-0">
+                                    <img
+                                        src={project.image_path || "https://via.placeholder.com/1920x1080/a3845b/ffffff?text=Project+Image"}
+                                        alt={project.title}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                            console.log('Image failed to load:', project.image_path);
+                                            e.target.src = "https://via.placeholder.com/1920x1080/a3845b/ffffff?text=Project+Image";
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 bg-black/30" />
+                                </div>
 
-                            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                                <div className={`${index % 2 === 0 ? "text-left" : "text-right"}`}>
-                                    <div className="max-w-2xl">
-                                        <Badge variant="secondary" className="bg-white/20 text-white border-white/30 mb-6">
-                                            {project.category}
-                                        </Badge>
-                                        <h3 className="text-5xl md:text-7xl font-light mb-8 text-white leading-tight">
-                                            {project.title.split(" ").slice(0, -1).join(" ")}
-                                            <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
-                                        </h3>
-                                        <div className="flex items-center text-white/80 text-lg mb-8">
-                                            <MapPin className="h-5 w-5 mr-2" />
-                                            <span>{project.location}</span>
-                                            <span className="mx-4">•</span>
-                                            <span>{project.year}</span>
+                                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                                    <div className={`${index % 2 === 0 ? "text-left" : "text-right"}`}>
+                                        <div className="max-w-2xl">
+                                            <Badge
+                                                variant="secondary"
+                                                className="bg-white/20 text-white border-white/30 mb-6"
+                                                style={{ backgroundColor: project.category?.color ? `${project.category.color}80` : 'rgba(163, 132, 91, 0.5)' }}
+                                            >
+                                                {project.category?.name || 'Uncategorized'}
+                                            </Badge>
+                                            <h3 className="text-5xl md:text-7xl font-light mb-8 text-white leading-tight">
+                                                {project.title.split(" ").slice(0, -1).join(" ")}
+                                                <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
+                                            </h3>
+                                            <div className="flex items-center text-white/80 text-lg mb-8">
+                                                <MapPin className="h-5 w-5 mr-2" />
+                                                <span>{project.location}</span>
+                                                <span className="mx-4">•</span>
+                                                <span>{project.year}</span>
+                                            </div>
+                                            <p className="text-white/90 text-lg mb-8 leading-relaxed">
+                                                {project.description}
+                                            </p>
+                                            <Link href={`/projects/${project.id}`}>
+                                                <Button
+                                                    size="lg"
+                                                    className="bg-white/10 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm"
+                                                >
+                                                    View Project Details
+                                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                                </Button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-24 bg-gray-50 rounded-2xl mx-4">
+                            <div className="max-w-2xl mx-auto px-4">
+                                <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <MapPin className="h-12 w-12 text-gray-400" />
+                                </div>
+                                <h3 className="text-3xl font-light text-gray-600 mb-4">No Featured Projects Yet</h3>
+                                <p className="text-lg text-gray-500 mb-8">
+                                    Our portfolio is currently being updated. Check back soon to see our latest architectural innovations.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                    <Link href="/contact">
+                                        <Button className="bg-primary-600 hover:bg-primary-700 text-white">
+                                            Discuss Your Project
+                                            <ArrowRight className="ml-2 h-5 w-5" />
+                                        </Button>
+                                    </Link>
+                                    <Link href="/about">
+                                        <Button variant="outline" className="border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white">
+                                            Learn About Us
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                    ))}
+                    )}
                 </section>
 
                 {/* Newsletter Section */}

@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, MapPin, Calendar, Filter, Grid, List } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import logo from "../../assets/images/A1.png"
 
 export default function Projects({ projects, categories = [], selectedCategory = null }) {
   const [viewMode, setViewMode] = useState('grid')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [displayedProjects, setDisplayedProjects] = useState([])
 
   // Set initial category from URL parameter
   const [activeCategory, setActiveCategory] = useState(selectedCategory || 'all')
@@ -19,11 +21,39 @@ export default function Projects({ projects, categories = [], selectedCategory =
         return categoryName === activeCategory;
       }) || []
 
+  // Initialize displayed projects
+  useEffect(() => {
+    setDisplayedProjects(filteredProjects)
+  }, [])
+
   const handleCategoryChange = (categorySlug) => {
-    setActiveCategory(categorySlug)
-    // Update URL without page reload
-    const url = categorySlug === 'all' ? '/projects' : `/projects?category=${categorySlug}`
-    window.history.pushState({}, '', url)
+    if (categorySlug === activeCategory) return // Don't animate if same category
+
+    // Start transition
+    setIsTransitioning(true)
+
+    // Fade out current projects
+    setTimeout(() => {
+      setActiveCategory(categorySlug)
+      // Update URL without page reload
+      const url = categorySlug === 'all' ? '/projects' : `/projects?category=${categorySlug}`
+      window.history.pushState({}, '', url)
+
+      // Update displayed projects after fade out
+      const newFilteredProjects = categorySlug === 'all'
+        ? projects?.data || []
+        : projects?.data?.filter(project => {
+            const categoryName = project.category?.name || project.category;
+            return categoryName === categorySlug;
+          }) || []
+
+      setDisplayedProjects(newFilteredProjects)
+
+      // End transition and fade in new projects
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 50)
+    }, 200) // Fade out duration
   }
 
   return (
@@ -151,15 +181,24 @@ export default function Projects({ projects, categories = [], selectedCategory =
                   : `${activeCategory} Projects`
                 }
               </h2>
-              <p className="text-secondary-600">
-                {filteredProjects.length === 0
-                  ? 'No projects found in this category'
-                  : `Showing ${filteredProjects.length} project${filteredProjects.length !== 1 ? 's' : ''}`
-                }
+              <p className={`text-secondary-600 transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
+                {isTransitioning ? (
+                  <span className="inline-flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Loading projects...
+                  </span>
+                ) : displayedProjects.length === 0 ? (
+                  'No projects found in this category'
+                ) : (
+                  `Showing ${displayedProjects.length} project${displayedProjects.length !== 1 ? 's' : ''}`
+                )}
               </p>
             </div>
-            {filteredProjects.length === 0 ? (
-              <div className="text-center py-16">
+            {displayedProjects.length === 0 ? (
+              <div className={`text-center py-16 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                 <div className="max-w-md mx-auto">
                   <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,9 +223,19 @@ export default function Projects({ projects, categories = [], selectedCategory =
                 </div>
               </div>
             ) : viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {filteredProjects.map((project) => (
-                  <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
+              <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+                {displayedProjects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group transform ${
+                      isTransitioning
+                        ? 'opacity-0 scale-95 translate-y-4'
+                        : 'opacity-100 scale-100 translate-y-0'
+                    }`}
+                    style={{
+                      transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
+                    }}
+                  >
                     <div className="relative overflow-hidden">
                       <img
                         src={project.image_path || '/placeholder.svg'}
@@ -223,9 +272,19 @@ export default function Projects({ projects, categories = [], selectedCategory =
                 ))}
               </div>
             ) : (
-              <div className="space-y-6">
-                {filteredProjects.map((project) => (
-                  <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className={`space-y-6 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+                {displayedProjects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform ${
+                      isTransitioning
+                        ? 'opacity-0 scale-95 translate-y-4'
+                        : 'opacity-100 scale-100 translate-y-0'
+                    }`}
+                    style={{
+                      transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
+                    }}
+                  >
                     <div className="md:flex">
                       <div className="md:w-1/3">
                         <img
