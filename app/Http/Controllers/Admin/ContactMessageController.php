@@ -46,7 +46,7 @@ class ContactMessageController extends Controller
             'read_at' => now()
         ]);
 
-        return Redirect::back()->with('success', 'Message marked as read.');
+        return Redirect::back();
     }
 
     public function markAsUnread(ContactMessage $message)
@@ -56,13 +56,13 @@ class ContactMessageController extends Controller
             'read_at' => null
         ]);
 
-        return Redirect::back()->with('success', 'Message marked as unread.');
+        return Redirect::back();
     }
 
     public function destroy(ContactMessage $message)
     {
         $message->delete();
 
-        return Redirect::back()->with('success', 'Message deleted successfully.');
+        return Redirect::back();
     }
 }

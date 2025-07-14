@@ -81,7 +81,7 @@ class ProjectController extends Controller
 
         Project::create($validated);
 
-        return Redirect::route('admin.projects.index')->with('success', 'Project created successfully!');
+        return Redirect::route('admin.projects.index');
     }
 
     public function edit(Project $project)
@@ -125,7 +125,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
-        return Redirect::route('admin.projects.index')->with('success', 'Project updated successfully!');
+        return Redirect::route('admin.projects.index');
     }
 
     public function destroy(Project $project)
@@ -140,7 +140,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return Redirect::route('admin.projects.index')->with('success', 'Project deleted successfully!');
+        return Redirect::route('admin.projects.index');
     }
 
     public function deleteGalleryImage(Project $project, $index)

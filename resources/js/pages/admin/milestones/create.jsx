@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Save } from 'lucide-react'
 import { router } from '@inertiajs/react'
+import { useModal } from '@/components/ui/modal'
 import {
     FormSection,
     FormField,
@@ -23,6 +24,7 @@ export default function MilestoneCreate() {
     })
     const [errors, setErrors] = useState({})
     const [processing, setProcessing] = useState(false)
+    const { showSuccess, showError, ModalComponent } = useModal()
 
     const breadcrumbs = [
         { title: 'Admin', href: '/admin' },
@@ -37,10 +39,19 @@ export default function MilestoneCreate() {
         router.post('/admin/milestones', data, {
             onSuccess: () => {
                 setProcessing(false)
+                showSuccess(
+                    'Milestone Created!',
+                    'The milestone has been created successfully.',
+                    () => router.visit('/admin/milestones')
+                )
             },
             onError: (errors) => {
                 setErrors(errors)
                 setProcessing(false)
+                showError(
+                    'Creation Failed',
+                    'There was an error creating the milestone. Please check the form and try again.'
+                )
             }
         })
     }
@@ -174,6 +185,9 @@ export default function MilestoneCreate() {
                     </div>
                 </PageContent>
             </PageContainer>
+
+            {/* Modal Component */}
+            <ModalComponent />
         </AppLayout>
     )
 }

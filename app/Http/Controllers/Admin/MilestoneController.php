@@ -47,8 +47,7 @@ class MilestoneController extends Controller
 
         Milestone::create($validated);
 
-        return redirect()->route('admin.milestones.index')
-            ->with('success', 'Milestone created successfully.');
+        return redirect()->route('admin.milestones.index');
     }
 
     /**
@@ -76,8 +75,7 @@ class MilestoneController extends Controller
 
         $milestone->update($validated);
 
-        return redirect()->route('admin.milestones.index')
-            ->with('success', 'Milestone updated successfully.');
+        return redirect()->route('admin.milestones.index');
     }
 
     /**
@@ -87,7 +85,6 @@ class MilestoneController extends Controller
     {
         $milestone->delete();
 
-        return redirect()->route('admin.milestones.index')
-            ->with('success', 'Milestone deleted successfully.');
+        return redirect()->route('admin.milestones.index');
     }
 }

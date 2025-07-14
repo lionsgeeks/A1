@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Head, Link, useForm } from '@inertiajs/react'
 import { route } from 'ziggy-js'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { ArrowLeft, Save, Palette, Eye, EyeOff, Upload, X, Image as ImageIcon } from 'lucide-react'
 import AppLayout from '@/layouts/app-layout'
 import { ImageUpload } from '@/components/admin/form-section'
@@ -12,7 +12,12 @@ import { useModal } from '@/components/ui/modal'
 export default function CategoryCreate({ category }) {
   const isEditing = !!category
   const [colorPreview, setColorPreview] = useState(category?.color || '#a3845b')
-  const { showConfirm, ModalComponent } = useModal()
+  const [imagePreview, setImagePreview] = useState(category?.image_path ? `/${category.image_path}` : null)
+  const [isDragging, setIsDragging] = useState(false)
+  const { showConfirm, showSuccess, showError, ModalComponent } = useModal()
+
+  // Ref for file input
+  const imageInputRef = useRef(null)
 
   const { data, setData, post, put, processing, errors } = useForm({
     name: category?.name || '',
@@ -28,9 +33,37 @@ export default function CategoryCreate({ category }) {
 
     if (isEditing) {
       // Use dedicated POST route for updates with files
-      post(route('admin.categories.update-with-files', category.id))
+      post(route('admin.categories.update-with-files', category.id), {
+        onSuccess: () => {
+          showSuccess(
+            'Category Updated!',
+            'The category has been updated successfully.',
+            () => window.location.href = route('admin.categories.index')
+          )
+        },
+        onError: (errors) => {
+          showError(
+            'Update Failed',
+            'There was an error updating the category. Please check the form and try again.'
+          )
+        }
+      })
     } else {
-      post(route('admin.categories.store'))
+      post(route('admin.categories.store'), {
+        onSuccess: () => {
+          showSuccess(
+            'Category Created!',
+            'The category has been created successfully.',
+            () => window.location.href = route('admin.categories.index')
+          )
+        },
+        onError: (errors) => {
+          showError(
+            'Creation Failed',
+            'There was an error creating the category. Please check the form and try again.'
+          )
+        }
+      })
     }
   }
 
@@ -57,6 +90,65 @@ export default function CategoryCreate({ category }) {
     const color = e.target.value
     setData('color', color)
     setColorPreview(color)
+  }
+
+  const handleImageAreaClick = () => {
+    if (imageInputRef.current) {
+      imageInputRef.current.click()
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setData('image', file)
+      const reader = new FileReader()
+      reader.onload = (e) => setImagePreview(e.target.result)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setImagePreview(null)
+    setData('image', null)
+    if (imageInputRef.current) {
+      imageInputRef.current.value = ''
+    }
+  }
+
+  // Drag and drop handlers
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDragEnter = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleImageDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    const files = e.dataTransfer.files
+    if (files && files[0]) {
+      const file = files[0]
+      if (file.type.startsWith('image/')) {
+        setData('image', file)
+        const reader = new FileReader()
+        reader.onload = (e) => setImagePreview(e.target.result)
+        reader.readAsDataURL(file)
+      }
+    }
   }
 
   const predefinedColors = [
@@ -103,7 +195,17 @@ export default function CategoryCreate({ category }) {
           </div>
 
           {/* Form */}
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg relative">
+            {processing && (
+              <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+                <div className="flex items-center space-x-3">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                  <span className="text-gray-600 font-medium">
+                    {isEditing ? 'Updating category...' : 'Creating category...'}
+                  </span>
+                </div>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="p-6 space-y-6" encType="multipart/form-data">
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -187,14 +289,66 @@ export default function CategoryCreate({ category }) {
 
                 {/* Image Upload */}
                 <div className="space-y-2">
-                  <Label htmlFor="image">{isEditing && category.image_path ? 'Replace Image' : 'Upload Image'}</Label>
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setData('image', e.target.files[0])}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                  />
+                  <Label>{isEditing && category.image_path ? 'Replace Image' : 'Upload Image'}</Label>
+                  <div
+                    className={`border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
+                      isDragging
+                        ? 'border-blue-400 bg-blue-50'
+                        : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    onClick={!imagePreview ? handleImageAreaClick : undefined}
+                    onDragOver={handleDragOver}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleImageDrop}
+                  >
+                    {imagePreview ? (
+                      <div className="relative">
+                        <img
+                          src={imagePreview}
+                          alt="Category preview"
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removeImage()
+                          }}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleImageAreaClick()
+                          }}
+                          className="absolute bottom-2 right-2 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600"
+                          title="Change image"
+                        >
+                          <Upload className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                        <div className="text-sm text-gray-600">
+                          <p className="font-medium text-gray-900">Upload an image or drag and drop</p>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 10MB</p>
+                      </div>
+                    )}
+                    <input
+                      ref={imageInputRef}
+                      id="image"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="sr-only"
+                    />
+                  </div>
                   {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
                   <p className="text-gray-500 text-sm">
                     Recommended: 800x600px or larger. Max file size: 10MB. Formats: JPG, PNG, GIF
@@ -317,8 +471,17 @@ export default function CategoryCreate({ category }) {
                   disabled={processing}
                   className="bg-primary-600 hover:bg-primary-700"
                 >
-                  <Save className="h-4 w-4 mr-2" />
-                  {processing ? 'Saving...' : (isEditing ? 'Update Category' : 'Create Category')}
+                  {processing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4 mr-2" />
+                      {isEditing ? 'Update Category' : 'Create Category'}
+                    </>
+                  )}
                 </Button>
               </div>
             </form>

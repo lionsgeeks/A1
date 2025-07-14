@@ -9,23 +9,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { useModal } from '@/components/ui/modal';
 
-export default function ForgotPassword({ status }) {
+export default function ForgotPassword() {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
 
+    const { showSuccess, ModalComponent } = useModal();
+
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.email'));
+        post(route('password.email'), {
+            onSuccess: () => {
+                showSuccess(
+                    'Reset Link Sent',
+                    'A reset link will be sent if the account exists. Please check your email.'
+                );
+            }
+        });
     };
 
     return (
         <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
             <Head title="Forgot password" />
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
 
             <div className="space-y-6">
                 <form onSubmit={submit}>
@@ -58,6 +66,9 @@ export default function ForgotPassword({ status }) {
                     <TextLink href={route('login')}>log in</TextLink>
                 </div>
             </div>
+
+            {/* Modal Component */}
+            <ModalComponent />
         </AuthLayout>
     );
 }

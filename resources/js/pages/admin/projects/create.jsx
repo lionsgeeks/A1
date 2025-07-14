@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import AppLayout from '@/layouts/app-layout'
 import { Head } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
@@ -24,6 +24,12 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   const [galleryPreviews, setGalleryPreviews] = useState(project?.gallery_images || [])
   const [existingGalleryImages, setExistingGalleryImages] = useState(project?.gallery_images || [])
   const [newGalleryImages, setNewGalleryImages] = useState([])
+  const [isDraggingMain, setIsDraggingMain] = useState(false)
+  const [isDraggingGallery, setIsDraggingGallery] = useState(false)
+
+  // Refs for file inputs
+  const mainImageInputRef = useRef(null)
+  const galleryInputRef = useRef(null)
 
   const { data, setData, post, put, processing, errors } = useForm({
     title: project?.title || '',
@@ -66,6 +72,97 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   const removeImage = () => {
     setImagePreview(null)
     setData('image', null)
+  }
+
+  // Click handlers for upload areas
+  const handleMainImageAreaClick = () => {
+    if (mainImageInputRef.current) {
+      mainImageInputRef.current.click()
+    }
+  }
+
+  const handleGalleryAreaClick = () => {
+    if (galleryInputRef.current) {
+      galleryInputRef.current.click()
+    }
+  }
+
+  // Drag and drop handlers
+  const handleMainImageDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleMainImageDragEnter = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingMain(true)
+  }
+
+  const handleMainImageDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingMain(false)
+  }
+
+  const handleGalleryDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleGalleryDragEnter = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingGallery(true)
+  }
+
+  const handleGalleryDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingGallery(false)
+  }
+
+  const handleMainImageDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingMain(false)
+
+    const files = e.dataTransfer.files
+    if (files && files[0]) {
+      const file = files[0]
+      if (file.type.startsWith('image/')) {
+        setData('image', file)
+        const reader = new FileReader()
+        reader.onload = (e) => setImagePreview(e.target.result)
+        reader.readAsDataURL(file)
+      }
+    }
+  }
+
+  const handleGalleryDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDraggingGallery(false)
+
+    const files = Array.from(e.dataTransfer.files)
+    const imageFiles = files.filter(file => file.type.startsWith('image/'))
+
+    if (imageFiles.length > 0) {
+      setData('gallery_images', imageFiles)
+
+      const newPreviews = []
+      imageFiles.forEach((file) => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          newPreviews.push(e.target.result)
+          if (newPreviews.length === imageFiles.length) {
+            setGalleryPreviews([...galleryPreviews, ...newPreviews])
+            setNewGalleryImages([...newGalleryImages, ...imageFiles])
+          }
+        }
+        reader.readAsDataURL(file)
+      })
+    }
   }
 
   const handleGalleryChange = async (e) => {
@@ -183,9 +280,41 @@ export default function ProjectCreate({ project = null, categories = [] }) {
       router.post(`/admin/projects/${project.id}`, {
         ...data,
         _method: 'PUT'
+      }, {
+        onSuccess: () => {
+          showModalDialog(
+            'success',
+            'Project Updated!',
+            'The project has been updated successfully.',
+            () => router.visit('/admin/projects')
+          )
+        },
+        onError: (errors) => {
+          showModalDialog(
+            'error',
+            'Update Failed',
+            'There was an error updating the project. Please check the form and try again.'
+          )
+        }
       })
     } else {
-      post('/admin/projects')
+      post('/admin/projects', {
+        onSuccess: () => {
+          showModalDialog(
+            'success',
+            'Project Created!',
+            'The project has been created successfully.',
+            () => router.visit('/admin/projects')
+          )
+        },
+        onError: (errors) => {
+          showModalDialog(
+            'error',
+            'Creation Failed',
+            'There was an error creating the project. Please check the form and try again.'
+          )
+        }
+      })
     }
   }
 
@@ -353,7 +482,18 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Main Project Image *
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <div
+                className={`border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
+                  isDraggingMain
+                    ? 'border-blue-400 bg-blue-50'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+                onClick={!imagePreview ? handleMainImageAreaClick : undefined}
+                onDragOver={handleMainImageDragOver}
+                onDragEnter={handleMainImageDragEnter}
+                onDragLeave={handleMainImageDragLeave}
+                onDrop={handleMainImageDrop}
+              >
                 {imagePreview ? (
                   <div className="relative">
                     <img
@@ -368,26 +508,32 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                     >
                       <X className="h-4 w-4" />
                     </button>
+                    <button
+                      type="button"
+                      onClick={handleMainImageAreaClick}
+                      className="absolute bottom-2 right-2 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600"
+                      title="Change image"
+                    >
+                      <Upload className="h-4 w-4" />
+                    </button>
                   </div>
                 ) : (
                   <div className="text-center">
                     <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <div className="flex text-sm text-gray-600">
-                      <label htmlFor="image" className="relative cursor-pointer bg-white rounded-md font-medium text-gray-900 hover:text-gray-700">
-                        <span>Upload a file</span>
-                        <input
-                          id="image"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="sr-only"
-                        />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
+                    <div className="text-sm text-gray-600">
+                      <p className="font-medium text-gray-900">Upload a file or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs text-gray-500 mt-2">PNG, JPG, GIF up to 10MB</p>
                   </div>
                 )}
+                <input
+                  ref={mainImageInputRef}
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="sr-only"
+                />
               </div>
               {errors.image && <p className="text-red-600 text-sm mt-1">{errors.image}</p>}
             </div>
@@ -397,7 +543,18 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gallery Images (Optional)
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <div
+                className={`border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
+                  isDraggingGallery
+                    ? 'border-blue-400 bg-blue-50'
+                    : 'border-gray-300 hover:border-gray-400'
+                }`}
+                onClick={handleGalleryAreaClick}
+                onDragOver={handleGalleryDragOver}
+                onDragEnter={handleGalleryDragEnter}
+                onDragLeave={handleGalleryDragLeave}
+                onDrop={handleGalleryDrop}
+              >
                 {galleryPreviews.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     {galleryPreviews.map((preview, index) => (
@@ -409,7 +566,10 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                         />
                         <button
                           type="button"
-                          onClick={() => removeGalleryImage(index)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removeGalleryImage(index)
+                          }}
                           className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                         >
                           <X className="h-3 w-3" />
@@ -420,21 +580,20 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 ) : null}
                 <div className="text-center">
                   <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <div className="flex text-sm text-gray-600">
-                    <label htmlFor="gallery" className="relative cursor-pointer bg-white rounded-md font-medium text-gray-900 hover:text-gray-700">
-                      <span>Upload gallery images</span>
-                      <input
-                        id="gallery"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleGalleryChange}
-                        className="sr-only"
-                      />
-                    </label>
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium text-gray-900">Upload gallery images</p>
                   </div>
-                  <p className="text-xs text-gray-500">Multiple files allowed</p>
+                  <p className="text-xs text-gray-500 mt-2">Multiple files allowed</p>
                 </div>
+                <input
+                  ref={galleryInputRef}
+                  id="gallery"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleGalleryChange}
+                  className="sr-only"
+                />
               </div>
               {errors.gallery_images && <p className="text-red-600 text-sm mt-1">{errors.gallery_images}</p>}
             </div>

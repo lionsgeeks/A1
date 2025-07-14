@@ -24,6 +24,7 @@ import {
 } from '@/components/admin'
 
 export default function MessagesIndex({ messages, filters, stats }) {
+  const [loadingActions, setLoadingActions] = useState({})
   const breadcrumbs = [
     { title: 'Admin', href: '/admin' },
     { title: 'Messages', href: '/admin/messages' }
@@ -88,17 +89,25 @@ export default function MessagesIndex({ messages, filters, stats }) {
       label: 'Mark as Read',
       icon: MailOpen,
       onClick: (message) => {
-        router.patch(`/admin/messages/${message.id}/read`)
+        setLoadingActions(prev => ({ ...prev, [`read-${message.id}`]: true }))
+        router.patch(`/admin/messages/${message.id}/read`, {}, {
+          onFinish: () => setLoadingActions(prev => ({ ...prev, [`read-${message.id}`]: false }))
+        })
       },
-      show: (message) => message.status === 'unread'
+      show: (message) => message.status === 'unread',
+      loading: (message) => loadingActions[`read-${message.id}`]
     },
     {
       label: 'Mark as Unread',
       icon: Mail,
       onClick: (message) => {
-        router.patch(`/admin/messages/${message.id}/unread`)
+        setLoadingActions(prev => ({ ...prev, [`unread-${message.id}`]: true }))
+        router.patch(`/admin/messages/${message.id}/unread`, {}, {
+          onFinish: () => setLoadingActions(prev => ({ ...prev, [`unread-${message.id}`]: false }))
+        })
       },
-      show: (message) => message.status === 'read'
+      show: (message) => message.status === 'read',
+      loading: (message) => loadingActions[`unread-${message.id}`]
     },
     {
       label: 'Delete',
@@ -109,10 +118,14 @@ export default function MessagesIndex({ messages, filters, stats }) {
           'Delete Message',
           `Are you sure you want to delete this message from ${message.name}? This action cannot be undone.`,
           () => {
-            router.delete(`/admin/messages/${message.id}`)
+            setLoadingActions(prev => ({ ...prev, [`delete-${message.id}`]: true }))
+            router.delete(`/admin/messages/${message.id}`, {
+              onFinish: () => setLoadingActions(prev => ({ ...prev, [`delete-${message.id}`]: false }))
+            })
           }
         )
-      }
+      },
+      loading: (message) => loadingActions[`delete-${message.id}`]
     }
   ]
 

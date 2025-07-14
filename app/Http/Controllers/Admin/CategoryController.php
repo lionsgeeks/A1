@@ -81,7 +81,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return Redirect::route('admin.categories.index')->with('success', 'Category created successfully!');
+        return Redirect::route('admin.categories.index');
     }
 
     /**
@@ -135,7 +135,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return Redirect::route('admin.categories.index')->with('success', 'Category updated successfully!');
+        return Redirect::route('admin.categories.index');
     }
 
     /**
@@ -147,8 +147,9 @@ class CategoryController extends Controller
         $projectsCount = $category->projects()->count();
 
         if ($projectsCount > 0) {
-            return Redirect::route('admin.categories.index')
-                ->with('error', "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first.");
+            return response()->json([
+                'error' => "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first."
+            ], 422);
         }
 
         // Delete image if exists
@@ -158,7 +159,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return Redirect::route('admin.categories.index')->with('success', 'Category deleted successfully!');
+        return Redirect::route('admin.categories.index');
     }
 
     /**

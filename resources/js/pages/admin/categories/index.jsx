@@ -10,13 +10,17 @@ import { useModal } from '@/components/ui/modal'
 
 export default function CategoriesIndex({ categories, filters }) {
   const [search, setSearch] = useState(filters.search || '')
-  const { showConfirm, ModalComponent } = useModal()
+  const [deletingId, setDeletingId] = useState(null)
+  const [searching, setSearching] = useState(false)
+  const { showConfirm, showSuccess, showError, ModalComponent } = useModal()
 
   const handleSearch = (e) => {
     e.preventDefault()
+    setSearching(true)
     router.get(route('admin.categories.index'), { search }, {
       preserveState: true,
-      replace: true
+      replace: true,
+      onFinish: () => setSearching(false)
     })
   }
 
@@ -25,7 +29,24 @@ export default function CategoriesIndex({ categories, filters }) {
       'Delete Category',
       `Are you sure you want to delete the category "${category.name}"? This action cannot be undone and will affect all projects in this category.`,
       () => {
-        router.delete(route('admin.categories.destroy', category.id))
+        setDeletingId(category.id)
+        router.delete(route('admin.categories.destroy', category.id), {
+          onSuccess: () => {
+            setDeletingId(null)
+            showSuccess(
+              'Category Deleted!',
+              'The category has been deleted successfully.'
+            )
+          },
+          onError: (errors) => {
+            setDeletingId(null)
+            const errorMessage = errors.error || 'There was an error deleting the category. Please try again.'
+            showError(
+              'Delete Failed',
+              errorMessage
+            )
+          }
+        })
       }
     )
   }
@@ -65,9 +86,18 @@ export default function CategoriesIndex({ categories, filters }) {
                     className="w-full"
                   />
                 </div>
-                <Button type="submit" variant="outline">
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
+                <Button type="submit" variant="outline" disabled={searching}>
+                  {searching ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"></div>
+                      Searching...
+                    </>
+                  ) : (
+                    <>
+                      <Search className="h-4 w-4 mr-2" />
+                      Search
+                    </>
+                  )}
                 </Button>
               </form>
             </div>
@@ -148,9 +178,13 @@ export default function CategoriesIndex({ categories, filters }) {
                           size="sm"
                           onClick={() => handleDelete(category)}
                           className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                          disabled={category.projects_count > 0}
+                          disabled={category.projects_count > 0 || deletingId === category.id}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          {deletingId === category.id ? (
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
                         </Button>
                       </div>
 

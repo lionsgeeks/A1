@@ -23,7 +23,8 @@ import {
 
 export default function MilestonesIndex({ milestones }) {
     const [selectedMilestone, setSelectedMilestone] = useState(null)
-    const { showConfirm, ModalComponent } = useModal()
+    const [deletingId, setDeletingId] = useState(null)
+    const { showConfirm, showSuccess, showError, ModalComponent } = useModal()
 
     const breadcrumbs = [
         { title: 'Admin', href: '/admin' },
@@ -100,10 +101,27 @@ export default function MilestonesIndex({ milestones }) {
                     'Delete Milestone',
                     `Are you sure you want to delete the milestone "${milestone.title}"? This action cannot be undone.`,
                     () => {
-                        router.delete(`/admin/milestones/${milestone.id}`)
+                        setDeletingId(milestone.id)
+                        router.delete(`/admin/milestones/${milestone.id}`, {
+                            onSuccess: () => {
+                                setDeletingId(null)
+                                showSuccess(
+                                    'Milestone Deleted!',
+                                    'The milestone has been deleted successfully.'
+                                )
+                            },
+                            onError: (errors) => {
+                                setDeletingId(null)
+                                showError(
+                                    'Delete Failed',
+                                    'There was an error deleting the milestone. Please try again.'
+                                )
+                            }
+                        })
                     }
                 )
-            }
+            },
+            loading: (milestone) => deletingId === milestone.id
         }
     ]
 
