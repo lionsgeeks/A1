@@ -9,6 +9,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
   const [viewMode, setViewMode] = useState('grid')
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displayedProjects, setDisplayedProjects] = useState([])
+console.log(projects);
 
   // Set initial category from URL parameter
   const [activeCategory, setActiveCategory] = useState(selectedCategory || 'all')
