@@ -261,7 +261,7 @@ console.log(projects);
                         <MapPin className="h-4 w-4 mr-2 text-primary-600" />
                         <span className="font-light">{project.location}</span>
                       </div>
-                      <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light">{project.description}</p>
+                      <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">{project.description}</p>
                       <Link href={`/projects/${project.id}`}>
                         <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
                           View Details

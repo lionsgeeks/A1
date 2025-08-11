@@ -36,8 +36,14 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     category_id: project?.category_id || '',
     location: project?.location || '',
     year: project?.year || new Date().getFullYear().toString(),
+    start_year: project?.start_year || '',
+    end_year: project?.end_year || '',
     description: project?.description || '',
-    details: project?.details || '',
+    achievement_status: project?.achievement_status || '',
+    surface_area: project?.surface_area || '',
+    client_name: project?.client_name || '',
+    project_cost: project?.project_cost || '',
+    duration_months: project?.duration_months || '',
     status: project?.status || 'active',
     sort_order: project?.sort_order || 0,
     image: null,
@@ -381,7 +387,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
 
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
-                  Location *
+                  Location
                 </label>
                 <input
                   type="text"
@@ -389,14 +395,14 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                   value={data.location}
                   onChange={(e) => setData('location', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  required
+
                 />
                 {errors.location && <p className="text-red-600 text-sm mt-1">{errors.location}</p>}
               </div>
 
               <div>
                 <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
-                  Year *
+                  Year
                 </label>
                 <input
                   type="number"
@@ -404,10 +410,128 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                   value={data.year}
                   onChange={(e) => setData('year', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  required
                 />
                 {errors.year && <p className="text-red-600 text-sm mt-1">{errors.year}</p>}
               </div>
+            </div>
+
+            {/* Project Timeline */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div>
+                <label htmlFor="start_year" className="block text-sm font-medium text-gray-700 mb-2">
+                  Start Year
+                </label>
+                <input
+                  type="number"
+                  id="start_year"
+                  value={data.start_year}
+                  onChange={(e) => setData('start_year', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="2018"
+                />
+                {errors.start_year && <p className="text-red-600 text-sm mt-1">{errors.start_year}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="end_year" className="block text-sm font-medium text-gray-700 mb-2">
+                  End Year
+                </label>
+                <input
+                  type="number"
+                  id="end_year"
+                  value={data.end_year}
+                  onChange={(e) => setData('end_year', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="2020"
+                />
+                {errors.end_year && <p className="text-red-600 text-sm mt-1">{errors.end_year}</p>}
+              </div>
+            </div>
+
+            {/* Project Status and Surface */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div>
+                <label htmlFor="achievement_status" className="block text-sm font-medium text-gray-700 mb-2">
+                  Achievement Status
+                </label>
+                <select
+                  id="achievement_status"
+                  value={data.achievement_status}
+                  onChange={(e) => setData('achievement_status', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                >
+                  <option value="">Select Status</option>
+                  <option value="ACHEVÉ">ACHEVÉ</option>
+                  <option value="EN COURS">EN COURS</option>
+                  <option value="EN PROJET">EN PROJET</option>
+                  <option value="SUSPENDU">SUSPENDU</option>
+                </select>
+                {errors.achievement_status && <p className="text-red-600 text-sm mt-1">{errors.achievement_status}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="surface_area" className="block text-sm font-medium text-gray-700 mb-2">
+                  Surface Area
+                </label>
+                <input
+                  type="text"
+                  id="surface_area"
+                  value={data.surface_area}
+                  onChange={(e) => setData('surface_area', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="7000 m²"
+                />
+                {errors.surface_area && <p className="text-red-600 text-sm mt-1">{errors.surface_area}</p>}
+              </div>
+            </div>
+
+            {/* Client and Project Cost */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div>
+                <label htmlFor="client_name" className="block text-sm font-medium text-gray-700 mb-2">
+                  Client / Maîtrise d'Ouvrage
+                </label>
+                <input
+                  type="text"
+                  id="client_name"
+                  value={data.client_name}
+                  onChange={(e) => setData('client_name', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="CASA AMÉNAGEMENT / CID"
+                />
+                {errors.client_name && <p className="text-red-600 text-sm mt-1">{errors.client_name}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="project_cost" className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Cost / Montant des Travaux
+                </label>
+                <input
+                  type="text"
+                  id="project_cost"
+                  value={data.project_cost}
+                  onChange={(e) => setData('project_cost', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  placeholder="21 Mdhs"
+                />
+                {errors.project_cost && <p className="text-red-600 text-sm mt-1">{errors.project_cost}</p>}
+              </div>
+            </div>
+
+            {/* Duration */}
+            <div className="mt-6">
+              <label htmlFor="duration_months" className="block text-sm font-medium text-gray-700 mb-2">
+                Duration (Months)
+              </label>
+              <input
+                type="number"
+                id="duration_months"
+                value={data.duration_months}
+                onChange={(e) => setData('duration_months', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                placeholder="24"
+              />
+              {errors.duration_months && <p className="text-red-600 text-sm mt-1">{errors.duration_months}</p>}
             </div>
 
             <div className="mt-6">
@@ -425,20 +549,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               {errors.description && <p className="text-red-600 text-sm mt-1">{errors.description}</p>}
             </div>
 
-            <div className="mt-6">
-              <label htmlFor="details" className="block text-sm font-medium text-gray-700 mb-2">
-                Project Details
-              </label>
-              <textarea
-                id="details"
-                rows={6}
-                value={data.details}
-                onChange={(e) => setData('details', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-                placeholder="Additional project details, specifications, etc."
-              />
-              {errors.details && <p className="text-red-600 text-sm mt-1">{errors.details}</p>}
-            </div>
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div>

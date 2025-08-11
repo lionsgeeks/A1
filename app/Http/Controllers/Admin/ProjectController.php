@@ -59,14 +59,20 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'location' => 'required|string|max:255',
-            'year' => 'required|string|max:4',
-            'description' => 'required|string|max:500',
-            'details' => 'required|string',
-            'status' => 'required|in:active,draft,archived',
+            'location' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:4',
+            'start_year' => 'nullable|string|max:4',
+            'end_year' => 'nullable|string|max:4',
+            'description' => 'string',
+            'achievement_status' => 'nullable|string|max:255',
+            'surface_area' => 'nullable|string|max:255',
+            'client_name' => 'nullable|string|max:255',
+            'project_cost' => 'nullable|string|max:255',
+            'duration_months' => 'nullable|integer|min:0',
+            'status' => 'in:active,draft,archived',
             'sort_order' => 'integer|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
 
         // Upload main image
@@ -97,16 +103,22 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'location' => 'required|string|max:255',
-            'year' => 'required|string|max:4',
-            'description' => 'required|string|max:500',
-            'details' => 'required|string',
-            'status' => 'required|in:active,draft,archived',
+            'title' => 'string|max:255',
+            'category_id' => 'exists:categories,id',
+            'location' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:4',
+            'start_year' => 'nullable|string|max:4',
+            'end_year' => 'nullable|string|max:4',
+            'description' => 'string|max:500',
+            'achievement_status' => 'nullable|string|max:255',
+            'surface_area' => 'nullable|string|max:255',
+            'client_name' => 'nullable|string|max:255',
+            'project_cost' => 'nullable|string|max:255',
+            'duration_months' => 'nullable|integer|min:0',
+            'status' => 'in:active,draft,archived',
             'sort_order' => 'integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
 
         // Upload new main image if provided

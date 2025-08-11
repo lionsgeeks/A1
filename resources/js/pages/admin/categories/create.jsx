@@ -33,7 +33,7 @@ export default function CategoryCreate({ category }) {
 
     if (isEditing) {
       // Use dedicated POST route for updates with files
-      post(route('admin.categories.update-with-files', category.id), {
+      put(route('admin.categories.update-with-files', category.id), {
         onSuccess: () => {
           showSuccess(
             'Category Updated!',

@@ -28,8 +28,7 @@ class SampleProjectSeeder extends Seeder
                 'category_id' => $residentialCategory->id,
                 'location' => 'Beverly Hills, CA',
                 'year' => '2024',
-                'description' => 'A stunning modern villa featuring clean lines, large windows, and sustainable design elements.',
-                'details' => 'This contemporary residential project showcases innovative architectural design with a focus on natural light and open spaces. The villa includes 5 bedrooms, 4 bathrooms, and a spacious living area with panoramic views.',
+                'description' => 'A stunning modern villa featuring clean lines, large windows, and sustainable design elements. This contemporary residential project showcases innovative architectural design with a focus on natural light and open spaces. The villa includes 5 bedrooms, 4 bathrooms, and a spacious living area with panoramic views.',
                 'image_path' => 'https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556',
                 'gallery_images' => [
                     'https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556',
@@ -43,8 +42,7 @@ class SampleProjectSeeder extends Seeder
                 'category_id' => $commercialCategory->id,
                 'location' => 'Downtown Los Angeles, CA',
                 'year' => '2024',
-                'description' => 'A 20-story corporate headquarters building with modern amenities and sustainable features.',
-                'details' => 'This commercial project represents the future of office design with flexible workspaces, green building technologies, and state-of-the-art facilities. The building includes retail spaces on the ground floor and premium office suites.',
+                'description' => 'A 20-story corporate headquarters building with modern amenities and sustainable features. This commercial project represents the future of office design with flexible workspaces, green building technologies, and state-of-the-art facilities. The building includes retail spaces on the ground floor and premium office suites.',
                 'image_path' => 'https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556',
                 'gallery_images' => [
                     'https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556'

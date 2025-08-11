@@ -220,6 +220,51 @@ export default function ProjectsIndex({ projects }) {
                           {selectedProject.year}
                         </p>
                       </div>
+
+                      {/* Timeline */}
+                      {(selectedProject.start_year || selectedProject.end_year) && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Timeline</h4>
+                          <p className="text-gray-600">
+                            {selectedProject.start_year || '----'} - {selectedProject.end_year || '----'}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Achievement Status */}
+                      {selectedProject.achievement_status && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Achievement Status</h4>
+                          <Badge className="bg-blue-100 text-blue-800">
+                            {selectedProject.achievement_status}
+                          </Badge>
+                        </div>
+                      )}
+
+                      {/* Surface Area */}
+                      {selectedProject.surface_area && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Surface Area</h4>
+                          <p className="text-gray-600">{selectedProject.surface_area}</p>
+                        </div>
+                      )}
+
+                      {/* Client */}
+                      {selectedProject.client_name && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Client</h4>
+                          <p className="text-gray-600">{selectedProject.client_name}</p>
+                        </div>
+                      )}
+
+                      {/* Project Cost */}
+                      {selectedProject.project_cost && (
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Project Cost</h4>
+                          <p className="text-gray-600">{selectedProject.project_cost}</p>
+                        </div>
+                      )}
+
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2">Status</h4>
                         <Badge className={getStatusColor(selectedProject.status)}>
@@ -231,15 +276,10 @@ export default function ProjectsIndex({ projects }) {
 
                   <div className="mt-6">
                     <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
-                    <p className="text-gray-600">{selectedProject.description}</p>
+                    <p className="text-gray-600 ">{selectedProject.description}</p>
                   </div>
 
-                  {selectedProject.details && (
-                    <div className="mt-6">
-                      <h4 className="font-semibold text-gray-900 mb-2">Details</h4>
-                      <p className="text-gray-600">{selectedProject.details}</p>
-                    </div>
-                  )}
+
 
                   <div className="flex justify-between items-center pt-6 border-t border-gray-200 mt-6">
                     <div className="text-sm text-gray-500">

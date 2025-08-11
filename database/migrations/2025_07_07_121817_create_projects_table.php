@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('location');
             $table->string('year');
             $table->text('description');
-            $table->text('details');
             $table->string('image_path')->nullable();
             $table->json('gallery_images')->nullable();
             $table->string('status')->default('active');

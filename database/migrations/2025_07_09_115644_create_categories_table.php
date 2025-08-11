@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('image_path')->nullable();
             $table->string('color')->default('#a3845b'); // Default to primary color
             $table->integer('sort_order')->default(0);
             $table->boolean('is_active')->default(true);

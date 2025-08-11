@@ -1,15 +1,20 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
 use App\Models\Category;
 
-return new class extends Migration
+class UpdateCategoriesSeeder extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
      */
-    public function up(): void
+    public function run(): void
     {
+        // Clear existing categories
+        Category::truncate();
+
         $categories = [
             [
                 'name' => 'Aménagement Urbain + Patrimoine et culture',
@@ -63,28 +68,9 @@ return new class extends Migration
         ];
 
         foreach ($categories as $categoryData) {
-            Category::updateOrCreate(
-                ['name' => $categoryData['name']],
-                $categoryData
-            );
+            Category::create($categoryData);
         }
-    }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        $categoryNames = [
-            'Aménagement Urbain + Patrimoine et culture',
-            'Aménagement urbain et paysager',
-            'Équipement',
-            'Industrie et tertiaire',
-            'Patrimoine et culture',
-            'Tourisme Hotel & Loisir',
-            'Tourisme Hotel Loisir ET patrimoine',
-        ];
-
-        Category::whereIn('name', $categoryNames)->delete();
+        $this->command->info('Categories updated successfully!');
     }
-};
+}

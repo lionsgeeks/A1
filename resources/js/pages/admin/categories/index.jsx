@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Head, Link, router } from '@inertiajs/react'
 import { route } from 'ziggy-js'
 import { useState } from 'react'
-import { Search, Plus, Edit, Trash2, Palette, Eye, EyeOff } from 'lucide-react'
+import { Search, Plus, Edit, Trash2, Palette, Eye, EyeOff, X, Upload, ImageIcon } from 'lucide-react'
 import AppLayout from '@/layouts/app-layout'
 import { useModal } from '@/components/ui/modal'
 
@@ -12,6 +12,17 @@ export default function CategoriesIndex({ categories, filters }) {
   const [search, setSearch] = useState(filters.search || '')
   const [deletingId, setDeletingId] = useState(null)
   const [searching, setSearching] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [editingCategory, setEditingCategory] = useState(null)
+  const [editForm, setEditForm] = useState({
+    name: '',
+    description: '',
+    color: '#a3845b',
+    sort_order: 0,
+    is_active: true,
+    image: null
+  })
+  const [editLoading, setEditLoading] = useState(false)
   const { showConfirm, showSuccess, showError, ModalComponent } = useModal()
 
   const handleSearch = (e) => {
@@ -22,6 +33,88 @@ export default function CategoriesIndex({ categories, filters }) {
       replace: true,
       onFinish: () => setSearching(false)
     })
+  }
+
+  const handleEdit = (category) => {
+    setEditingCategory(category)
+    setEditForm({
+      name: category.name,
+      description: category.description || '',
+      color: category.color,
+      sort_order: category.sort_order,
+      is_active: category.is_active,
+      image: null
+    })
+    setEditModalOpen(true)
+  }
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault()
+    setEditLoading(true)
+
+    const formData = new FormData()
+    formData.append('name', editForm.name)
+    formData.append('description', editForm.description)
+    formData.append('color', editForm.color)
+    formData.append('sort_order', editForm.sort_order)
+    formData.append('is_active', editForm.is_active ? '1' : '0')
+    formData.append('_method', 'PUT')
+
+    if (editForm.image) {
+      formData.append('image', editForm.image)
+    }
+
+    // Debug logging
+    console.log('Form data being sent:', {
+      name: editForm.name,
+      description: editForm.description,
+      color: editForm.color,
+      sort_order: editForm.sort_order,
+      is_active: editForm.is_active,
+      hasImage: !!editForm.image
+    })
+
+    try {
+      const response = await fetch(`/admin/categories/${editingCategory.id}/update`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      })
+
+      if (!response.ok) {
+        let errorMessage = `HTTP error! status: ${response.status}`
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.message || errorMessage
+          console.error('Response error:', response.status, errorData)
+        } catch (e) {
+          const errorText = await response.text()
+          console.error('Response error:', response.status, errorText)
+        }
+        throw new Error(errorMessage)
+      }
+
+      const data = await response.json()
+      console.log('Response data:', data)
+
+      if (data.success) {
+        setEditModalOpen(false)
+        setEditingCategory(null)
+        showSuccess('Category Updated!', data.message)
+        // Refresh the page to show updated data
+        router.reload()
+      } else {
+        showError('Update Failed', data.message || 'There was an error updating the category.')
+      }
+    } catch (error) {
+      console.error('Update error:', error)
+      showError('Update Failed', error.message || 'There was an error updating the category. Please try again.')
+    } finally {
+      setEditLoading(false)
+    }
   }
 
   const handleDelete = (category) => {
@@ -167,12 +260,15 @@ export default function CategoriesIndex({ categories, filters }) {
 
                       {/* Actions */}
                       <div className="flex space-x-2">
-                        <Link href={route('admin.categories.edit', category.id)} className="flex-1">
-                          <Button variant="outline" size="sm" className="w-full">
-                            <Edit className="h-4 w-4 mr-2" />
-                            Edit
-                          </Button>
-                        </Link>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => handleEdit(category)}
+                        >
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit
+                        </Button>
                         <Button
                           variant="outline"
                           size="sm"
@@ -242,6 +338,159 @@ export default function CategoriesIndex({ categories, filters }) {
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {/* Modal Header */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">Edit Category</h2>
+                <button
+                  onClick={() => setEditModalOpen(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Edit Form */}
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Category Name *
+                  </label>
+                  <Input
+                    type="text"
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    required
+                    className="w-full"
+                    placeholder="Enter category name"
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    value={editForm.description}
+                    onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    rows={3}
+                    placeholder="Enter category description"
+                  />
+                </div>
+
+                {/* Color */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Color *
+                  </label>
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="color"
+                      value={editForm.color}
+                      onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
+                      className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
+                    />
+                    <Input
+                      type="text"
+                      value={editForm.color}
+                      onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
+                      className="flex-1"
+                      placeholder="#000000"
+                    />
+                  </div>
+                </div>
+
+                {/* Sort Order */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sort Order
+                  </label>
+                  <Input
+                    type="number"
+                    value={editForm.sort_order}
+                    onChange={(e) => setEditForm({ ...editForm, sort_order: parseInt(e.target.value) || 0 })}
+                    min="0"
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Active Status */}
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="is_active"
+                    checked={editForm.is_active}
+                    onChange={(e) => setEditForm({ ...editForm, is_active: e.target.checked })}
+                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  />
+                  <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+                    Active
+                  </label>
+                </div>
+
+                {/* Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Category Image
+                  </label>
+                  <div className="flex items-center space-x-3">
+                    {editingCategory?.image_path && (
+                      <img
+                        src={`/${editingCategory.image_path}`}
+                        alt="Current"
+                        className="w-12 h-12 object-cover rounded border"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setEditForm({ ...editForm, image: e.target.files[0] })}
+                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Form Actions */}
+                <div className="flex space-x-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditModalOpen(false)}
+                    className="flex-1"
+                    disabled={editLoading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-primary-600 hover:bg-primary-700"
+                    disabled={editLoading}
+                  >
+                    {editLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Updating...
+                      </>
+                    ) : (
+                      'Update Category'
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal Component */}
       <ModalComponent />

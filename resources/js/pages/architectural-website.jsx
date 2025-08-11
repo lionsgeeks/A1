@@ -159,7 +159,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             <div className="flex items-center">
                                 <Link href="/" className="flex items-center space-x-3">
                                     <img src={logo}
-                                        className='w-[60px] aspect-square object-cover'
+                                        className='w-[40px] aspect-square object-cover'
                                         alt="ARCH Studio" />
                                     <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
                                 </Link>
@@ -194,7 +194,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 <section className="relative h-screen flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 z-0">
                         <img
-                            src="https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556"
+                            src="storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg"
                             alt="Modern Architecture"
                             className="w-full h-full object-cover"
                         />
@@ -263,7 +263,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             </div>
                             <div className="relative">
                                 <img
-                                    src="https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556"
+                                    src="storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg"
                                     alt="Architectural Detail"
                                     className="w-full h-auto rounded-lg shadow-2xl"
                                 />
@@ -501,10 +501,10 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                             >
                                                 {project.category?.name || 'Uncategorized'}
                                             </Badge>
-                                            <h3 className="text-5xl md:text-7xl font-light mb-8 text-white leading-tight">
+                                            <p className="text-2xl md:text-4xl font-light mb-8 text-white leading-tight">
                                                 {project.title.split(" ").slice(0, -1).join(" ")}
                                                 <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
-                                            </h3>
+                                            </p>
                                             <div className="flex items-center text-white/80 text-lg mb-8">
                                                 <MapPin className="h-5 w-5 mr-2" />
                                                 <span>{project.location}</span>
@@ -630,7 +630,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                             <div className="relative">
                                 <img
-                                    src="https://images.adsttc.com/media/images/5757/f2b9/e58e/cefd/f100/027c/large_jpg/DSC_5456.jpg?1465381556"
+                                    src="storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg"
                                     alt="Office Building"
                                     className="w-full h-auto rounded-lg shadow-2xl"
                                 />

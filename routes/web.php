@@ -73,7 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Categories CRUD
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
-    Route::post('/categories/{category}/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update-with-files');
+    Route::put('/categories/{category}/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update-with-files');
     Route::delete('/categories/{category}/image', [App\Http\Controllers\Admin\CategoryController::class, 'deleteImage'])->name('categories.delete-image');
 });
 

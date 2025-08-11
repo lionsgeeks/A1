@@ -85,12 +85,39 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                     <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
                                 </h1>
                                 <div className="flex items-center text-white/80 text-lg mb-4">
-                                    <MapPin className="h-5 w-5 mr-2" />
-                                    <span>{project.location}</span>
-                                    <span className="mx-4">•</span>
-                                    <Calendar className="h-5 w-5 mr-2" />
-                                    <span>{project.year}</span>
+                                    {project.location && (
+                                        <>
+                                            <MapPin className="h-5 w-5 mr-2" />
+                                            <span>{project.location}</span>
+                                            <span className="mx-4">•</span>
+                                        </>
+                                    )}
+                                    {(project.start_year && project.end_year) || project.year ? (
+                                        <>
+                                            <Calendar className="h-5 w-5 mr-2" />
+                                            {project.start_year && project.end_year ? (
+                                                <div className="flex items-center space-x-2">
+                                                    <span className="text-2xl font-bold tracking-wider">
+                                                        {project.start_year}
+                                                    </span>
+                                                    <span>-</span>
+                                                    <span className="text-2xl font-bold tracking-wider">
+                                                        {project.end_year}
+                                                    </span>
+                                                </div>
+                                            ) : project.year ? (
+                                                <span>{project.year}</span>
+                                            ) : null}
+                                        </>
+                                    ) : null}
                                 </div>
+
+                                {/* Achievement Status in header */}
+                                {project.achievement_status && (
+                                    <div className="text-white/90 text-sm font-medium tracking-wider mb-2">
+                                        {project.achievement_status}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -104,11 +131,8 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                             <div className="lg:col-span-2">
                                 <h2 className="text-3xl font-light mb-6 text-black">Project Overview</h2>
                                 <div className="prose prose-lg max-w-none">
-                                    <p className="text-lg text-black leading-relaxed mb-6">
+                                    <div className="text-lg text-black leading-relaxed whitespace-pre-wrap">
                                         {project.description}
-                                    </p>
-                                    <div className="text-black leading-relaxed whitespace-pre-wrap">
-                                        {project.details}
                                     </div>
                                 </div>
 
@@ -213,15 +237,103 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             </Badge>
                                         </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-black mb-1">Location</label>
-                                            <p className="text-black">{project.location}</p>
-                                        </div>
+                                        {project.location && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Location</label>
+                                                <p className="text-black">{project.location}</p>
+                                            </div>
+                                        )}
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-black mb-1">Year</label>
-                                            <p className="text-black">{project.year}</p>
-                                        </div>
+                                        {project.year && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Year</label>
+                                                <p className="text-black">{project.year}</p>
+                                            </div>
+                                        )}
+
+                                        {/* Project Timeline */}
+                                        {(project.start_year || project.end_year) && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Project Timeline</label>
+                                                <div className="flex items-center space-x-2">
+                                                    <span className="text-2xl font-bold text-black tracking-wider">
+                                                        {project.start_year || '----'}
+                                                    </span>
+                                                    <span className="text-xl text-black">-</span>
+                                                    <span className="text-2xl font-bold text-black tracking-wider">
+                                                        {project.end_year || '----'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center space-x-2 mt-1">
+                                                    {project.start_year && (
+                                                        <div className="text-xs text-gray-600 tracking-widest">
+                                                            {project.start_year.split('').join(' ')}
+                                                        </div>
+                                                    )}
+                                                    {project.start_year && project.end_year && (
+                                                        <span className="text-xs text-gray-600">-</span>
+                                                    )}
+                                                    {project.end_year && (
+                                                        <div className="text-xs text-gray-600 tracking-widest">
+                                                            {project.end_year.split('').join(' ')}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Achievement Status */}
+                                        {project.achievement_status && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Achievement Status</label>
+                                                <div className="text-lg font-bold text-black tracking-wider">
+                                                    {project.achievement_status}
+                                                </div>
+                                                <div className="text-xs text-gray-600 tracking-widest mt-1">
+                                                    {project.achievement_status.split('').join(' ')}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Surface Area */}
+                                        {project.surface_area && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Surface Area</label>
+                                                <div className="text-lg font-bold text-black">
+                                                    {project.surface_area}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Client */}
+                                        {project.client_name && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Maîtrise d'Ouvrage</label>
+                                                <div className="text-sm font-medium text-black">
+                                                    {project.client_name}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Project Cost */}
+                                        {project.project_cost && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Montant des Travaux</label>
+                                                <div className="text-lg font-bold text-black">
+                                                    {project.project_cost}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Duration */}
+                                        {project.duration_months && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Duration</label>
+                                                <div className="text-sm text-black">
+                                                    {project.duration_months} months
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div>
                                             <label className="block text-sm font-medium text-black mb-1">Status</label>

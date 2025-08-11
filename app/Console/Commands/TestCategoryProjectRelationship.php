@@ -82,8 +82,7 @@ class TestCategoryProjectRelationship extends Command
                 'title' => 'Test Office Building',
                 'location' => 'Test City, TS',
                 'year' => '2024',
-                'description' => 'A test project created via relationship',
-                'details' => 'This project was created to test the category-project relationship.',
+                'description' => 'A test project created via relationship to test the category-project relationship.',
                 'status' => 'active',
                 'sort_order' => 999
             ]);

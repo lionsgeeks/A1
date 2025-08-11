@@ -22,7 +22,11 @@ class DatabaseSeeder extends Seeder
 
         // Seed categories
         $this->call([
-            CategoriesSeeder::class,
+            UpdateCategoriesSeeder::class,
+            // Adminseeder::class,
+            // MilestoneSeeder::class
+
+
         ]);
     }
 }
