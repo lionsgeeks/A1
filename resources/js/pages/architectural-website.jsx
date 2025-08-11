@@ -283,7 +283,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                 {/* Carousel Section */}
                 <section className="py-32 bg-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8">
                         <div className="text-center mb-20">
                             <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
                                 Recent
@@ -291,7 +291,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             </h2>
                         </div>
 
-                        <div className="carousel-container relative overflow-hidden rounded-3xl bg-transparent p-8">
+                        <div className="carousel-container  relative overflow-hidden rounded-3xl bg-white p-8">
                             {/* Main carousel container */}
                             <div
                                 className={`flex ${isTransitioning ? 'transition-transform duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]' : ''}`}
@@ -308,7 +308,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         style={{ width: `${slideWidth - gap}px` }}
                                     >
                                         {item.id ? (
-                                            <Link href={`/projects?category=${item.slug.charAt(0).toUpperCase() + item.slug.slice(1)}`}
+                                            <Link href={`/projects?category=${item.title}`}
                                                 className="block">
                                                 <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
                                                     {/* Image or Color Background */}
