@@ -62,39 +62,38 @@ console.log(projects);
       <Head title="Our Projects - ARCH Studio" />
       <div className="min-h-screen bg-white">
         {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200/30 z-50 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-20">
-              <div className="flex items-center">
-                <Link href="/" className="flex items-center space-x-3">
-                  <img src={logo}
-                    className='w-[60px] aspect-square object-cover'
-                    alt="ARCH Studio" />
-                  <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
-                </Link>
-              </div>
-              <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-10">
-                  <Link href="/projects" className="text-primary-600 px-4 py-2 text-sm font-medium border-b-2 border-primary-600 tracking-wide uppercase">
-                    Projects
-                  </Link>
-                  <Link href="/about" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
-                    About
-                  </Link>
-                  <Link href="/contact" className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase">
-                    Contact
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center">
+                                <Link href="/" className="flex items-center space-x-2">
+                                    <img src={logo}
+                                    className='w-[55px] aspect-square object-cover'
+                                    alt="" />
+                                </Link>
+                            </div>
+                            <div className="hidden md:block">
+                                <div className="ml-10 flex items-baseline space-x-8">
+                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
+                                        Projects
+                                    </Link>
+                                    <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
+                                        About
+                                    </Link>
+                                    <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
+                                        Contact
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
 
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img
-              src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&h=1080&fit=crop"
+              src="storage/projects/5c47e95d-33eb-4ffc-8ab3-b5b45d4eece6.JPG"
               alt="Our Projects"
               className="w-full h-full object-cover"
             />
@@ -256,7 +255,7 @@ console.log(projects);
                         </Badge>
                         <span className="text-sm text-secondary-500 font-light">{project.year}</span>
                       </div>
-                      <h3 className="text-xl font-light text-secondary-950 mb-3 leading-tight">{project.title}</h3>
+                      <h3 className="text-xl font-light text-secondary-950 mb-3 leading-tight line-clamp-1">{project.title}</h3>
                       <div className="flex items-center text-secondary-600 text-sm mb-4">
                         <MapPin className="h-4 w-4 mr-2 text-primary-600" />
                         <span className="font-light">{project.location}</span>
@@ -277,7 +276,7 @@ console.log(projects);
                 {displayedProjects.map((project, index) => (
                   <div
                     key={project.id}
-                    className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform ${
+                    className={`bg-white rounded-lg h-full shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform ${
                       isTransitioning
                         ? 'opacity-0 scale-95 translate-y-4'
                         : 'opacity-100 scale-100 translate-y-0'

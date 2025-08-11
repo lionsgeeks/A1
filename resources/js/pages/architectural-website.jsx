@@ -78,7 +78,21 @@ if (typeof document !== 'undefined') {
 export default function ArchitecturalWebsite({ featuredCategories = [], featuredProjects = [] }) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const [isTransitioning, setIsTransitioning] = useState(true)
+    const carouselImages = [
+        "storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg",
+        "storage/projects/5c47e95d-33eb-4ffc-8ab3-b5b45d4eece6.JPG",
+        "storage/projects/c585f6a6-47de-4775-8701-583b6880cf4f.JPG",
+    ];
 
+    const [currentIndex, setCurrentIndex] = useState(0);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [carouselImages.length]);
     // Use CRUD-managed categories for the carousel
     const highlights = featuredCategories.length > 0 ? featuredCategories.map(category => ({
         id: category.id,
@@ -119,7 +133,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSlide((prev) => prev + 1)
-        }, 3500) // Slightly faster for better flow
+        }, 2000) // Slightly faster for better flow
 
         return () => clearInterval(interval)
     }, [])
@@ -153,35 +167,25 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
             <Head title="ARCH Studio - Designing the Future" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
-                <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200/30 z-50 shadow-sm">
+                <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex justify-between items-center h-20">
+                        <div className="flex justify-between items-center h-16">
                             <div className="flex items-center">
-                                <Link href="/" className="flex items-center space-x-3">
+                                <Link href="/" className="flex items-center space-x-2">
                                     <img src={logo}
-                                        className='w-[40px] aspect-square object-cover'
-                                        alt="ARCH Studio" />
-                                    <span className="text-xl font-semibold text-secondary-950 tracking-wide">ARCH</span>
+                                        className='w-[55px] aspect-square object-cover'
+                                        alt="" />
                                 </Link>
                             </div>
                             <div className="hidden md:block">
-                                <div className="ml-10 flex items-baseline space-x-10">
-                                    <Link
-                                        href="/projects"
-                                        className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
-                                    >
+                                <div className="ml-10 flex items-baseline space-x-8">
+                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
                                         Projects
                                     </Link>
-                                    <Link
-                                        href="/about"
-                                        className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
-                                    >
+                                    <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         About
                                     </Link>
-                                    <Link
-                                        href="/contact"
-                                        className="text-secondary-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-all duration-300 tracking-wide uppercase"
-                                    >
+                                    <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         Contact
                                     </Link>
                                 </div>
@@ -193,11 +197,15 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 {/* Hero Section */}
                 <section className="relative h-screen flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 z-0">
-                        <img
-                            src="storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg"
-                            alt="Modern Architecture"
-                            className="w-full h-full object-cover"
-                        />
+                        {carouselImages.map((src, index) => (
+                            <img
+                                key={src}
+                                src={src}
+                                alt={`Slide ${index + 1}`}
+                                className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? "opacity-100" : "opacity-0 pointer-events-none"
+                                    }`}
+                            />
+                        ))}
                         <div className="absolute inset-0 bg-secondary-950/50" />
                     </div>
 
@@ -230,7 +238,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 </section>
 
                 {/* About Section */}
-                <section id="about" className="py-32 bg-primary-50/30">
+                <section id="about" className="py-24 bg-primary-50/30">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                             <div>
@@ -450,7 +458,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 </section>
 
                 {/* Projects Section */}
-                <section id="projects" className="py-16">
+                <section id="projects" className="py-12">
                     <div className="text-center mb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
                             Featured
@@ -555,34 +563,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         </div>
                     )}
                 </section>
-
-                {/* Newsletter Section */}
-                <section className="py-24 bg-gray-900 text-white">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h2 className="text-4xl md:text-5xl font-light mb-6">
-                            Stay
-                            <span className="block font-bold">Informed</span>
-                        </h2>
-                        <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-                            Subscribe to our newsletter and be the first to know about our latest projects, architectural insights, and
-                            industry innovations.
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                            <input
-                                type="email"
-                                placeholder="Enter your email address"
-                                className="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50"
-                            />
-                            <Button className="bg-white text-gray-900 hover:bg-gray-100 px-6 py-3">Subscribe</Button>
-                        </div>
-
-                        <p className="text-sm text-gray-400 mt-4">No spam, unsubscribe at any time. We respect your privacy.</p>
-                    </div>
-                </section>
-
                 {/* Contact Section */}
-                <section id="contact" className="py-24">
+                <section id="contact" className="py-18">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                             <div>
@@ -638,6 +620,32 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         </div>
                     </div>
                 </section>
+                {/* Newsletter Section */}
+                <section className="py-12 bg-gray-900 text-white">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <h2 className="text-4xl md:text-5xl font-light mb-6">
+                            Stay
+                            <span className="block font-bold">Informed</span>
+                        </h2>
+                        <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                            Subscribe to our newsletter and be the first to know about our latest projects, architectural insights, and
+                            industry innovations.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                            <input
+                                type="email"
+                                placeholder="Enter your email address"
+                                className="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            />
+                            <Button className="bg-white text-gray-900 hover:bg-gray-100 px-6 py-3">Subscribe</Button>
+                        </div>
+
+                        <p className="text-sm text-gray-400 mt-4">No spam, unsubscribe at any time. We respect your privacy.</p>
+                    </div>
+                </section>
+
+
 
                 {/* Footer */}
                 <footer className="bg-gray-900 text-white py-16">
