@@ -93,13 +93,13 @@ export default function Contact() {
                             </div>
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
-                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
+                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium ">
                                         Projects
                                     </Link>
                                     <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         About
                                     </Link>
-                                    <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
+                                    <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-black">
                                         Contact
                                     </Link>
                                 </div>
@@ -391,46 +391,50 @@ export default function Contact() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-secondary-950 text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="md:col-span-2">
-                <Link href="/" className="flex items-center space-x-3 mb-6">
-                  <img src={logo}
-                    className='w-[50px] aspect-square object-cover'
-                    alt="ARCH Studio" />
-                  <span className="text-3xl font-light tracking-wider text-primary-300">ARCH</span>
-                </Link>
-                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                  Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
-                </p>
-              </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                  <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                  <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                </ul>
-              </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>+1 (555) 123-4567</li>
-                  <li>hello@archstudio.com</li>
-                  <li>123 Design Street<br />New York, NY 10001</li>
-                </ul>
-              </div>
-            </div>
 
-            <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-              <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+
+             {/* Footer */}
+                <footer className="bg-gray-900 text-white py-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div className="md:col-span-2">
+                                <Link href="/" className="flex items-center space-x-2 mb-4">
+                                    <img src={logo}
+                                        className='w-[55px] aspect-square object-cover'
+                                        alt="" />
+                                </Link>
+                                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
+                                    Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                                <ul className="space-y-2 text-gray-300">
+                                    <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                                    <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
+                                    <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
+                                <ul className="space-y-2 text-gray-300">
+                                    <li>+1 (555) 123-4567</li>
+                                    <li>hello@archstudio.com</li>
+                                    <li>123 Design Street<br />New York, NY 10001</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
       </div>
 
       {/* Modal Component */}

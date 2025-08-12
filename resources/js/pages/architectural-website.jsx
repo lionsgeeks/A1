@@ -167,7 +167,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
             <Head title="ARCH Studio - Designing the Future" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
-                <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
+                <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-center h-16">
                             <div className="flex items-center">
@@ -179,7 +179,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             </div>
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
-                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
+                                    <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium ">
                                         Projects
                                     </Link>
                                     <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
@@ -621,7 +621,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                     </div>
                 </section>
                 {/* Newsletter Section */}
-                <section className="py-12 bg-gray-900 text-white">
+                {/* <section className="py-12 bg-gray-900 text-white">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <h2 className="text-4xl md:text-5xl font-light mb-6">
                             Stay
@@ -643,7 +643,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                         <p className="text-sm text-gray-400 mt-4">No spam, unsubscribe at any time. We respect your privacy.</p>
                     </div>
-                </section>
+                </section> */}
 
 
 
@@ -654,12 +654,9 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             <div className="md:col-span-2">
                                 <Link href="/" className="flex items-center space-x-2 mb-4">
                                     {/* Logo Design */}
-                                    <div className="relative">
-                                        <div className="w-8 h-8 bg-white transform rotate-45"></div>
-                                        <div className="absolute top-1 left-1 w-6 h-6 bg-gray-900 transform rotate-45"></div>
-                                        <div className="absolute top-2 left-2 w-4 h-4 bg-white transform rotate-45"></div>
-                                    </div>
-                                    <span className="text-3xl font-bold tracking-wider">ARCH</span>
+                                    <img src={logo}
+                                        className='w-[55px] aspect-square object-cover'
+                                        alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                                     Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over

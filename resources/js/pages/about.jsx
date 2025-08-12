@@ -6,34 +6,22 @@ import logo from "../../assets/images/A1.png"
 
 export default function About({ milestones = [] }) {
     const team = [
+
         {
             id: 1,
-            name: "Sarah Johnson",
-            role: "Principal Architect",
-            image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-            bio: "With over 15 years of experience, Sarah leads our design vision and ensures every project meets the highest standards of innovation and sustainability."
-        },
-        {
-            id: 2,
             name: "Michael Chen",
             role: "Senior Project Manager",
             image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
             bio: "Michael brings exceptional organizational skills and technical expertise to manage complex architectural projects from conception to completion."
         },
         {
-            id: 3,
+            id: 2,
             name: "Emily Rodriguez",
             role: "Sustainability Specialist",
             image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
             bio: "Emily ensures all our projects incorporate cutting-edge sustainable practices and green building technologies."
         },
-        {
-            id: 4,
-            name: "David Thompson",
-            role: "Design Director",
-            image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-            bio: "David's creative vision and attention to detail drive the aesthetic excellence that defines our architectural solutions."
-        }
+
     ]
 
     const values = [
@@ -66,7 +54,7 @@ export default function About({ milestones = [] }) {
             <Head title="About Us - ARCH Studio" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
-                <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-50">
+                <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-center h-16">
                             <div className="flex items-center">
@@ -205,9 +193,9 @@ export default function About({ milestones = [] }) {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="flex item-center justify-center w-full gap-8">
                             {team.map((member) => (
-                                <div key={member.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                                <div key={member.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl w-[25%] transition-shadow">
                                     <img
                                         src={member.image}
                                         alt={member.name}
@@ -296,12 +284,9 @@ export default function About({ milestones = [] }) {
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                             <div className="md:col-span-2">
                                 <Link href="/" className="flex items-center space-x-2 mb-4">
-                                    <div className="relative">
-                                        <div className="w-8 h-8 bg-white transform rotate-45"></div>
-                                        <div className="absolute top-1 left-1 w-6 h-6 bg-gray-900 transform rotate-45"></div>
-                                        <div className="absolute top-2 left-2 w-4 h-4 bg-white transform rotate-45"></div>
-                                    </div>
-                                    <span className="text-3xl font-bold tracking-wider">ARCH</span>
+                                    <img src={logo}
+                                        className='w-[55px] aspect-square object-cover'
+                                        alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                                     Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
