@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target, FileText } from "lucide-react"
 import { Head, Link } from '@inertiajs/react';
 import logo from "../../assets/images/A1.png"
 
@@ -38,8 +38,8 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                             <div className="flex items-center">
                                 <Link href="/" className="flex items-center space-x-2">
                                     <img src={logo}
-                                    className='w-[55px] aspect-square object-cover'
-                                    alt="" />
+                                        className='w-[55px] aspect-square object-cover'
+                                        alt="" />
                                 </Link>
                             </div>
                             <div className="hidden md:block">
@@ -374,10 +374,15 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 <Share2 className="h-4 w-4 mr-2" />
                                                 Share
                                             </Button>
-                                            <Button variant="outline" className="flex-1 text-black border-black hover:bg-black hover:text-white">
-                                                <Download className="h-4 w-4 mr-2" />
-                                                Download PDF
-                                            </Button>
+                                            <a href={project.pdf_path} download>
+                                                <Button
+                                                    variant="outline"
+                                                    className="flex-1 text-black border-black hover:bg-black hover:text-white"
+                                                >
+                                                    <FileText className="h-4 w-4 mr-2" />
+                                                    Download PDF
+                                                </Button>
+                                            </a>
                                         </div>
                                     </div>
 

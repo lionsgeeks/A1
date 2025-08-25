@@ -8,6 +8,8 @@ use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -69,11 +71,20 @@ class ProjectController extends Controller
             'client_name' => 'nullable|string|max:255',
             'project_cost' => 'nullable|string|max:255',
             'duration_months' => 'nullable|integer|min:0',
-            'status' => 'in:active,draft,archived',
+            'status' => 'in:active,inactive',
             'sort_order' => 'integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
+            'pdf' => 'nullable|mimes:pdf|max:20480',
         ]);
+
+        // Upload PDF if provided
+        if ($request->hasFile('pdf')) {
+            $pdfFile = $request->file('pdf');
+            $filename = Str::uuid() . '.' . $pdfFile->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('projects', $pdfFile, $filename);
+            $validated['pdf_path'] = '/storage/projects/' . $filename;
+        }
 
         // Upload main image
         $imagePath = $this->imageUploadService->uploadImage($request->file('image'));
@@ -104,22 +115,35 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'string|max:255',
-            'category_id' => 'exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id',
             'location' => 'nullable|string|max:255',
             'year' => 'nullable|string|max:4',
             'start_year' => 'nullable|string|max:4',
             'end_year' => 'nullable|string|max:4',
-            'description' => 'string|max:500',
+            'description' => 'string',
             'achievement_status' => 'nullable|string|max:255',
             'surface_area' => 'nullable|string|max:255',
             'client_name' => 'nullable|string|max:255',
             'project_cost' => 'nullable|string|max:255',
             'duration_months' => 'nullable|integer|min:0',
-            'status' => 'in:active,draft,archived',
+            'status' => 'in:active,inactive',
             'sort_order' => 'integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
+            'pdf' => 'nullable|mimes:pdf|max:20480',
         ]);
+
+        // Upload new PDF if provided
+        if ($request->hasFile('pdf')) {
+            if ($project->pdf_path) {
+                $storagePath = str_replace('/storage/', '', $project->pdf_path);
+                Storage::disk('public')->delete($storagePath);
+            }
+            $pdfFile = $request->file('pdf');
+            $filename = Str::uuid() . '.' . $pdfFile->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('projects', $pdfFile, $filename);
+            $validated['pdf_path'] = '/storage/projects/' . $filename;
+        }
 
         // Upload new main image if provided
         if ($request->hasFile('image')) {
@@ -148,6 +172,10 @@ class ProjectController extends Controller
         }
         if ($project->gallery_images) {
             $this->imageUploadService->deleteMultipleImages($project->gallery_images);
+        }
+        if ($project->pdf_path) {
+            $storagePath = str_replace('/storage/', '', $project->pdf_path);
+            Storage::disk('public')->delete($storagePath);
         }
 
         $project->delete();

@@ -8,6 +8,7 @@ import {
     Save,
     ArrowLeft,
     Image as ImageIcon,
+    FileText,
     AlertTriangle,
     CheckCircle
 } from 'lucide-react'
@@ -30,6 +31,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   // Refs for file inputs
   const mainImageInputRef = useRef(null)
   const galleryInputRef = useRef(null)
+  const pdfInputRef = useRef(null)
 
   const { data, setData, post, put, processing, errors } = useForm({
     title: project?.title || '',
@@ -47,6 +49,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     status: project?.status || 'active',
     sort_order: project?.sort_order || 0,
     image: null,
+    pdf: null,
     gallery_images: []
   })
 
@@ -647,6 +650,37 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 />
               </div>
               {errors.image && <p className="text-red-600 text-sm mt-1">{errors.image}</p>}
+            {/* Project PDF */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Project PDF (Optional)
+              </label>
+              <div className="border-2 border-dashed rounded-lg p-6">
+                <input
+                  ref={pdfInputRef}
+                  id="pdf"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setData('pdf', e.target.files[0])}
+                  className="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                />
+                {project?.pdf_path && (
+                  <div className="mt-2">
+                    <a href={project.pdf_path} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">
+                      View current PDF
+                    </a>
+                  </div>
+                )}
+                {data.pdf && (
+                  <div className="mt-2 text-sm text-gray-700 flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-gray-500" />
+                    Selected: {data.pdf.name}
+                  </div>
+                )}
+              </div>
+              {errors.pdf && <p className="text-red-600 text-sm mt-1">{errors.pdf}</p>}
+            </div>
+
             </div>
 
             {/* Gallery Images */}

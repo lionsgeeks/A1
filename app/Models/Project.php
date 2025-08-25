@@ -20,6 +20,7 @@ class Project extends Model
         'project_cost',
         'duration_months',
         'image_path',
+        'pdf_path',
         'gallery_images',
         'status',
         'sort_order'
