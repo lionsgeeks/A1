@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target, FileText } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target, FileText, Instagram, Twitter, Linkedin } from "lucide-react"
 import { Head, Link } from '@inertiajs/react';
 import logo from "../../assets/images/A1.png"
 
@@ -408,7 +408,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {relatedProjects.map((relatedProject) => (
                                     <Link key={relatedProject.id} href={`/projects/${relatedProject.id}`}>
-                                        <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                                        <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl h-full  transition-shadow">
                                             <img
                                                 src={relatedProject.image_path}
                                                 alt={relatedProject.title}
@@ -429,7 +429,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                     <span className="mx-2">•</span>
                                                     <span>{relatedProject.year}</span>
                                                 </div>
-                                                <p className="text-black text-sm leading-relaxed">{relatedProject.description}</p>
+                                                <p className="text-black text-sm leading-relaxed line-clamp-5">{relatedProject.description}</p>
                                             </div>
                                         </div>
                                     </Link>
@@ -478,48 +478,108 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                 )}
 
                 {/* Footer */}
-                <footer className="bg-gray-900 text-white py-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                            <div className="md:col-span-2">
-                                <Link href="/" className="flex items-center space-x-2 mb-4">
-                                    <div className="relative">
-                                        <div className="w-8 h-8 bg-white transform rotate-45"></div>
-                                        <div className="absolute top-1 left-1 w-6 h-6 bg-gray-900 transform rotate-45"></div>
-                                        <div className="absolute top-2 left-2 w-4 h-4 bg-white transform rotate-45"></div>
-                                    </div>
-                                    <span className="text-3xl font-bold tracking-wider">ARCH</span>
-                                </Link>
-                                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                                    Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
-                                </p>
-                            </div>
+                  <footer className="bg-gray-900 text-white py-16">
+                                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                           <div className="md:col-span-2">
+                                               <Link href="/" className="flex items-center space-x-2 mb-4">
+                                                   {/* Logo Design */}
+                                                   <img src={logo}
+                                                       className='w-[55px] aspect-square object-cover'
+                                                       alt="" />
+                                               </Link>
+                                               <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
+                                                   Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over
+                                                   two decades.
+                                               </p>
+                                               <div className="flex space-x-4">
+                                                   <Link
+                                                       href="#"
+                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+                                                   >
+                                                       <Instagram className="h-5 w-5" />
+                                                   </Link>
+                                                   <Link
+                                                       href="#"
+                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+                                                   >
+                                                       <Twitter className="h-5 w-5" />
+                                                   </Link>
+                                                   <Link
+                                                       href="#"
+                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+                                                   >
+                                                       <Linkedin className="h-5 w-5" />
+                                                   </Link>
+                                               </div>
+                                           </div>
 
-                            <div>
-                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                                <ul className="space-y-2 text-gray-300">
-                                    <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                                    <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-                                    <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                                </ul>
-                            </div>
+                                           <div>
+                                               <h3 className="text-lg font-semibold mb-4">Services</h3>
+                                               <ul className="space-y-2 text-gray-300">
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Architectural Design
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Urban Planning
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Interior Design
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Consultation
+                                                       </Link>
+                                                   </li>
+                                               </ul>
+                                           </div>
 
-                            <div>
-                                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-                                <ul className="space-y-2 text-gray-300">
-                                    <li>+1 (555) 123-4567</li>
-                                    <li>hello@archstudio.com</li>
-                                    <li>123 Design Street<br />New York, NY 10001</li>
-                                </ul>
-                            </div>
-                        </div>
+                                           <div>
+                                               <h3 className="text-lg font-semibold mb-4">Company</h3>
+                                               <ul className="space-y-2 text-gray-300">
+                                                   <li>
+                                                       <Link href="/about" className="hover:text-white transition-colors">
+                                                           About Us
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Our Team
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           Careers
+                                                       </Link>
+                                                   </li>
+                                                   <li>
+                                                       <Link href="#" className="hover:text-white transition-colors">
+                                                           News
+                                                       </Link>
+                                                   </li>
+                                               </ul>
+                                           </div>
+                                       </div>
 
-                        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer>
+                                       <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                                           <div className="flex space-x-6 mt-4 md:mt-0">
+                                               <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                                                   Privacy Policy
+                                               </Link>
+                                               <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                                                   Terms of Service
+                                               </Link>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </footer>
             </div>
         </>
     )
