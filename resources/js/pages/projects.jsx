@@ -59,7 +59,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
 
     return (
         <>
-            <Head title="Our Projects - ARCH Studio" />
+            <Head title="Nos projets - ARCH Studio" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -75,10 +75,10 @@ export default function Projects({ projects, categories = [], selectedCategory =
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
                                     <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
-                                        Projects
+                                        Projets
                                     </Link>
                                     <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
-                                        About
+                                        À propos
                                     </Link>
                                     <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         Contact
@@ -94,7 +94,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                     <div className="absolute inset-0 z-0">
                         <img
                             src="storage/projects/5c47e95d-33eb-4ffc-8ab3-b5b45d4eece6.JPG"
-                            alt="Our Projects"
+                            alt="Nos projets"
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-secondary-950/50" />
@@ -102,11 +102,11 @@ export default function Projects({ projects, categories = [], selectedCategory =
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
                         <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
-                            Our
-                            <span className="block font-light text-primary-300">Projects</span>
+                            Nos
+                            <span className="block font-light text-primary-300">projets</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
-                            Explore our portfolio of innovative architectural solutions that have transformed communities and redefined spaces
+                            Découvrez notre portefeuille de solutions architecturales innovantes qui ont transformé les communautés et redéfini les espaces
                         </p>
                     </div>
                 </section>
@@ -125,7 +125,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                             : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
                                         }`}
                                 >
-                                    All Projects
+                                    Tous les projets
                                 </button>
 
                                 {/* Category Buttons */}
@@ -175,8 +175,8 @@ export default function Projects({ projects, categories = [], selectedCategory =
                         <div className="mb-12 text-center">
                             <h2 className="text-3xl font-bold text-secondary-900 mb-4">
                                 {activeCategory === 'all'
-                                    ? 'All Projects'
-                                    : `${activeCategory} Projects`
+                                    ? 'Tous les projets'
+                                    : `Projets: ${activeCategory}`
                                 }
                             </h2>
                             <p className={`text-secondary-600 transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
@@ -186,12 +186,12 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Loading projects...
+                                        Chargement des projets...
                                     </span>
                                 ) : displayedProjects.length === 0 ? (
-                                    'No projects found in this category'
+                                    'Aucun projet trouvé dans cette catégorie'
                                 ) : (
-                                    `Showing ${displayedProjects.length} project${displayedProjects.length !== 1 ? 's' : ''}`
+                                    `Affichage de ${displayedProjects.length} projet${displayedProjects.length !== 1 ? 's' : ''}`
                                 )}
                             </p>
                         </div>
@@ -204,19 +204,19 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         </svg>
                                     </div>
                                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                        No projects found
+                                        Aucun projet trouvé
                                     </h3>
                                     <p className="text-gray-600 mb-6">
                                         {activeCategory === 'all'
-                                            ? 'No projects have been added yet.'
-                                            : `No projects found in the "${activeCategory}" category.`
+                                            ? 'Aucun projet n’a encore été ajouté.'
+                                            : `Aucun projet trouvé dans la catégorie « ${activeCategory} ».`
                                         }
                                     </p>
                                     <Button
                                         onClick={() => handleCategoryChange('all')}
                                         className="bg-primary-600 hover:bg-primary-700"
                                     >
-                                        View All Projects
+                                        Voir tous les projets
                                     </Button>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                     className="font-medium tracking-wide uppercase text-xs text-white"
                                                     style={{ backgroundColor: project.category?.color || '#a3845b' }}
                                                 >
-                                                    {project.category?.name || 'Uncategorized'}
+                                                    {project.category?.name || 'Sans catégorie'}
                                                 </Badge>
                                                 <span className="text-sm text-secondary-500 font-light">{project.year}</span>
                                             </div>
@@ -260,7 +260,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                             <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">{project.description}</p>
                                             <Link href={`/projects/${project.id}`}>
                                                 <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
-                                                    View Details
+                                                    Voir les détails
                                                     <ArrowRight className="ml-2 h-4 w-4" />
                                                 </Button>
                                             </Link>
@@ -296,7 +296,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                         className="text-white font-medium"
                                                         style={{ backgroundColor: project.category?.color || '#a3845b' }}
                                                     >
-                                                        {project.category?.name || project.category || 'Uncategorized'}
+                                                        {project.category?.name || project.category || 'Sans catégorie'}
                                                     </Badge>
                                                     <span className="text-sm text-gray-500">{project.year}</span>
                                                 </div>
@@ -308,7 +308,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                 <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
                                                 <Link href={`/projects/${project.id}`}>
                                                     <Button className="bg-gray-900 hover:bg-gray-800 text-white">
-                                                        View Details
+                                                        Voir les détails
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Button>
                                                 </Link>
@@ -325,16 +325,16 @@ export default function Projects({ projects, categories = [], selectedCategory =
                 <section className="py-24 bg-gray-900 text-white">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <h2 className="text-4xl md:text-5xl font-light mb-6">
-                            Have a Project
-                            <span className="block font-bold">In Mind?</span>
+                            Vous avez un projet
+                            <span className="block font-bold">en tête ?</span>
                         </h2>
                         <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-                            Let's discuss your architectural vision and bring your ideas to life with our expertise and creativity.
+                            Discutons de votre vision architecturale et donnons vie à vos idées grâce à notre expertise et notre créativité.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link href="/contact">
                                 <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 text-lg">
-                                    Start Your Project
+                                    Démarrer votre projet
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
@@ -343,7 +343,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                     size="lg"
                                     className="bg-white/10 text-white hover:bg-white hover:text-gray-900 px-8 py-3 text-lg backdrop-blur-sm"
                                 >
-                                    Learn About Us
+                                    En savoir plus sur nous
                                 </Button>
                             </Link>
                         </div>
@@ -361,22 +361,22 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                                    Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
+                                    Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle depuis plus de deux décennies.
                                 </p>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                                <h3 className="text-lg font-semibold mb-4">Liens rapides</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                                    <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
+                                    <li><Link href="/" className="hover:text-white transition-colors">Accueil</Link></li>
+                                    <li><Link href="/about" className="hover:text-white transition-colors">À propos</Link></li>
+                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projets</Link></li>
                                     <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
+                                <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
                                 <ul className="space-y-2 text-gray-300">
                                     <li>+1 (555) 123-4567</li>
                                     <li>hello@archstudio.com</li>
@@ -386,7 +386,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

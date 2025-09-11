@@ -9,17 +9,17 @@ export default function About({ milestones = [] }) {
 
         {
             id: 1,
-            name: "Michael Chen",
-            role: "Senior Project Manager",
-            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-            bio: "Michael brings exceptional organizational skills and technical expertise to manage complex architectural projects from conception to completion."
+            name: "Abderrahim KASSOU",
+            role: "Architecte-urbaniste DPLG",
+            image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=400&h=400&fit=crop&crop=face",
+            bio: "Architecte-urbaniste DPLG (Paris-La Villette), également diplômé en anthropologie (Paris VIII) et en géographie-aménagement (Tours). Avec près de 20 ans de pratique libérale, il a réalisé des projets de logements, d’équipements culturels, d’aménagements touristiques et de réhabilitation patrimoniale. Ancien président de Casamémoire, il est engagé dans plusieurs associations (Forum Marocain des Alternatives, Architecture & Développement) et fut membre du Conseil National des Droits de l��Homme."
         },
         {
             id: 2,
-            name: "Emily Rodriguez",
-            role: "Sustainability Specialist",
-            image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-            bio: "Emily ensures all our projects incorporate cutting-edge sustainable practices and green building technologies."
+            name: "Mustapha CHAKIB",
+            role: "Architecte",
+            image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+            bio: "Architecte diplômé de l’ESA Paris, il a débuté sa carrière à la Direction de l’Urbanisme en tant que chef de service des plans d’aménagement de la zone Nord. Avec plus de 25 ans d’expérience, il exerce en libéral et a conduit de nombreux projets urbains d’envergure, alliant conception, supervision et gestion de dossiers complexes avec l’administration."
         },
 
     ]
@@ -28,22 +28,22 @@ export default function About({ milestones = [] }) {
         {
             icon: Target,
             title: "Innovation",
-            description: "We push the boundaries of architectural design, incorporating cutting-edge technologies and creative solutions."
+            description: "Nous repoussons les limites du design architectural en intégrant des technologies de pointe et des solutions créatives."
         },
         {
             icon: Users,
             title: "Collaboration",
-            description: "We believe in working closely with our clients, communities, and partners to create meaningful spaces."
+            description: "Nous croyons en une collaboration étroite avec nos clients, les communautés et nos partenaires pour créer des espaces porteurs de sens."
         },
         {
             icon: Award,
             title: "Excellence",
-            description: "We maintain the highest standards of quality and craftsmanship in every project we undertake."
+            description: "Nous maintenons les plus hauts standards de qualité et de savoir‑faire dans chacun de nos projets."
         },
         {
             icon: Calendar,
-            title: "Sustainability",
-            description: "We're committed to creating environmentally responsible designs that benefit future generations."
+            title: "Durabilité",
+            description: "Nous nous engageons à concevoir des projets respectueux de l’environnement, bénéfiques pour les générations futures."
         }
     ]
 
@@ -51,7 +51,7 @@ export default function About({ milestones = [] }) {
 
     return (
         <>
-            <Head title="About Us - ARCH Studio" />
+            <Head title="À propos - ARCH Studio" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-50">
@@ -69,10 +69,10 @@ export default function About({ milestones = [] }) {
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
                                     <Link href="/projects" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
-                                        Projects
+                                        Projets
                                     </Link>
                                     <Link href="/about" className="text-gray-900 px-3 py-2 text-sm font-medium border-b-2 border-gray-900">
-                                        About
+                                        À propos
                                     </Link>
                                     <Link href="/contact" className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
                                         Contact
@@ -88,7 +88,7 @@ export default function About({ milestones = [] }) {
                     <div className="absolute inset-0 z-0">
                         <img
                             src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop"
-                            alt="Our Studio"
+                            alt="Notre studio"
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black/50" />
@@ -96,11 +96,11 @@ export default function About({ milestones = [] }) {
 
                     <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                         <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
-                            About
+                            À propos
                             <span className="block font-bold">ARCH Studio</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
-                            Two decades of architectural excellence, innovation, and sustainable design
+                            Deux décennies d’excellence architecturale, d’innovation et de design durable
                         </p>
                     </div>
                 </section>
@@ -111,41 +111,37 @@ export default function About({ milestones = [] }) {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                             <div>
                                 <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                    Our
-                                    <span className="block font-bold">Story</span>
+                                    Notre
+                                    <span className="block font-bold">histoire</span>
                                 </h2>
                                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                    Founded in 2003, ARCH Studio began with a simple yet ambitious vision: to create architectural
-                                    masterpieces that not only serve their functional purpose but also inspire and elevate the human experience.
+                                    Fondé en 2003, ARCH Studio est né d’une vision simple mais ambitieuse : créer des œuvres architecturales qui, au-delà de leur fonction, inspirent et élèvent l’expérience humaine.
                                 </p>
                                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                    Over the past two decades, we have grown from a small team of passionate architects to a
-                                    comprehensive design studio, completing over 150 projects across residential, commercial,
-                                    and cultural sectors.
+                                    Au cours des deux dernières décennies, nous sommes passés d’une petite équipe d’architectes passionnés à un studio de design complet, réalisant plus de 150 projets dans les secteurs résidentiel, commercial et culturel.
                                 </p>
                                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                                    Our commitment to sustainable design, innovative solutions, and collaborative partnerships
-                                    has earned us recognition in the architectural community and the trust of clients worldwide.
+                                    Notre engagement en faveur d’un design durable, de solutions innovantes et de partenariats collaboratifs nous a valu une reconnaissance dans la communauté architecturale et la confiance de clients à travers le monde.
                                 </p>
                                 <div className="grid grid-cols-3 gap-8">
                                     <div className="text-center">
                                         <div className="text-3xl font-bold text-gray-900 mb-2">150+</div>
-                                        <div className="text-sm text-gray-600">Projects Completed</div>
+                                        <div className="text-sm text-gray-600">Projets réalisés</div>
                                     </div>
                                     <div className="text-center">
                                         <div className="text-3xl font-bold text-gray-900 mb-2">25+</div>
-                                        <div className="text-sm text-gray-600">Awards Won</div>
+                                        <div className="text-sm text-gray-600">Distinctions obtenues</div>
                                     </div>
                                     <div className="text-center">
                                         <div className="text-3xl font-bold text-gray-900 mb-2">20+</div>
-                                        <div className="text-sm text-gray-600">Years Experience</div>
+                                        <div className="text-sm text-gray-600">Années d’expérience</div>
                                     </div>
                                 </div>
                             </div>
                             <div className="relative">
                                 <img
                                     src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&h=700&fit=crop"
-                                    alt="Our Office"
+                                    alt="Notre bureau"
                                     className="w-full h-auto rounded-lg shadow-2xl"
                                 />
                             </div>
@@ -158,11 +154,11 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Our
-                                <span className="block font-bold">Values</span>
+                                Nos
+                                <span className="block font-bold">valeurs</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                The principles that guide our work and define our approach to architectural excellence
+                                Les principes qui guident notre travail et définissent notre approche de l’excellence architecturale
                             </p>
                         </div>
 
@@ -185,11 +181,11 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Meet Our
-                                <span className="block font-bold">Team</span>
+                                Notre
+                                <span className="block font-bold">équipe</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                The talented professionals behind our architectural innovations
+                                Les professionnels talentueux à l’origine de nos innovations architecturales
                             </p>
                         </div>
 
@@ -217,11 +213,11 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Our
-                                <span className="block font-bold">Journey</span>
+                                Notre
+                                <span className="block font-bold">parcours</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Key milestones in our architectural evolution
+                                Les étapes clés de notre évolution architecturale
                             </p>
                         </div>
 
@@ -242,7 +238,7 @@ export default function About({ milestones = [] }) {
                             )) : (
                                 <div className="text-center py-12">
                                     <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                                    <p className="text-gray-600">No milestones available yet.</p>
+                                    <p className="text-gray-600">Aucune étape disponible pour le moment.</p>
                                 </div>
                             )}
                         </div>
@@ -253,16 +249,16 @@ export default function About({ milestones = [] }) {
                 <section className="py-24 bg-gray-900 text-white">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <h2 className="text-4xl md:text-5xl font-light mb-6">
-                            Ready to Work
-                            <span className="block font-bold">With Us?</span>
+                            Prêt à travailler
+                            <span className="block font-bold">avec nous ?</span>
                         </h2>
                         <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-                            Let's discuss your architectural vision and create something extraordinary together.
+                            Discutons de votre vision architecturale et créons ensemble quelque chose d’exceptionnel.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link href="/contact">
                                 <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 text-lg">
-                                    Get In Touch
+                                    Nous contacter
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
@@ -271,7 +267,7 @@ export default function About({ milestones = [] }) {
                                     size="lg"
                                     className="bg-white/10 text-white hover:bg-white hover:text-gray-900 px-8 py-3 text-lg backdrop-blur-sm"
                                 >
-                                    View Our Work
+                                    Voir nos réalisations
                                 </Button>
                             </Link>
                         </div>
@@ -289,22 +285,22 @@ export default function About({ milestones = [] }) {
                                         alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                                    Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over two decades.
+                                    Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle depuis plus de deux décennies.
                                 </p>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                                <h3 className="text-lg font-semibold mb-4">Liens rapides</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                                    <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
+                                    <li><Link href="/" className="hover:text-white transition-colors">Accueil</Link></li>
+                                    <li><Link href="/about" className="hover:text-white transition-colors">À propos</Link></li>
+                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projets</Link></li>
                                     <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
+                                <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
                                 <ul className="space-y-2 text-gray-300">
                                     <li>+1 (555) 123-4567</li>
                                     <li>hello@archstudio.com</li>
@@ -314,7 +310,7 @@ export default function About({ milestones = [] }) {
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

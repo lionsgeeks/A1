@@ -99,8 +99,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
         slug: category.slug,
         image: category.image_path ? `/${category.image_path}` : null, // Use actual category image
         title: category.name,
-        subtitle: `${category.projects_count} Project${category.projects_count !== 1 ? 's' : ''}`,
-        description: category.description || 'Explore our architectural projects in this category.',
+        subtitle: `${category.projects_count} projet${category.projects_count !== 1 ? 's' : ''}`,
+        description: category.description || 'Découvrez nos projets architecturaux dans cette catégorie.',
         color: category.color,
         projectCount: category.projects_count,
         hasImage: !!category.image_path
@@ -111,8 +111,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
             slug: 'architecture',
             image: null,
             title: "Architecture",
-            subtitle: "0 Projects",
-            description: "Add categories from the admin panel to showcase your work here.",
+            subtitle: "0 projets",
+            description: "Ajoutez des catégories depuis le panneau d'administration pour présenter votre travail ici.",
             color: "#a3845b",
             projectCount: 0,
             hasImage: false
@@ -164,7 +164,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
     return (
         <>
-            <Head title="ARCH Studio - Designing the Future" />
+            <Head title="ARCH Studio - Concevoir l’avenir" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -180,10 +180,10 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
                                     <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium ">
-                                        Projects
+                                        Projets
                                     </Link>
                                     <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
-                                        About
+                                        À propos
                                     </Link>
                                     <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         Contact
@@ -211,16 +211,16 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
                         <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
-                            Designing the
-                            <span className="block font-light text-primary-300">Future</span>
+                           Concevoir
+                            <span className="block font-light text-primary-300">l’avenir</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
-                            We create architectural masterpieces that blend innovation, sustainability, and timeless elegance
+                           Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-6 justify-center">
                             <Link href="/projects">
                                 <Button size="lg" className="bg-primary-500 text-white hover:bg-primary-600 px-10 py-4 text-lg font-medium tracking-wide transition-all duration-300">
-                                    View Our Work
+                                   Voir nos réalisations
                                     <ArrowRight className="ml-3 h-5 w-5" />
                                 </Button>
                             </Link>
@@ -230,7 +230,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                     variant="outline"
                                     className="border-2 border-white/30 text-black hover:bg-white hover:text-secondary-950 px-10 py-4 text-lg font-medium tracking-wide backdrop-blur-sm transition-all duration-300"
                                 >
-                                    Get In Touch
+                                    Nous contacter
                                 </Button>
                             </Link>
                         </div>
@@ -243,29 +243,29 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                             <div>
                                 <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
-                                    Crafting Spaces That
-                                    <span className="block font-light text-primary-600">Inspire</span>
+                                   Concevoir des espaces qui
+                                    <span className="block font-light text-primary-600">inspirent</span>
                                 </h2>
                                 <p className="text-lg text-secondary-700 mb-8 leading-relaxed">
-                                    For over two decades, we have been at the forefront of architectural innovation, creating spaces that
-                                    not only serve their purpose but elevate the human experience through thoughtful design.
+                                   Depuis plus de deux décennies, nous sommes à l’avant-garde de l’innovation architecturale, créant des espaces qui ne se contentent pas de remplir leur fonction mais qui élèvent l’expérience humaine grâce à un design réfléchi.
                                 </p>
                                 <p className="text-lg text-secondary-700 mb-12 leading-relaxed">
-                                    Our approach combines cutting-edge design with sustainable practices, ensuring that every project
-                                    contributes positively to its environment and community while maintaining timeless elegance.
+                                    Notre approche combine un design de pointe et des pratiques durables, garantissant que chaque projet contribue positivement à son environnement et à sa communauté tout en conservant une élégance intemporelle.
+
                                 </p>
                                 <div className="grid grid-cols-3 gap-8">
                                     <div className="text-center">
                                         <div className="text-4xl font-light text-primary-600 mb-2">150+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">Projects Completed</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">projets réalisés</div>
                                     </div>
                                     <div className="text-center">
                                         <div className="text-4xl font-light text-primary-600 mb-2">25+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">Awards Won</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">distinctions obtenues</div>
                                     </div>
                                     <div className="text-center">
                                         <div className="text-4xl font-light text-primary-600 mb-2">20+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">Years Experience</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">années d’expérience
+</div>
                                     </div>
                                 </div>
                             </div>
@@ -286,8 +286,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                     <div className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8">
                         <div className="text-center mb-20">
                             <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
-                                Recent
-                                <span className="block font-light text-primary-600">Highlights</span>
+                               Réalisations
+                                <span className="block font-light text-primary-600">récentes</span>
                             </h2>
                         </div>
 
@@ -391,7 +391,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                                                     {/* View Category indicator */}
                                                     <div className="absolute top-6 left-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2">
-                                                        <span className="text-white text-sm font-medium">View Projects</span>
+                                                        <span className="text-white text-sm font-medium">Voir tous les projets</span>
                                                     </div>
                                                 </div>
                                             </Link>
@@ -461,12 +461,10 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 <section id="projects" className="py-12">
                     <div className="text-center mb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                            Featured
-                            <span className="block font-bold">Projects</span>
+                            Projets à la une
                         </h2>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-                            Explore our portfolio of innovative architectural solutions that have transformed communities and redefined
-                            skylines.
+                            Découvrez notre portefeuille de solutions architecturales innovantes qui ont transformé les communautés et redéfini les horizons.
                         </p>
                         {projects.length > 0 && (
                             <Link href="/projects">
@@ -475,7 +473,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                     size="lg"
                                     className="border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white"
                                 >
-                                    View All Projects
+                                    Voir tous les projets
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
@@ -507,7 +505,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                                 className="bg-white/20 text-white border-white/30 mb-6"
                                                 style={{ backgroundColor: project.category?.color ? `${project.category.color}80` : 'rgba(163, 132, 91, 0.5)' }}
                                             >
-                                                {project.category?.name || 'Uncategorized'}
+                                                {project.category?.name || 'Sans catégorie'}
                                             </Badge>
                                             <p className="text-2xl md:text-4xl font-light mb-8 text-white leading-tight">
                                                 {project.title.split(" ").slice(0, -1).join(" ")}
@@ -527,7 +525,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                                     size="lg"
                                                     className="bg-white/10 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm"
                                                 >
-                                                    View Project Details
+                                                    Voir le projet
                                                     <ArrowRight className="ml-2 h-5 w-5" />
                                                 </Button>
                                             </Link>
@@ -542,20 +540,20 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                 <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <MapPin className="h-12 w-12 text-gray-400" />
                                 </div>
-                                <h3 className="text-3xl font-light text-gray-600 mb-4">No Featured Projects Yet</h3>
+                                <h3 className="text-3xl font-light text-gray-600 mb-4">Aucun projet à la une pour le moment</h3>
                                 <p className="text-lg text-gray-500 mb-8">
-                                    Our portfolio is currently being updated. Check back soon to see our latest architectural innovations.
+                                    Notre portfolio est en cours de mise à jour. Revenez bientôt pour découvrir nos dernières innovations architecturales.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                     <Link href="/contact">
                                         <Button className="bg-primary-600 hover:bg-primary-700 text-white">
-                                            Discuss Your Project
+                                            Discuter de votre projet
                                             <ArrowRight className="ml-2 h-5 w-5" />
                                         </Button>
                                     </Link>
                                     <Link href="/about">
                                         <Button variant="outline" className="border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white">
-                                            Learn About Us
+                                            En savoir plus sur nous
                                         </Button>
                                     </Link>
                                 </div>
@@ -569,12 +567,11 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                             <div>
                                 <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                    Let's Create
-                                    <span className="block font-bold">Something Amazing</span>
+                                    Créons
+                                    <span className="block font-bold">quelque chose d’extraordinaire</span>
                                 </h2>
                                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                                    Ready to bring your architectural vision to life? We'd love to hear about your project and explore how
-                                    we can help you create something extraordinary.
+                                    Prêt à donner vie à votre vision architecturale ? Nous serions ravis d’en discuter avec vous et d’explorer comment nous pouvons vous aider à créer quelque chose d’exceptionnel.
                                 </p>
 
                                 <div className="space-y-6">
@@ -583,7 +580,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                             <Phone className="h-5 w-5 text-gray-600" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-gray-900">Phone</div>
+                                            <div className="font-semibold text-gray-900">Téléphone</div>
                                             <div className="text-gray-600">+1 (555) 123-4567</div>
                                         </div>
                                     </div>
@@ -603,7 +600,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                             <MapPin className="h-5 w-5 text-gray-600" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-gray-900">Office</div>
+                                            <div className="font-semibold text-gray-900">Adresse</div>
                                             <div className="text-gray-600">123 Design Street, New York, NY 10001</div>
                                         </div>
                                     </div>
@@ -659,8 +656,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                                    Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over
-                                    two decades.
+                                    Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle depuis plus de deux décennies.
                                 </p>
                                 <div className="flex space-x-4">
                                     <Link
@@ -689,48 +685,48 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                 <ul className="space-y-2 text-gray-300">
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Architectural Design
+                                            Conception architecturale
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Urban Planning
+                                            Urbanisme
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Interior Design
+                                            Design intérieur
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Consultation
+                                            Conseil
                                         </Link>
                                     </li>
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Company</h3>
+                                <h3 className="text-lg font-semibold mb-4">Entreprise</h3>
                                 <ul className="space-y-2 text-gray-300">
                                     <li>
                                         <Link href="/about" className="hover:text-white transition-colors">
-                                            About Us
+                                            À propos
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Our Team
+                                            Notre équipe
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            Careers
+                                            Carrières
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href="#" className="hover:text-white transition-colors">
-                                            News
+                                            Actualités
                                         </Link>
                                     </li>
                                 </ul>
@@ -738,13 +734,13 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
                             <div className="flex space-x-6 mt-4 md:mt-0">
                                 <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                    Privacy Policy
+                                    Politique de confidentialité
                                 </Link>
                                 <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                    Terms of Service
+                                    Conditions d’utilisation
                                 </Link>
                             </div>
                         </div>

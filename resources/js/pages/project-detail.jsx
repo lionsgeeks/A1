@@ -45,10 +45,10 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-8">
                                     <Link href="/projects" className="text-black px-3 py-2 text-sm font-medium border-b-2 border-black">
-                                        Projects
+                                        Projets
                                     </Link>
                                     <Link href="/about" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
-                                        About
+                                        À propos
                                     </Link>
                                     <Link href="/contact" className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium transition-colors">
                                         Contact
@@ -78,7 +78,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                     className="text-white border-white/30 mb-4 font-medium"
                                     style={{ backgroundColor: project.category?.color || '#a3845b' }}
                                 >
-                                    {project.category?.name || project.category || 'Uncategorized'}
+                                    {project.category?.name || project.category || 'Sans catégorie'}
                                 </Badge>
                                 <h1 className="text-5xl md:text-7xl font-light mb-4 leading-tight">
                                     {project.title.split(" ").slice(0, -1).join(" ")}
@@ -129,7 +129,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                             {/* Main Content */}
                             <div className="lg:col-span-2">
-                                <h2 className="text-3xl font-light mb-6 text-black">Project Overview</h2>
+                                <h2 className="text-3xl font-light mb-6 text-black">Aperçu du projet</h2>
                                 <div className="prose prose-lg max-w-none">
                                     <div className="text-lg text-black leading-relaxed whitespace-pre-wrap">
                                         {project.description}
@@ -138,7 +138,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                 {/* Project Specifications */}
                                 <div className="mt-12">
-                                    <h3 className="text-2xl font-light mb-6 text-black">Project Specifications</h3>
+                                    <h3 className="text-2xl font-light mb-6 text-black">Spécifications du projet</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {project.client && (
                                             <div className="flex items-start space-x-3">
@@ -154,7 +154,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <div className="flex items-start space-x-3">
                                                 <Ruler className="h-5 w-5 text-black mt-1" />
                                                 <div>
-                                                    <h4 className="font-medium text-black">Total Area</h4>
+                                                    <h4 className="font-medium text-black">Surface totale</h4>
                                                     <p className="text-black">{project.area}</p>
                                                 </div>
                                             </div>
@@ -164,7 +164,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <div className="flex items-start space-x-3">
                                                 <Clock className="h-5 w-5 text-black mt-1" />
                                                 <div>
-                                                    <h4 className="font-medium text-black">Project Duration</h4>
+                                                    <h4 className="font-medium text-black">Durée du projet</h4>
                                                     <p className="text-black">{project.duration}</p>
                                                 </div>
                                             </div>
@@ -174,7 +174,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <div className="flex items-start space-x-3">
                                                 <Target className="h-5 w-5 text-black mt-1" />
                                                 <div>
-                                                    <h4 className="font-medium text-black">Budget Range</h4>
+                                                    <h4 className="font-medium text-black">Fourchette budgétaire</h4>
                                                     <p className="text-black">{project.budget}</p>
                                                 </div>
                                             </div>
@@ -184,7 +184,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <div className="flex items-start space-x-3">
                                                 <Building className="h-5 w-5 text-black mt-1" />
                                                 <div>
-                                                    <h4 className="font-medium text-black">Project Team</h4>
+                                                    <h4 className="font-medium text-black">Équipe du projet</h4>
                                                     <p className="text-black">{project.team}</p>
                                                 </div>
                                             </div>
@@ -194,7 +194,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <div className="flex items-start space-x-3">
                                                 <Award className="h-5 w-5 text-black mt-1" />
                                                 <div>
-                                                    <h4 className="font-medium text-black">Awards & Recognition</h4>
+                                                    <h4 className="font-medium text-black">Distinctions & récompenses</h4>
                                                     <p className="text-black">{project.awards}</p>
                                                 </div>
                                             </div>
@@ -205,7 +205,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                 {/* Image Gallery */}
                                 {allImages.length > 1 && (
                                     <div className="mt-12">
-                                        <h3 className="text-2xl font-light mb-6 text-black">Project Gallery</h3>
+                                        <h3 className="text-2xl font-light mb-6 text-black">Galerie du projet</h3>
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                             {allImages.slice(1).map((image, index) => (
                                                 <img
@@ -224,29 +224,29 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                             {/* Sidebar */}
                             <div className="lg:col-span-1">
                                 <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
-                                    <h3 className="text-xl font-semibold text-black mb-6">Project Information</h3>
+                                    <h3 className="text-xl font-semibold text-black mb-6">Informations du projet</h3>
 
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-black mb-1">Category</label>
+                                            <label className="block text-sm font-medium text-black mb-1">Catégorie</label>
                                             <Badge
                                                 className="text-white font-medium"
                                                 style={{ backgroundColor: project.category?.color || '#a3845b' }}
                                             >
-                                                {project.category?.name || project.category || 'Uncategorized'}
+                                                {project.category?.name || project.category || 'Sans catégorie'}
                                             </Badge>
                                         </div>
 
                                         {project.location && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Location</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Localisation</label>
                                                 <p className="text-black">{project.location}</p>
                                             </div>
                                         )}
 
                                         {project.year && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Year</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Année</label>
                                                 <p className="text-black">{project.year}</p>
                                             </div>
                                         )}
@@ -254,7 +254,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                         {/* Project Timeline */}
                                         {(project.start_year || project.end_year) && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Project Timeline</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Période du projet</label>
                                                 <div className="flex items-center space-x-2">
                                                     <span className="text-2xl font-bold text-black tracking-wider">
                                                         {project.start_year || '----'}
@@ -285,7 +285,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                         {/* Achievement Status */}
                                         {project.achievement_status && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Achievement Status</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Statut d’achèvement</label>
                                                 <div className="text-lg font-bold text-black tracking-wider">
                                                     {project.achievement_status}
                                                 </div>
@@ -298,7 +298,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                         {/* Surface Area */}
                                         {project.surface_area && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Surface Area</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Surface</label>
                                                 <div className="text-lg font-bold text-black">
                                                     {project.surface_area}
                                                 </div>
@@ -328,15 +328,15 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                         {/* Duration */}
                                         {project.duration_months && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Duration</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Durée</label>
                                                 <div className="text-sm text-black">
-                                                    {project.duration_months} months
+                                                    {project.duration_months} mois
                                                 </div>
                                             </div>
                                         )}
 
                                         <div>
-                                            <label className="block text-sm font-medium text-black mb-1">Status</label>
+                                            <label className="block text-sm font-medium text-black mb-1">Statut</label>
                                             <Badge className={
                                                 project.status === 'active' ? 'bg-green-100 text-green-800' :
                                                     project.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
@@ -348,21 +348,21 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                         {project.architect && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Lead Architect</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Architecte principal</label>
                                                 <p className="text-black">{project.architect}</p>
                                             </div>
                                         )}
 
                                         {project.contractor && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Contractor</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Entrepreneur</label>
                                                 <p className="text-black">{project.contractor}</p>
                                             </div>
                                         )}
 
                                         {project.completion_date && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Completion Date</label>
+                                                <label className="block text-sm font-medium text-black mb-1">Date d’achèvement</label>
                                                 <p className="text-black">{project.completion_date}</p>
                                             </div>
                                         )}
@@ -372,7 +372,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                         <div className="flex space-x-3">
                                             <Button className="flex-1 bg-black hover:bg-gray-800 text-white">
                                                 <Share2 className="h-4 w-4 mr-2" />
-                                                Share
+                                                Partager
                                             </Button>
                                             <a href={project.pdf_path} download>
                                                 <Button
@@ -380,7 +380,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                     className="flex-1 text-black border-black hover:bg-black hover:text-white"
                                                 >
                                                     <FileText className="h-4 w-4 mr-2" />
-                                                    Download PDF
+                                                    Télécharger le PDF
                                                 </Button>
                                             </a>
                                         </div>
@@ -389,7 +389,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                     <div className="mt-6">
                                         <Link href="/contact">
                                             <Button className="w-full bg-black hover:bg-gray-800 text-white">
-                                                Start Your Project
+                                                Démarrer votre projet
                                             </Button>
                                         </Link>
                                     </div>
@@ -403,7 +403,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                 {relatedProjects.length > 0 && (
                     <section className="py-24 bg-gray-50">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h2 className="text-3xl font-light mb-12 text-black text-center">Related Projects</h2>
+                            <h2 className="text-3xl font-light mb-12 text-black text-center">Projets liés</h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {relatedProjects.map((relatedProject) => (
@@ -420,7 +420,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                     className="text-white font-medium mb-3"
                                                     style={{ backgroundColor: relatedProject.category?.color || '#a3845b' }}
                                                 >
-                                                    {relatedProject.category?.name || relatedProject.category || 'Uncategorized'}
+                                                    {relatedProject.category?.name || relatedProject.category || 'Sans catégorie'}
                                                 </Badge>
                                                 <h3 className="text-xl font-semibold text-black mb-2">{relatedProject.title}</h3>
                                                 <div className="flex items-center text-black text-sm mb-3">
@@ -568,7 +568,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                        </div>
 
                                        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. All rights reserved.</p>
+                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
                                            <div className="flex space-x-6 mt-4 md:mt-0">
                                                <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
                                                    Privacy Policy
