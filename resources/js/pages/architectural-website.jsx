@@ -211,16 +211,16 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
                         <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
-                           Concevoir
-                            <span className="block font-light text-primary-300">l’avenir</span>
+                            Concevoir <span className=" font-light text-primary-300">l’avenir</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
-                           Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle.
-                        </p>
+                            Façonner des espaces qui
+                            révèlent le territoire et inspirent
+                            ceux qui l’habitent.                        </p>
                         <div className="flex flex-col sm:flex-row gap-6 justify-center">
                             <Link href="/projects">
                                 <Button size="lg" className="bg-primary-500 text-white hover:bg-primary-600 px-10 py-4 text-lg font-medium tracking-wide transition-all duration-300">
-                                   Voir nos réalisations
+                                    Voir nos réalisations
                                     <ArrowRight className="ml-3 h-5 w-5" />
                                 </Button>
                             </Link>
@@ -243,29 +243,33 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                             <div>
                                 <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
-                                   Concevoir des espaces qui
+                                    Concevoir des espaces qui
                                     <span className="block font-light text-primary-600">inspirent</span>
                                 </h2>
                                 <p className="text-lg text-secondary-700 mb-8 leading-relaxed">
-                                   Depuis plus de deux décennies, nous sommes à l’avant-garde de l’innovation architecturale, créant des espaces qui ne se contentent pas de remplir leur fonction mais qui élèvent l’expérience humaine grâce à un design réfléchi.
+                                    Chaque projet est pensé comme une rencontre entre un lieu, un programme
+                                    et une communauté. Notre démarche conjugue savoir-faire architectural,
+                                    lecture fine du contexte et attention portée aux usages, pour donner
+                                    naissance à des espaces à la fois ancrés et ouverts, fonctionnels et porteurs de
+                                    sens.
                                 </p>
-                                <p className="text-lg text-secondary-700 mb-12 leading-relaxed">
+                                {/* <p className="text-lg text-secondary-700 mb-12 leading-relaxed">
                                     Notre approche combine un design de pointe et des pratiques durables, garantissant que chaque projet contribue positivement à son environnement et à sa communauté tout en conservant une élégance intemporelle.
 
-                                </p>
-                                <div className="grid grid-cols-3 gap-8">
+                                </p> */}
+                                <div className="grid grid-cols-3 gap-4  ">
                                     <div className="text-center">
-                                        <div className="text-4xl font-light text-primary-600 mb-2">150+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">projets réalisés</div>
+                                        <div className="text-4xl font-light text-primary-600 mb-2">190+</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">projets achevés</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-4xl font-light text-primary-600 mb-2">25+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">distinctions obtenues</div>
+                                        <div className="text-4xl font-light text-primary-600 mb-2">5+</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">concours gagnés</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-4xl font-light text-primary-600 mb-2">20+</div>
-                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">années d’expérience
-</div>
+                                        <div className="text-4xl font-light text-primary-600 mb-2">15+</div>
+                                        <div className="text-sm text-secondary-600 uppercase tracking-wide">années d’expériences
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +290,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                     <div className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8">
                         <div className="text-center mb-20">
                             <h2 className="text-5xl md:text-6xl font-extralight mb-8 text-secondary-950 leading-tight">
-                               Réalisations
+                                Réalisations
                                 <span className="block font-light text-primary-600">récentes</span>
                             </h2>
                         </div>
@@ -581,7 +585,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         </div>
                                         <div>
                                             <div className="font-semibold text-gray-900">Téléphone</div>
-                                            <div className="text-gray-600">+1 (555) 123-4567</div>
+                                            <div className="text-gray-600">+212 5 2247 49 91</div>
                                         </div>
                                     </div>
 
@@ -591,7 +595,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         </div>
                                         <div>
                                             <div className="font-semibold text-gray-900">Email</div>
-                                            <div className="text-gray-600">hello@archstudio.com</div>
+                                            <div className="text-gray-600">info@ateliera1.com </div>
                                         </div>
                                     </div>
 
@@ -643,14 +647,12 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 </section> */}
 
 
-
-                {/* Footer */}
+     {/* Footer */}
                 <footer className="bg-gray-900 text-white py-16">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                             <div className="md:col-span-2">
                                 <Link href="/" className="flex items-center space-x-2 mb-4">
-                                    {/* Logo Design */}
                                     <img src={logo}
                                         className='w-[55px] aspect-square object-cover'
                                         alt="" />
@@ -658,91 +660,30 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                                     Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle depuis plus de deux décennies.
                                 </p>
-                                <div className="flex space-x-4">
-                                    <Link
-                                        href="#"
-                                        className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                    >
-                                        <Instagram className="h-5 w-5" />
-                                    </Link>
-                                    <Link
-                                        href="#"
-                                        className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                    >
-                                        <Twitter className="h-5 w-5" />
-                                    </Link>
-                                    <Link
-                                        href="#"
-                                        className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                    >
-                                        <Linkedin className="h-5 w-5" />
-                                    </Link>
-                                </div>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Services</h3>
+                                <h3 className="text-lg font-semibold mb-4">Liens rapides</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Conception architecturale
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Urbanisme
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Design intérieur
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Conseil
-                                        </Link>
-                                    </li>
+                                    <li><Link href="/" className="hover:text-white transition-colors">Accueil</Link></li>
+                                    <li><Link href="/about" className="hover:text-white transition-colors">À propos</Link></li>
+                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projets</Link></li>
+                                    <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">Entreprise</h3>
+                                <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li>
-                                        <Link href="/about" className="hover:text-white transition-colors">
-                                            À propos
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Notre équipe
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Carrières
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="hover:text-white transition-colors">
-                                            Actualités
-                                        </Link>
-                                    </li>
+                                    <li>+212 5 2247 49 91</li>
+                                    <li>info@ateliera1.com </li>
+                                  <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
                             <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
-                            <div className="flex space-x-6 mt-4 md:mt-0">
-                                <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                    Politique de confidentialité
-                                </Link>
-                                <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                    Conditions d’utilisation
-                                </Link>
-                            </div>
                         </div>
                     </div>
                 </footer>

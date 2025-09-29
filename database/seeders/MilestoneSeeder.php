@@ -14,54 +14,47 @@ class MilestoneSeeder extends Seeder
     {
         $milestones = [
             [
-                'year' => '2003',
-                'title' => 'Company Founded',
-                'description' => 'ARCH Studio founded with a vision to transform architectural design and create spaces that inspire.',
+                'year' => '2001 - 2011',
+                'title' => 'Premières collaborations',
+                'description' => 'Premières collaborations des fondateurs au sein de l’agence KILO.',
                 'sort_order' => 1,
                 'is_active' => true
             ],
             [
-                'year' => '2008',
-                'title' => 'First Major Project',
-                'description' => 'Completed our first major commercial project - Downtown Business Center, establishing our reputation in the industry.',
+                'year' => '2012',
+                'title' => 'CRÉATION D’ATELIER A1',
+                'description' => 'Création de l’atelier A1 et début de son activité architecturale.',
                 'sort_order' => 2,
                 'is_active' => true
             ],
             [
-                'year' => '2012',
-                'title' => 'International Recognition',
-                'description' => 'Received our first international architecture award for sustainable design, marking our commitment to environmental responsibility.',
+                'year' => '2013',
+                'title' => 'Premières interventions',
+                'description' => 'Premières interventions dans la réhabilitation du patrimoine : projet de restauration et réhabilitation des Foundouks, Barka, Staouiniyine, Chemayine & Sbitriyine.',
                 'sort_order' => 3,
                 'is_active' => true
             ],
             [
-                'year' => '2015',
-                'title' => 'Service Expansion',
-                'description' => 'Expanded operations to include urban planning and landscape architecture, offering comprehensive design solutions.',
+                'year' => '2016',
+                'title' => 'Projets urbains et culturels',
+                'description' => 'Développement de projets urbains et culturels d’envergure : reconversion de l’Église du Sacré-Cœur et aménagement des lignes de tram 3 & 4 à Casablanca.',
                 'sort_order' => 4,
                 'is_active' => true
             ],
             [
-                'year' => '2018',
-                'title' => '100 Projects Milestone',
-                'description' => 'Reached milestone of 100 completed projects across residential and commercial sectors, showcasing our versatility.',
+                'year' => '2020',
+                'title' => 'Consolidation',
+                'description' => 'Consolidation des expériences dans l’aménagement urbain, avec une approche de plus en plus transversale : aménagement de la corniche Dar Bouazza.',
                 'sort_order' => 5,
                 'is_active' => true
             ],
             [
-                'year' => '2021',
-                'title' => 'Green Building Initiative',
-                'description' => 'Launched our green building certification program, leading the industry in sustainable architecture practices.',
+                'year' => '2023 - aujourd’hui',
+                'title' => 'Projets variés',
+                'description' => 'Déploiement de projets variés – équipements structurants, aménagements urbains et complexes intégrés – avec une attention renouvelée aux enjeux sociaux, environnementaux et territoriaux : étude d’aménagement des lignes BHNS Marrakech.',
                 'sort_order' => 6,
                 'is_active' => true
             ],
-            [
-                'year' => '2024',
-                'title' => '20+ Years of Excellence',
-                'description' => 'Celebrating over 20 years of architectural excellence with 150+ completed projects and numerous industry awards.',
-                'sort_order' => 7,
-                'is_active' => true
-            ]
         ];
 
         foreach ($milestones as $milestone) {

@@ -1,51 +1,106 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Mail, Phone, MapPin, Users, Award, Calendar, Target } from "lucide-react"
+import { ArrowRight, Mail, Phone, MapPin, Users, Award, Calendar, Target, Lightbulb } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
 import logo from "../../assets/images/A1.png"
 
 export default function About({ milestones = [] }) {
     const team = [
-
         {
             id: 1,
-            name: "Abderrahim KASSOU",
-            role: "Architecte-urbaniste DPLG",
-            image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=400&h=400&fit=crop&crop=face",
-            bio: "Architecte-urbaniste DPLG (Paris-La Villette), également diplômé en anthropologie (Paris VIII) et en géographie-aménagement (Tours). Avec près de 20 ans de pratique libérale, il a réalisé des projets de logements, d’équipements culturels, d’aménagements touristiques et de réhabilitation patrimoniale. Ancien président de Casamémoire, il est engagé dans plusieurs associations (Forum Marocain des Alternatives, Architecture & Développement) et fut membre du Conseil National des Droits de l��Homme."
+            name: "CHAKIB Mustapha",
+            role: "Architecte Associé",
+            image: null,
+            bio: "Fondateurs de l’agence, Mustapha orchestre les projets d’envergure avec une solide maîtrise des enjeux urbains et administratifs."
         },
         {
             id: 2,
-            name: "Mustapha CHAKIB",
-            role: "Architecte",
-            image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
-            bio: "Architecte diplômé de l’ESA Paris, il a débuté sa carrière à la Direction de l’Urbanisme en tant que chef de service des plans d’aménagement de la zone Nord. Avec plus de 25 ans d’expérience, il exerce en libéral et a conduit de nombreux projets urbains d’envergure, alliant conception, supervision et gestion de dossiers complexes avec l’administration."
+            name: "KASSOU Abderrahim",
+            role: "Architecte Associé",
+            image: null,
+            bio: "Fondateur investi dans la société civile, Abderrahim apporte à l’agence une vision élargie, nourrie par ses engagements associatifs et citoyens."
         },
-
-    ]
+        {
+            id: 3,
+            name: "BOUNASRI Aymen",
+            role: "Architecte senior",
+            image: null,
+            bio: "Référence technique de l’équipe, Aymen veille à la précision des détails et à la transmission des savoir-faire auprès des plus jeunes."
+        },
+        {
+            id: 4,
+            name: "MABROUR Salma",
+            role: "Architecte chargée de projet",
+            image: null,
+            bio: "Avec une approche créative et structurée, Salma pilote les opérations et incarne le lien entre conception et réalisation."
+        },
+        {
+            id: 5,
+            name: "KHABBAR Salma",
+            role: "Architecte chargée de projet junior",
+            image: null,
+            bio: "Jeune voix de l’Atelier, Salma apporte une fraîcheur d’idées et une énergie nouvelle au sein des projets collectifs."
+        },
+        {
+            id: 6,
+            name: "MRANI Loubna",
+            role: "Office Manager",
+            image: null,
+            bio: "Véritable cheville ouvrière de l’organisation, Loubna veille à la fluidité des démarches et à la rigueur des process internes."
+        },
+        {
+            id: 7,
+            name: "LKAYATI Malika",
+            role: "Dessinatrice Projeteuse",
+            image: null,
+            bio: "Spécialiste des détails, Malika s’assure que chaque plan traduit fidèlement l’intention architecturale, en mettant l’accent sur la clarté et la qualité d’exécution."
+        },
+        {
+            id: 8,
+            name: "RIAHI Said",
+            role: "Dessinateur Projeteur",
+            image: null,
+            bio: "Avec un œil attentif sur les structures et la précision des plans, Said transforme les concepts en documents techniques fiables, optimisant faisabilité et solidité des projets."
+        },
+        {
+            id: 9,
+            name: "AL ZEMOURI ABDERRAHMAN",
+            role: "Infographiste 3D",
+            image: null,
+            bio: "Spécialiste de la représentation visuelle, Abderrahman donne vie aux idées en images, avec une attention particulière portée au détail et à la justesse des atmosphères."
+        },
+        {
+            id: 10,
+            name: "Astit Omar",
+            role: "Agent logistique",
+            image: null,
+            bio: "Dernier maillon mais essentiel, Omar relie l’agence au terrain avec efficacité et fiabilité."
+        }
+    ];
 
     const values = [
         {
-            icon: Target,
-            title: "Innovation",
-            description: "Nous repoussons les limites du design architectural en intégrant des technologies de pointe et des solutions créatives."
+            icon: Users,
+            title: "Dialogue et coopération",
+            description: "Nous plaçons l’échange au cœur du processus, en favorisant un dialogue continu entre maîtrise d’ouvrage, usagers et concepteurs, pour faire émerger des projets porteurs de sens."
         },
         {
-            icon: Users,
-            title: "Collaboration",
-            description: "Nous croyons en une collaboration étroite avec nos clients, les communautés et nos partenaires pour créer des espaces porteurs de sens."
+            icon: MapPin,
+            title: "Ancrage territorial",
+            description: "Chaque projet s’enracine dans son contexte urbain, paysager et culturel, afin de révéler les spécificités locales et valoriser le patrimoine existant."
+        },
+        {
+            icon: Lightbulb,
+            title: "Innovation responsable",
+            description: "Nous explorons des solutions contemporaines et durables, intégrant les avancées techniques et environnementales tout en respectant les ressources et les usages."
         },
         {
             icon: Award,
-            title: "Excellence",
-            description: "Nous maintenons les plus hauts standards de qualité et de savoir‑faire dans chacun de nos projets."
-        },
-        {
-            icon: Calendar,
-            title: "Durabilité",
-            description: "Nous nous engageons à concevoir des projets respectueux de l’environnement, bénéfiques pour les générations futures."
+            title: "Exigence et qualité",
+            description: "Du dessin initial au chantier, nous cultivons une rigueur constante afin de garantir la cohérence, la précision et la pérennité de nos réalisations."
         }
-    ]
+    ];
+
 
 
 
@@ -96,56 +151,84 @@ export default function About({ milestones = [] }) {
 
                     <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                         <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
-                            À propos
-                            <span className="block font-bold">ARCH Studio</span>
+                            À propos <span className="block font-bold">ARCH Studio</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
-                            Deux décennies d’excellence architecturale, d’innovation et de design durable
-                        </p>
+                            Depuis ses débuts, l’Atelier s’est construit autour d’une vision partagée :
+                            concevoir des espaces qui reflètent la richesse des contextes urbains et
+                            culturels dans lesquels ils s’inscrivent.                        </p>
                     </div>
                 </section>
 
                 {/* Company Story Section */}
                 <section className="py-24 bg-gray-50">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start px-6 lg:px-20 py-16 bg-gray-50">
+                            {/* Left Content */}
                             <div>
-                                <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                    Notre
-                                    <span className="block font-bold">histoire</span>
+                                {/* Heading */}
+                                <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900 leading-tight">
+                                    Notre <span className=" font-bold text-primary-600">histoire</span>
                                 </h2>
+
+                                {/* Intro */}
+                                <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                                    L’agence a été fondée avec la volonté de développer une pratique architecturale construite autour du projet urbain et territorial.
+                                    Cette approche, basée sur près de 20 ans d’expérience des architectes Abderrahim Kassou et Mustapha Chakib et de leur équipe,
+                                    s’articule autour d’un dialogue continu entre les acteurs du projet, le programme et le site.
+                                </p>
+
                                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                    Fondé en 2003, ARCH Studio est né d’une vision simple mais ambitieuse : créer des œuvres architecturales qui, au-delà de leur fonction, inspirent et élèvent l’expérience humaine.
+                                    La trajectoire de l’agence s’est construite autour de projets d’une grande diversité de programmes, de sites et d’échelles qui vont
+                                    de la réalisation de complexes intégrés aux aménagements urbains en passant par la conception et la réalisation d’équipements
+                                    structurants. Les fondateurs de Atelier A1 étaient préalablement membres fondateurs de l’agence Kilo. A ce titre, ils ont participé
+                                    à la production d’une architecture résolument contemporaine et ont participé au renouveau de la scène architecturale au Maroc durant
+                                    toutes les années 2000.
                                 </p>
+
                                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                    Au cours des deux dernières décennies, nous sommes passés d’une petite équipe d’architectes passionnés à un studio de design complet, réalisant plus de 150 projets dans les secteurs résidentiel, commercial et culturel.
+                                    Agissant aussi bien dans les domaines de l’architecture que de l’urbanisme, du paysage et de l’aménagement, l’équipe de Atelier
+                                    A1 est composée d’architectes, urbanistes, décorateurs et projeteurs ayant développé une connaissance fine et complexe du tissu
+                                    urbain marocain.
                                 </p>
-                                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                                    Notre engagement en faveur d’un design durable, de solutions innovantes et de partenariats collaboratifs nous a valu une reconnaissance dans la communauté architecturale et la confiance de clients à travers le monde.
-                                </p>
-                                <div className="grid grid-cols-3 gap-8">
+
+
+
+                                {/* Stats */}
+                                <div className="grid grid-cols-3 gap-6 mt-12">
                                     <div className="text-center">
-                                        <div className="text-3xl font-bold text-gray-900 mb-2">150+</div>
-                                        <div className="text-sm text-gray-600">Projets réalisés</div>
+                                        <div className="text-4xl font-bold text-primary-600 mb-2">190+</div>
+                                        <div className="text-sm text-gray-500 uppercase tracking-wide">
+                                            projets achevés
+                                        </div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-3xl font-bold text-gray-900 mb-2">25+</div>
-                                        <div className="text-sm text-gray-600">Distinctions obtenues</div>
+                                        <div className="text-4xl font-bold text-primary-600 mb-2">5+</div>
+                                        <div className="text-sm text-gray-500 uppercase tracking-wide">
+                                            concours gagnés
+                                        </div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-3xl font-bold text-gray-900 mb-2">20+</div>
-                                        <div className="text-sm text-gray-600">Années d’expérience</div>
+                                        <div className="text-4xl font-bold text-primary-600 mb-2">15+</div>
+                                        <div className="text-sm text-gray-500 uppercase tracking-wide">
+                                            années d’expérience
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="relative">
+
+                            {/* Right Image */}
+                            <div className="relative mt-10 lg:mt-20">
                                 <img
                                     src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&h=700&fit=crop"
                                     alt="Notre bureau"
-                                    className="w-full h-auto rounded-lg shadow-2xl"
+                                    className="w-full h-[700px] object-cover rounded-2xl shadow-xl"
                                 />
+                                <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent"></div>
                             </div>
                         </div>
+
+
                     </div>
                 </section>
 
@@ -154,12 +237,11 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Nos
-                                <span className="block font-bold">valeurs</span>
+                                Nos <span className="font-bold">valeurs</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Les principes qui guident notre travail et définissent notre approche de l’excellence architecturale
-                            </p>
+                                Notre démarche repose sur des convictions fortes qui orientent
+                                chaque projet et guident notre manière de concevoir et de construire.                            </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -181,17 +263,19 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Notre
-                                <span className="block font-bold">équipe</span>
+                                Notre  <span className=" font-bold">équipe</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Les professionnels talentueux à l’origine de nos innovations architecturales
-                            </p>
+                                Une équipe pluridisciplinaire où chaque parcours et chaque talent
+                                contribue à la richesse de l’Atelier.                            </p>
                         </div>
 
-                        <div className="flex item-center justify-center w-full gap-8">
-                            {team.map((member) => (
-                                <div key={member.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl w-[25%] transition-shadow">
+                        <div className="w-full flex flex-wrap justify-center gap-8">
+                            {team.slice(0, 2).map((member) => (
+                                <div
+                                    key={member.id}
+                                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl w-[45%] transition-shadow"
+                                >
                                     <img
                                         src={member.image}
                                         alt={member.name}
@@ -204,7 +288,26 @@ export default function About({ milestones = [] }) {
                                     </div>
                                 </div>
                             ))}
+
+                            {team.slice(2).map((member) => (
+                                <div
+                                    key={member.id}
+                                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl w-[22%] transition-shadow"
+                                >
+                                    {/* <img
+                                        src={member.image}
+                                        alt={member.name}
+                                        className="w-full h-64 object-cover"
+                                    /> */}
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
+                                        <p className="text-gray-600 font-medium mb-3">{member.role}</p>
+                                        <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
+
                     </div>
                 </section>
 
@@ -213,12 +316,11 @@ export default function About({ milestones = [] }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                Notre
-                                <span className="block font-bold">parcours</span>
+                                NOTRE <span className=" font-bold">PARCOURS</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Les étapes clés de notre évolution architecturale
-                            </p>
+                                Depuis ses origines, l’Atelier s’est construit au fil de rencontres, de
+                                projets et d’engagements qui ont façonné sa trajectoire.                            </p>
                         </div>
 
                         <div className="relative">
@@ -302,9 +404,9 @@ export default function About({ milestones = [] }) {
                             <div>
                                 <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li>+1 (555) 123-4567</li>
-                                    <li>hello@archstudio.com</li>
-                                    <li>123 Design Street<br />New York, NY 10001</li>
+                                    <li>+212 5 2247 49 91</li>
+                                    <li>info@ateliera1.com </li>
+                                  <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
                                 </ul>
                             </div>
                         </div>

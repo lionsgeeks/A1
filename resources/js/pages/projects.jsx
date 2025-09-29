@@ -102,8 +102,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
                         <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
-                            Nos
-                            <span className="block font-light text-primary-300">projets</span>
+                            Nos <span className=" font-light text-primary-300">projets</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
                             Découvrez notre portefeuille de solutions architecturales innovantes qui ont transformé les communautés et redéfini les espaces
@@ -378,9 +377,9 @@ export default function Projects({ projects, categories = [], selectedCategory =
                             <div>
                                 <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
                                 <ul className="space-y-2 text-gray-300">
-                                    <li>+1 (555) 123-4567</li>
-                                    <li>hello@archstudio.com</li>
-                                    <li>123 Design Street<br />New York, NY 10001</li>
+                                    <li>+212 5 2247 49 91</li>
+                                    <li>info@ateliera1.com </li>
+                                  <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
                                 </ul>
                             </div>
                         </div>
