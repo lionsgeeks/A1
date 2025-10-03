@@ -84,7 +84,7 @@ export default function Contact() {
 
     return (
         <>
-            <Head title="Nous contacter - ARCH Studio" />
+            <Head title="Nous contacter - A1 atelier" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -318,7 +318,7 @@ export default function Contact() {
 
                                 <div className="space-y-6">
                                     <div className="bg-gray-50 p-6 rounded-lg">
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Pourquoi choisir ARCH Studio ?</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Pourquoi choisir A1 atelier ?</h3>
                                         <ul className="space-y-3 text-gray-600">
                                             <li className="flex items-start">
                                                 <div className="w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
@@ -436,7 +436,7 @@ export default function Contact() {
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

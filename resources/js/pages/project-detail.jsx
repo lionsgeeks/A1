@@ -29,7 +29,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
     return (
         <>
-            <Head title={`${project.title} - ARCH Studio`} />
+            <Head title={`${project.title} - A1 atelier`} />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -568,7 +568,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                        </div>
 
                                        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
+                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
                                            <div className="flex space-x-6 mt-4 md:mt-0">
                                                <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
                                                    Privacy Policy

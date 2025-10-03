@@ -106,7 +106,7 @@ export default function About({ milestones = [] }) {
 
     return (
         <>
-            <Head title="À propos - ARCH Studio" />
+            <Head title="À propos - A1 atelier" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-50">
@@ -151,7 +151,7 @@ export default function About({ milestones = [] }) {
 
                     <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                         <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
-                            À propos <span className="block font-bold">ARCH Studio</span>
+                            À propos <span className="block font-bold">A1 atelier</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
                             Depuis ses débuts, l’Atelier s’est construit autour d’une vision partagée :
@@ -412,7 +412,7 @@ export default function About({ milestones = [] }) {
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

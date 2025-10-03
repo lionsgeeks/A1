@@ -164,7 +164,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
     return (
         <>
-            <Head title="ARCH Studio - Concevoir l’avenir" />
+            <Head title="A1 atelier - Concevoir l’avenir" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -683,7 +683,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

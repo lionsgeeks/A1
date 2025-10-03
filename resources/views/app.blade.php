@@ -31,7 +31,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'ARCH Studio') }}</title>
+        <title inertia>{{ config('app.name', 'A1 atelier') }}</title>
 
         <link rel="icon" href="/favicon.png" type="image/png">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">

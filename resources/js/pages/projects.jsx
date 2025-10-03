@@ -59,7 +59,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
 
     return (
         <>
-            <Head title="Nos projets - ARCH Studio" />
+            <Head title="Nos projets - A1 atelier" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -385,7 +385,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} ARCH Studio. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>
