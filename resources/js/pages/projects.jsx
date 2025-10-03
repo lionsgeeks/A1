@@ -356,7 +356,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                             <div className="md:col-span-2">
                                 <Link href="/" className="flex items-center space-x-2 mb-4">
                                     <img src={logo}
-                                        className='w-[55px] aspect-square object-cover'
+                                        className='w-[55px] bg-white aspect-square object-cover'
                                         alt="" />
                                 </Link>
                                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">

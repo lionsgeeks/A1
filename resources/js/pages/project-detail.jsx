@@ -477,109 +477,47 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                     </div>
                 )}
 
+
                 {/* Footer */}
-                  <footer className="bg-gray-900 text-white py-16">
-                                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                                           <div className="md:col-span-2">
-                                               <Link href="/" className="flex items-center space-x-2 mb-4">
-                                                   {/* Logo Design */}
-                                                   <img src={logo}
-                                                       className='w-[55px] aspect-square object-cover'
-                                                       alt="" />
-                                               </Link>
-                                               <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-                                                   Creating architectural masterpieces that blend innovation, sustainability, and timeless design for over
-                                                   two decades.
-                                               </p>
-                                               <div className="flex space-x-4">
-                                                   <Link
-                                                       href="#"
-                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                                   >
-                                                       <Instagram className="h-5 w-5" />
-                                                   </Link>
-                                                   <Link
-                                                       href="#"
-                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                                   >
-                                                       <Twitter className="h-5 w-5" />
-                                                   </Link>
-                                                   <Link
-                                                       href="#"
-                                                       className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
-                                                   >
-                                                       <Linkedin className="h-5 w-5" />
-                                                   </Link>
-                                               </div>
-                                           </div>
+                <footer className="bg-gray-900 text-white py-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div className="md:col-span-2">
+                                <Link href="/" className="flex items-center space-x-2 mb-4">
+                                    <img src={logo}
+                                        className='w-[55px] bg-white aspect-square object-cover'
+                                        alt="" />
+                                </Link>
+                                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
+                                    Nous créons des chefs-d’œuvre architecturaux qui allient innovation, durabilité et élégance intemporelle depuis plus de deux décennies.
+                                </p>
+                            </div>
 
-                                           <div>
-                                               <h3 className="text-lg font-semibold mb-4">Services</h3>
-                                               <ul className="space-y-2 text-gray-300">
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Architectural Design
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Urban Planning
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Interior Design
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Consultation
-                                                       </Link>
-                                                   </li>
-                                               </ul>
-                                           </div>
+                            <div>
+                                <h3 className="text-lg font-semibold mb-4">Liens rapides</h3>
+                                <ul className="space-y-2 text-gray-300">
+                                    <li><Link href="/" className="hover:text-white transition-colors">Accueil</Link></li>
+                                    <li><Link href="/about" className="hover:text-white transition-colors">À propos</Link></li>
+                                    <li><Link href="/projects" className="hover:text-white transition-colors">Projets</Link></li>
+                                    <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                                </ul>
+                            </div>
 
-                                           <div>
-                                               <h3 className="text-lg font-semibold mb-4">Company</h3>
-                                               <ul className="space-y-2 text-gray-300">
-                                                   <li>
-                                                       <Link href="/about" className="hover:text-white transition-colors">
-                                                           About Us
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Our Team
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           Careers
-                                                       </Link>
-                                                   </li>
-                                                   <li>
-                                                       <Link href="#" className="hover:text-white transition-colors">
-                                                           News
-                                                       </Link>
-                                                   </li>
-                                               </ul>
-                                           </div>
-                                       </div>
+                            <div>
+                                <h3 className="text-lg font-semibold mb-4">Coordonnées</h3>
+                                <ul className="space-y-2 text-gray-300">
+                                    <li>+212 5 2247 49 91</li>
+                                    <li>info@ateliera1.com </li>
+                                    <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                                       <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                                           <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
-                                           <div className="flex space-x-6 mt-4 md:mt-0">
-                                               <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                                   Privacy Policy
-                                               </Link>
-                                               <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
-                                                   Terms of Service
-                                               </Link>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </footer>
+                        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </>
     )
