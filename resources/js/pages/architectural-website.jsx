@@ -605,7 +605,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         </div>
                                         <div>
                                             <div className="font-semibold text-gray-900">Adresse</div>
-                                            <div className="text-gray-600">123 Design Street, New York, NY 10001</div>
+                                            <div className="text-gray-600 whitespace-normal break-normal w-3/4">217 angle rue fraternité et bd zerktouni 3 ème étage 20 000 Casablanca</div>
                                         </div>
                                     </div>
                                 </div>

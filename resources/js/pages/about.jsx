@@ -10,14 +10,14 @@ export default function About({ milestones = [] }) {
             id: 1,
             name: "CHAKIB Mustapha",
             role: "Architecte Associé",
-            image: null,
+            image: "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/d/9/a/d9a1058910_50163142_elon-musk1.jpg",
             bio: "Fondateurs de l’agence, Mustapha orchestre les projets d’envergure avec une solide maîtrise des enjeux urbains et administratifs."
         },
         {
             id: 2,
             name: "KASSOU Abderrahim",
             role: "Architecte Associé",
-            image: null,
+            image: "https://media.licdn.com/dms/image/v2/D4E03AQHMq-MGEiee5A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1668290611493?e=1762387200&v=beta&t=bX0_B-6I7acttUsROyAvpSrRs6M5ULfp9r8mfsuvL-I",
             bio: "Fondateur investi dans la société civile, Abderrahim apporte à l’agence une vision élargie, nourrie par ses engagements associatifs et citoyens."
         },
         {
