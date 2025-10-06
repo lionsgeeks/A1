@@ -35,7 +35,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
 
   const { data, setData, post, put, processing, errors } = useForm({
     title: project?.title || '',
-    category_id: project?.category_id || '',
+    category_ids: project?.category_ids || [],
     location: project?.location || '',
     year: project?.year || new Date().getFullYear().toString(),
     start_year: project?.start_year || '',
@@ -368,24 +368,31 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               </div>
 
               <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-                  Category *
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Categories *
                 </label>
-                <select
-                  id="category"
-                  value={data.category_id}
-                  onChange={(e) => setData('category_id', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.category_id && <p className="text-red-600 text-sm mt-1">{errors.category_id}</p>}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {categories.map((category) => {
+                    const checked = (data.category_ids || []).includes(category.id)
+                    return (
+                      <label key={category.id} className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setData('category_ids', [...(data.category_ids || []), category.id])
+                            } else {
+                              setData('category_ids', (data.category_ids || []).filter((id) => id !== category.id))
+                            }
+                          }}
+                        />
+                        <span>{category.name}</span>
+                      </label>
+                    )
+                  })}
+                </div>
+                {errors.category_ids && <p className="text-red-600 text-sm mt-1">{errors.category_ids}</p>}
               </div>
 
               <div>
@@ -584,6 +591,50 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 />
                 {errors.sort_order && <p className="text-red-600 text-sm mt-1">{errors.sort_order}</p>}
               </div>
+            </div>
+          </div>
+
+          {/* Sponsors Modal Trigger */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Sponsors</h3>
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                {(data.sponsors || []).map((s, idx) => (
+                  <span key={idx} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
+                    {s}
+                  </span>
+                ))}
+                {(!data.sponsors || data.sponsors.length === 0) && (
+                  <span className="text-sm text-gray-500">Aucun sponsor ajouté</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Nom du sponsor (URL optionnelle)"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      const val = e.currentTarget.value.trim()
+                      if (!val) return
+                      const next = [...(data.sponsors || []), val]
+                      setData('sponsors', next)
+                      e.currentTarget.value = ''
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    const input = document.querySelector('#sponsor-input')
+                  }}
+                >
+                  Ajouter (Entrée)
+                </Button>
+              </div>
+              {errors.sponsors && <p className="text-red-600 text-sm mt-1">{errors.sponsors}</p>}
             </div>
           </div>
 

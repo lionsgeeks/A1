@@ -29,7 +29,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
     return (
         <>
-            <Head title={`${project.title} - A1 atelier`} />
+            <Head title={`${project.title} - Atelier A1`} />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dadada] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -73,14 +73,32 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-8">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-white">
-                                <Badge
-                                    variant="secondary"
-                                    className="text-white border-white/30 mb-4 font-medium"
-                                    style={{ backgroundColor: project.category?.color || '#a3845b' }}
-                                >
-                                    {project.category?.name || project.category || 'Sans catégorie'}
-                                </Badge>
-                                <h1 className="text-5xl md:text-7xl font-light mb-4 leading-tight">
+                                <div className="flex items-center gap-2 mb-3">
+                                    {(() => {
+                                        const cats = project.categories || (project.category ? [project.category] : []);
+                                        const first = cats[0];
+                                        const remaining = Math.max(0, (cats?.length || 0) - 1);
+                                        return (
+                                            <>
+                                                {first ? (
+                                                    <Badge
+                                                        variant="secondary"
+                                                        className="text-white border-white/30 font-medium"
+                                                        style={{ backgroundColor: first?.color || '#a3845b' }}
+                                                    >
+                                                        {first?.name || 'Sans catégorie'}
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="secondary" className="text-white">Sans catégorie</Badge>
+                                                )}
+                                                {remaining > 0 && (
+                                                    <span className="text-sm text-white/80">+{remaining}</span>
+                                                )}
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+                                <h1 className="text-2xl  md:text-4xl font-light mb-4 leading-tight">
                                     {project.title.split(" ").slice(0, -1).join(" ")}
                                     <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
                                 </h1>
@@ -92,24 +110,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             <span className="mx-4">•</span>
                                         </>
                                     )}
-                                    {(project.start_year && project.end_year) || project.year ? (
-                                        <>
-                                            <Calendar className="h-5 w-5 mr-2" />
-                                            {project.start_year && project.end_year ? (
-                                                <div className="flex items-center space-x-2">
-                                                    <span className="text-2xl font-bold tracking-wider">
-                                                        {project.start_year}
-                                                    </span>
-                                                    <span>-</span>
-                                                    <span className="text-2xl font-bold tracking-wider">
-                                                        {project.end_year}
-                                                    </span>
-                                                </div>
-                                            ) : project.year ? (
-                                                <span>{project.year}</span>
-                                            ) : null}
-                                        </>
-                                    ) : null}
+                                    {/* Removed duplicated period to avoid repetition with sidebar */}
                                 </div>
 
                                 {/* Achievement Status in header */}
@@ -228,13 +229,17 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-black mb-1">Catégorie</label>
-                                            <Badge
-                                                className="text-white font-medium"
-                                                style={{ backgroundColor: project.category?.color || '#a3845b' }}
-                                            >
-                                                {project.category?.name || project.category || 'Sans catégorie'}
-                                            </Badge>
+                                            <label className="block text-sm font-medium text-black mb-1">Catégories</label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {(project.categories || (project.category ? [project.category] : [])).map((cat, idx) => (
+                                                    <Badge key={idx}
+                                                        className="text-white font-medium"
+                                                        style={{ backgroundColor: cat?.color || '#a3845b' }}
+                                                    >
+                                                        {cat?.name || 'Sans catégorie'}
+                                                    </Badge>
+                                                ))}
+                                            </div>
                                         </div>
 
                                         {project.location && (
@@ -251,7 +256,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             </div>
                                         )}
 
-                                        {/* Project Timeline */}
+                                        {/* Project Timeline (single line, no duplicates) */}
                                         {(project.start_year || project.end_year) && (
                                             <div>
                                                 <label className="block text-sm font-medium text-black mb-1">Période du projet</label>
@@ -264,33 +269,15 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                         {project.end_year || '----'}
                                                     </span>
                                                 </div>
-                                                <div className="flex items-center space-x-2 mt-1">
-                                                    {project.start_year && (
-                                                        <div className="text-xs text-gray-600 tracking-widest">
-                                                            {project.start_year.split('').join(' ')}
-                                                        </div>
-                                                    )}
-                                                    {project.start_year && project.end_year && (
-                                                        <span className="text-xs text-gray-600">-</span>
-                                                    )}
-                                                    {project.end_year && (
-                                                        <div className="text-xs text-gray-600 tracking-widest">
-                                                            {project.end_year.split('').join(' ')}
-                                                        </div>
-                                                    )}
-                                                </div>
                                             </div>
                                         )}
 
-                                        {/* Achievement Status */}
+                                        {/* Achievement Status (single line) */}
                                         {project.achievement_status && (
                                             <div>
                                                 <label className="block text-sm font-medium text-black mb-1">Statut d’achèvement</label>
                                                 <div className="text-lg font-bold text-black tracking-wider">
                                                     {project.achievement_status}
-                                                </div>
-                                                <div className="text-xs text-gray-600 tracking-widest mt-1">
-                                                    {project.achievement_status.split('').join(' ')}
                                                 </div>
                                             </div>
                                         )}
@@ -514,7 +501,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Atelier A1. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

@@ -51,16 +51,16 @@ class Category extends Model
         return $query->orderBy('sort_order')->orderBy('name');
     }
 
-    // Relationship with projects
+    // Projects via JSON category_ids
     public function projects()
     {
-        return $this->hasMany(Project::class, 'category_id', 'id');
+        return Project::whereJsonContains('category_ids', (int) $this->id);
     }
 
     // Relationship with active projects only
     public function activeProjects()
     {
-        return $this->hasMany(Project::class, 'category_id', 'id')->where('status', 'active');
+        return Project::where('status', 'active')->whereJsonContains('category_ids', (int) $this->id);
     }
 
     // Get projects count

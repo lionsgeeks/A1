@@ -31,7 +31,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'A1 atelier') }}</title>
+        <title inertia>{{ config('app.name', 'Atelier A1') }}</title>
 
         <link rel="icon" href="/favicon.png" type="image/png">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">

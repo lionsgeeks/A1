@@ -24,9 +24,7 @@ class CategoryController extends Controller
                 ->orWhere('description', 'like', '%' . $request->search . '%');
         }
 
-        $categories = $query->withCount(['projects' => function ($query) {
-            $query->where('status', 'active');
-        }])
+        $categories = $query
             ->ordered()
             ->paginate(15);
 
@@ -89,7 +87,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         return Inertia::render('admin/categories/create', [
-            'category' => $category->load('projects')
+            'category' => $category
         ]);
     }
 
@@ -188,8 +186,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // Check if category has projects
-        $projectsCount = $category->projects()->count();
+        // Check if category has projects (via JSON)
+        $projectsCount = \App\Models\Project::whereJsonContains('category_ids', (int) $category->id)->count();
 
         if ($projectsCount > 0) {
             return response()->json([

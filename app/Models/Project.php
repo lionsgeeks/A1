@@ -8,7 +8,6 @@ class Project extends Model
 {
     protected $fillable = [
         'title',
-        'category_id',
         'location',
         'year',
         'start_year',
@@ -17,57 +16,70 @@ class Project extends Model
         'achievement_status',
         'surface_area',
         'client_name',
+        'delegated_client_name',
         'project_cost',
         'duration_months',
         'image_path',
         'pdf_path',
         'gallery_images',
+        'sponsors',
+        'category_ids',
+        'partners',
+        'institutional_partners',
         'status',
         'sort_order'
     ];
 
     protected $casts = [
-        'gallery_images' => 'array'
+        'gallery_images' => 'array',
+        'category_ids' => 'array',
+        'partners' => 'array',
+        'institutional_partners' => 'array',
+        'sponsors' => 'array'
     ];
 
-    // Relationship with Category
-    public function category()
+    protected $appends = [
+        'categories'
+    ];
+
+    // Virtual accessor to fetch categories from JSON ids
+    public function getCategoriesAttribute()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        $ids = $this->category_ids ?? [];
+        if (empty($ids)) {
+            return collect();
+        }
+        return Category::whereIn('id', $ids)->get();
     }
 
     // Accessor to get category name (for backward compatibility)
     public function getCategoryNameAttribute()
     {
-        $category = $this->category;
-        if (is_object($category)) {
-            return $category->name;
-        }
-        return $category; // Return string value for old records
+        $first = $this->categories->first();
+        return $first?->name;
     }
 
     // Accessor to get category color
     public function getCategoryColorAttribute()
     {
-        $category = $this->category;
-        if (is_object($category)) {
-            return $category->color;
-        }
-        return '#a3845b'; // Default color for old records
+        $first = $this->categories->first();
+        return $first?->color ?? '#a3845b';
     }
 
     // Scope to filter by category
     public function scopeByCategory($query, $categoryId)
     {
-        return $query->where('category_id', $categoryId);
+        return $query->whereJsonContains('category_ids', (int) $categoryId);
     }
 
     // Scope to filter by category name
     public function scopeByCategoryName($query, $categoryName)
     {
-        return $query->whereHas('category', function ($q) use ($categoryName) {
-            $q->where('name', $categoryName);
-        });
+        $categoryId = Category::where('name', $categoryName)->value('id');
+        if (!$categoryId) {
+            return $query->whereRaw('1=0');
+        }
+        return $query->whereJsonContains('category_ids', (int) $categoryId);
     }
 
     // Scope for active projects

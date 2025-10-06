@@ -77,6 +77,7 @@ if (typeof document !== 'undefined') {
 
 export default function ArchitecturalWebsite({ featuredCategories = [], featuredProjects = [] }) {
     const [currentSlide, setCurrentSlide] = useState(0)
+    const [isCarouselPaused, setIsCarouselPaused] = useState(false)
     const [isTransitioning, setIsTransitioning] = useState(true)
     const carouselImages = [
         "storage/projects/4bfeb9ee-7e9e-4f7a-ba92-ea431d1c5e07.jpg",
@@ -131,12 +132,12 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
     // Auto-slide effect with infinite loop - smoother timing
     useEffect(() => {
+        if (isCarouselPaused) return
         const interval = setInterval(() => {
             setCurrentSlide((prev) => prev + 1)
-        }, 2000) // Slightly faster for better flow
-
+        }, 2000)
         return () => clearInterval(interval)
-    }, [])
+    }, [isCarouselPaused])
 
     // Handle infinite loop reset - smoother transitions
     useEffect(() => {
@@ -164,7 +165,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
 
     return (
         <>
-            <Head title="A1 atelier - Concevoir l’avenir" />
+            <Head title="Atelier A1" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -210,8 +211,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                     </div>
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
-                        <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
-                            Concevoir <span className=" font-light text-primary-300">l’avenir</span>
+                        <h1 className="text-2xl md:text-6xl font-extralight mb-8 leading-tight tracking-wide">
+                            Façonner des espaces qui révèlent le territoire  <span className=" font-light text-primary-300">et inspirent ceux qui l’habitent.</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
                             Façonner des espaces qui
@@ -295,7 +296,11 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             </h2>
                         </div>
 
-                        <div className="carousel-container  relative overflow-hidden rounded-3xl bg-white p-8">
+                        <div
+                            className="carousel-container  relative overflow-hidden rounded-3xl bg-white p-8"
+                            onMouseEnter={() => setIsCarouselPaused(true)}
+                            onMouseLeave={() => setIsCarouselPaused(false)}
+                        >
                             {/* Main carousel container */}
                             <div
                                 className={`flex ${isTransitioning ? 'transition-transform duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]' : ''}`}
@@ -312,7 +317,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         style={{ width: `${slideWidth - gap}px` }}
                                     >
                                         {item.id ? (
-                                            <Link href={`/projects?category=${item.title}`}
+                                            <Link href={`/projects?category=${encodeURIComponent(item.slug || item.title)}`}
                                                 className="block">
                                                 <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
                                                     {/* Image or Color Background */}
@@ -359,9 +364,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                                             <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
                                                                 {item.title}
                                                             </h3>
-                                                            <p className="text-lg text-gray-200 font-medium opacity-95 leading-relaxed">
-                                                                {item.subtitle}
-                                                            </p>
+                                                            {/* count removed */}
 
                                                             {/* Decorative line with category color */}
                                                             <div className="relative mt-6">
@@ -418,9 +421,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                                         <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
                                                             {item.title}
                                                         </h3>
-                                                        <p className="text-lg text-gray-200 font-medium opacity-95 leading-relaxed">
-                                                            {item.subtitle}
-                                                        </p>
+                                                        {/* count removed */}
 
                                                         {/* Decorative line with animation */}
                                                         <div className="relative mt-6">
@@ -504,13 +505,18 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                                     <div className={`${index % 2 === 0 ? "text-left" : "text-right"}`}>
                                         <div className="max-w-2xl">
-                                            <Badge
-                                                variant="secondary"
-                                                className="bg-white/20 text-white border-white/30 mb-6"
-                                                style={{ backgroundColor: project.category?.color ? `${project.category.color}80` : 'rgba(163, 132, 91, 0.5)' }}
-                                            >
-                                                {project.category?.name || 'Sans catégorie'}
-                                            </Badge>
+                                            <div className="flex gap-2 flex-wrap mb-6">
+                                                {(project.categories || (project.category ? [project.category] : [])).map((cat, idx) => (
+                                                    <Badge
+                                                        key={idx}
+                                                        variant="secondary"
+                                                        className="bg-white/20 text-white border-white/30"
+                                                        style={{ backgroundColor: cat?.color ? `${cat.color}80` : 'rgba(163, 132, 91, 0.5)' }}
+                                                    >
+                                                        {cat?.name || 'Sans catégorie'}
+                                                    </Badge>
+                                                ))}
+                                            </div>
                                             <p className="text-2xl md:text-4xl font-light mb-8 text-white leading-tight">
                                                 {project.title.split(" ").slice(0, -1).join(" ")}
                                                 <span className="block font-bold">{project.title.split(" ").slice(-1)}</span>
@@ -647,7 +653,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                 </section> */}
 
 
-     {/* Footer */}
+                {/* Footer */}
                 <footer className="bg-gray-900 text-white py-16">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -677,13 +683,13 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                 <ul className="space-y-2 text-gray-300">
                                     <li>+212 5 2247 49 91</li>
                                     <li>info@ateliera1.com </li>
-                                  <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
+                                    <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
                                 </ul>
                             </div>
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Atelier A1. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

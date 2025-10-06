@@ -11,7 +11,7 @@ export default function AppLogo() {
                 />
             </div>
             <div className="ml-1 grid flex-1 text-left ">
-                <span className="mb-0.5 truncate leading-tight font-semibold text-xl text-primary">A1 atelier</span>
+                <span className="mb-0.5 truncate leading-tight font-semibold text-xl text-primary">Atelier A1</span>
             </div>
         </>
     );

@@ -42,21 +42,30 @@ export default function ProjectsIndex({ projects }) {
     {
       key: 'title',
       label: 'Title',
-      sortable: true
+      sortable: true,
+      render: (value, project) => (
+        <Link href={`/admin/projects/${project.id}/edit`} className="text-gray-900 hover:underline block max-w-[420px]">
+          <span className="text-base line-clamp-1">{value}</span>
+        </Link>
+      )
     },
     {
-      key: 'category',
-      label: 'Category',
+      key: 'categories',
+      label: 'Categories',
       render: (_, project) => {
-        const categoryName = project.category?.name || 'Uncategorized';
-        const categoryColor = project.category?.color || '#a3845b';
+        const cats = project.categories || (project.category ? [project.category] : []);
+        if (cats.length === 0) return <span className="text-gray-400">—</span>;
+        const first = cats[0];
+        const remaining = cats.length - 1;
         return (
-          <Badge
-            className="text-white"
-            style={{ backgroundColor: categoryColor }}
-          >
-            {categoryName}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge className="text-white" style={{ backgroundColor: first?.color || '#a3845b' }}>
+              {first?.name || 'Sans catégorie'}
+            </Badge>
+            {remaining > 0 && (
+              <span className="text-xs text-gray-500">+{remaining}</span>
+            )}
+          </div>
         );
       }
     },
@@ -64,10 +73,12 @@ export default function ProjectsIndex({ projects }) {
       key: 'location',
       label: 'Location',
       render: (value) => (
-        <div className="flex items-center">
-          <MapPin className="h-4 w-4 mr-1 text-gray-400" />
-          {value}
-        </div>
+        value ? (
+          <div className="flex items-center">
+            <MapPin className="h-4 w-4 mr-1 text-gray-400" />
+            {value}
+          </div>
+        ) : <span className="text-gray-400">—</span>
       )
     },
     {

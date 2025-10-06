@@ -3,6 +3,10 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Phone, MapPin, Users, Award, Calendar, Target, Lightbulb } from "lucide-react"
 import { Head, Link } from '@inertiajs/react'
 import logo from "../../assets/images/A1.png"
+const lionsgeek = "/img/sponsors/lionsgeek.png"
+const casamemoire = "/img/sponsors/casamemoire.png"
+const ksdesign = "/img/sponsors/ksdesign.png"
+const icomos = "/img/sponsors/icomos.png"
 
 export default function About({ milestones = [] }) {
     const team = [
@@ -106,7 +110,7 @@ export default function About({ milestones = [] }) {
 
     return (
         <>
-            <Head title="À propos - A1 atelier" />
+            <Head title="À propos - Atelier A1" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-50">
@@ -151,7 +155,7 @@ export default function About({ milestones = [] }) {
 
                     <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                         <h1 className="text-5xl md:text-7xl font-light mb-6 leading-tight">
-                            À propos <span className="block font-bold">A1 atelier</span>
+                            À propos <span className="block font-bold">Atelier A1</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
                             Depuis ses débuts, l’Atelier s’est construit autour d’une vision partagée :
@@ -288,30 +292,59 @@ export default function About({ milestones = [] }) {
                                     </div>
                                 </div>
                             ))}
-
+{/* 
                             {team.slice(2).map((member) => (
                                 <div
                                     key={member.id}
                                     className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl w-[22%] transition-shadow"
                                 >
-                                    {/* <img
+                                    <img
                                         src={member.image}
                                         alt={member.name}
                                         className="w-full h-64 object-cover"
-                                    /> */}
+                                    />
                                     <div className="p-6">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
                                         <p className="text-gray-600 font-medium mb-3">{member.role}</p>
                                         <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
                                     </div>
                                 </div>
-                            ))}
+                            ))} */}
                         </div>
-
+                        {/* Sponsors (Partenaires) */}
+                        <div className="mt-20">
+                            <h3 className="text-3xl md:text-4xl font-light mb-8 text-gray-900 text-center">
+                                Nos <span className="font-bold">partenaires</span>
+                            </h3>
+                            {/* Inline keyframes for smooth marquee */}
+                            <style>{`
+                              @keyframes sponsor-scroll {
+                                0% { transform: translateX(0); }
+                                100% { transform: translateX(-50%); }
+                              }
+                            `}</style>
+                            <div className="relative group overflow-hidden max-w-5xl mx-auto">
+                                <div
+                                    className="flex items-center gap-16 w-[200%]"
+                                    style={{
+                                        animation: 'sponsor-scroll 18s linear infinite',
+                                        animationPlayState: 'running'
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
+                                >
+                                    {[lionsgeek, casamemoire, ksdesign, icomos, lionsgeek, casamemoire, ksdesign, icomos].map((src, idx) => (
+                                        <div key={`logo-${idx}`} className="h-28 flex items-center justify-center min-w-[200px]">
+                                            <img src={src} alt="sponsor" className="h-20 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                {/* Timeline Section */}
+                {/* Timeline Section - alternating left/right */}
                 <section className="py-24">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
@@ -320,24 +353,48 @@ export default function About({ milestones = [] }) {
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                                 Depuis ses origines, l’Atelier s’est construit au fil de rencontres, de
-                                projets et d’engagements qui ont façonné sa trajectoire.                            </p>
+                                projets et d’engagements qui ont façonné sa trajectoire.
+                            </p>
                         </div>
 
                         <div className="relative">
-                            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-200"></div>
+                            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-900"></div>
 
-                            {milestones.length > 0 ? milestones.map((milestone, index) => (
-                                <div key={milestone.id} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                                    <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                                        <div className="bg-white p-6 rounded-lg shadow-lg">
-                                            <div className="text-2xl font-bold text-gray-900 mb-2">{milestone.year}</div>
-                                            <div className="text-lg font-semibold text-gray-800 mb-2">{milestone.title}</div>
-                                            <p className="text-gray-600 leading-relaxed">{milestone.description}</p>
-                                        </div>
+                            {milestones && milestones.length > 0 ? (
+                                milestones.map((milestone, index) => (
+                                    <div key={milestone.id || index} className={`relative flex items-start mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                                        {index % 2 === 0 ? (
+                                            <>
+                                                <div className="w-1/2 pr-8 text-right">
+                                                    <div className="bg-white p-6 rounded-lg shadow">
+                                                        <div className="text-sm uppercase tracking-widest text-gray-700 font-semibold mb-2">{milestone.year}</div>
+                                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{milestone.title}</h3>
+                                                        {milestone.description && (
+                                                            <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-gray-900 rounded-full border-4 border-white"></div>
+                                                <div className="w-1/2"></div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="w-1/2"></div>
+                                                <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-gray-900 rounded-full border-4 border-white"></div>
+                                                <div className="w-1/2 pl-8 text-left">
+                                                    <div className="bg-white p-6 rounded-lg shadow">
+                                                        <div className="text-sm uppercase tracking-widest text-gray-700 font-semibold mb-2">{milestone.year}</div>
+                                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{milestone.title}</h3>
+                                                        {milestone.description && (
+                                                            <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
-                                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-900 rounded-full border-4 border-white"></div>
-                                </div>
-                            )) : (
+                                ))
+                            ) : (
                                 <div className="text-center py-12">
                                     <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                                     <p className="text-gray-600">Aucune étape disponible pour le moment.</p>
@@ -412,7 +469,7 @@ export default function About({ milestones = [] }) {
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Atelier A1. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>

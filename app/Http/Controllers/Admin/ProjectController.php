@@ -31,12 +31,15 @@ class ProjectController extends Controller
         }
 
         if ($request->category) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('name', $request->category);
-            });
+            $categoryId = \App\Models\Category::where('name', $request->category)->value('id');
+            if ($categoryId) {
+                $query->whereJsonContains('category_ids', (int) $categoryId);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
-        $projects = $query->with('category')
+        $projects = $query
                          ->orderBy('sort_order')
                          ->orderBy('created_at', 'desc')
                          ->paginate(12);
@@ -60,7 +63,8 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_ids' => 'required|array|min:1',
+            'category_ids.*' => 'exists:categories,id',
             'location' => 'nullable|string|max:255',
             'year' => 'nullable|string|max:4',
             'start_year' => 'nullable|string|max:4',
@@ -69,6 +73,7 @@ class ProjectController extends Controller
             'achievement_status' => 'nullable|string|max:255',
             'surface_area' => 'nullable|string|max:255',
             'client_name' => 'nullable|string|max:255',
+            'delegated_client_name' => 'nullable|string|max:255',
             'project_cost' => 'nullable|string|max:255',
             'duration_months' => 'nullable|integer|min:0',
             'status' => 'in:active,inactive',
@@ -76,6 +81,13 @@ class ProjectController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
             'pdf' => 'nullable|mimes:pdf|max:20480',
+            'partners' => 'nullable|array',
+            'partners.*' => 'string|max:255',
+            'institutional_partners' => 'nullable|array',
+            'institutional_partners.*.name' => 'required_with:institutional_partners|string|max:255',
+            'institutional_partners.*.url' => 'nullable|url|max:2048',
+            'sponsors' => 'nullable|array',
+            'sponsors.*' => 'string|max:255',
         ]);
 
         // Upload PDF if provided
@@ -87,12 +99,12 @@ class ProjectController extends Controller
         }
 
         // Upload main image
-        $imagePath = $this->imageUploadService->uploadImage($request->file('image'));
+        $imagePath = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 92, 2560);
         $validated['image_path'] = $imagePath;
 
         // Upload gallery images if provided
         if ($request->hasFile('gallery_images')) {
-            $galleryPaths = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'));
+            $galleryPaths = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'), 'projects', 92, 2560);
             $validated['gallery_images'] = $galleryPaths;
         }
 
@@ -115,7 +127,8 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => 'string|max:255',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_ids' => 'nullable|array|min:1',
+            'category_ids.*' => 'exists:categories,id',
             'location' => 'nullable|string|max:255',
             'year' => 'nullable|string|max:4',
             'start_year' => 'nullable|string|max:4',
@@ -124,6 +137,7 @@ class ProjectController extends Controller
             'achievement_status' => 'nullable|string|max:255',
             'surface_area' => 'nullable|string|max:255',
             'client_name' => 'nullable|string|max:255',
+            'delegated_client_name' => 'nullable|string|max:255',
             'project_cost' => 'nullable|string|max:255',
             'duration_months' => 'nullable|integer|min:0',
             'status' => 'in:active,inactive',
@@ -131,6 +145,13 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
             'pdf' => 'nullable|mimes:pdf|max:20480',
+            'partners' => 'nullable|array',
+            'partners.*' => 'string|max:255',
+            'institutional_partners' => 'nullable|array',
+            'institutional_partners.*.name' => 'required_with:institutional_partners|string|max:255',
+            'institutional_partners.*.url' => 'nullable|url|max:2048',
+            'sponsors' => 'nullable|array',
+            'sponsors.*' => 'string|max:255',
         ]);
 
         // Upload new PDF if provided
@@ -151,12 +172,12 @@ class ProjectController extends Controller
             if ($project->image_path) {
                 $this->imageUploadService->deleteImage($project->image_path);
             }
-            $validated['image_path'] = $this->imageUploadService->uploadImage($request->file('image'));
+            $validated['image_path'] = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 92, 2560);
         }
 
         // Upload new gallery images if provided (only for create mode, not edit mode)
         if ($request->hasFile('gallery_images') && !$project->gallery_images) {
-            $validated['gallery_images'] = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'));
+            $validated['gallery_images'] = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'), 'projects', 92, 2560);
         }
 
         $project->update($validated);

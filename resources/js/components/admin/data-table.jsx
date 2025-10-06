@@ -12,7 +12,9 @@ import {
     Edit,
     Trash2,
     Grid,
-    List
+    List,
+    MapPin,
+    Calendar
 } from 'lucide-react'
 import {
     DropdownMenu,
@@ -219,26 +221,67 @@ export function DataTable({
                 </div>
             ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {sortedData.map((item, index) => (
-                        <div key={item.id || index} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-                            {/* Grid card content will be customized per use case */}
-                            <div className="p-6 relative">
-                                {columns.map((column) => (
-                                    <div key={column.key} className="mb-2 flex items-center gap-2">
-                                        <span className="text-sm font-medium text-gray-600">{column.label == 'Image' ? '' : column.label + ':'} </span>
-                                        <span className="text-sm text-gray-900">{renderCell(item, column)}</span>
-                                    </div>
-                                ))}
-                                <div className='absolute top-0 right-[20px]'>
+                    {sortedData.map((item, index) => {
+                        const cats = item.categories || (item.category ? [item.category] : []);
+                        const firstCat = cats[0];
+                        const remaining = Math.max(0, cats.length - 1);
+                        return (
+                            <a key={item.id || index} href={`/admin/projects/${item.id}/edit`} className="group block rounded-xl border border-gray-100 overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                                {/* Image banner */}
+                                <div className="relative">
+                                    <img src={item.image_path || '/placeholder.svg'} alt="" className="h-40 w-full object-cover" />
                                     {actions.length > 0 && (
-                                        <div className="mt-4 pt-4 border-t border-gray-100">
+                                        <div className="absolute top-2 right-2">
                                             {renderActions(item)}
                                         </div>
                                     )}
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                                {/* Body */}
+                                <div className="p-4">
+                                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-gray-700">
+                                        {item.title}
+                                    </h3>
+
+                                    {/* Categories */}
+                                    <div className="mt-3 flex items-center gap-2">
+                                        {firstCat ? (
+                                            <Badge className="text-white" style={{ backgroundColor: firstCat?.color || '#a3845b' }}>
+                                                {firstCat?.name || 'Sans catégorie'}
+                                            </Badge>
+                                        ) : (
+                                            <span className="text-xs text-gray-400">—</span>
+                                        )}
+                                        {remaining > 0 && (
+                                            <span className="text-xs text-gray-500">+{remaining}</span>
+                                        )}
+                                    </div>
+
+                                    {/* Meta */}
+                                    <div className="mt-3 space-y-1 text-sm">
+                                        {item.location ? (
+                                            <div className="flex items-center text-gray-600">
+                                                <span className="mr-2"><MapPin className="h-4 w-4 text-gray-400" /></span>
+                                                <span className="line-clamp-1">{item.location}</span>
+                                            </div>
+                                        ) : null}
+                                        {item.year ? (
+                                            <div className="flex items-center text-gray-600">
+                                                <span className="mr-2"><Calendar className="h-4 w-4 text-gray-400" /></span>
+                                                <span>{item.year}</span>
+                                            </div>
+                                        ) : null}
+                                    </div>
+
+                                    {/* Status */}
+                                    {item.status && (
+                                        <div className="mt-3">
+                                            <Badge className={`text-xs ${item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{item.status}</Badge>
+                                        </div>
+                                    )}
+                                </div>
+                            </a>
+                        );
+                    })}
                 </div>
             ) : (
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

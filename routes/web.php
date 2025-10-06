@@ -4,16 +4,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    // Get all active categories for the carousel with project counts
+    // Get all active categories for the carousel (no project counts displayed)
     $featuredCategories = \App\Models\Category::active()
         ->ordered()
-        ->withCount(['projects' => function ($query) {
-            $query->where('status', 'active');
-        }])
-        ->get(); // Show all categories, not just those with projects
+        ->get();
 
     // Get the last 5 active projects for the featured section
-    $featuredProjects = \App\Models\Project::with('category')
+    $featuredProjects = \App\Models\Project::query()
         ->where('status', 'active')
         ->orderBy('created_at', 'desc')
         ->take(5)
@@ -37,6 +34,19 @@ Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'index']
 Route::get('/contact', function () {
     return Inertia::render('contact');
 })->name('contact');
+
+// Public proxy for sponsors images to avoid ad-blockers on '/assets'
+Route::get('/img/sponsors/{filename}', function ($filename) {
+    $path = resource_path('assets/images/sponsors/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    $mime = mime_content_type($path) ?: 'image/png';
+    return response()->file($path, [
+        'Content-Type' => $mime,
+        'Cache-Control' => 'public, max-age=604800'
+    ]);
+})->where('filename', '.*');
 
 Route::get('/test', function () {
     return 'Test route works!';

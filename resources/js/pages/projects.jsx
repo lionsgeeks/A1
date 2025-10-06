@@ -12,15 +12,24 @@ export default function Projects({ projects, categories = [], selectedCategory =
     console.log(projects);
 
     // Set initial category from URL parameter
-    const [activeCategory, setActiveCategory] = useState(selectedCategory || 'all')
+    const [activeCategory, setActiveCategory] = useState(() => {
+        if (!selectedCategory) return 'all'
+        // selectedCategory may be slug or name. Map slug to name for display and filtering
+        const found = (categories || []).find(c => c.slug === selectedCategory || c.name === selectedCategory)
+        return found ? found.name : 'all'
+    })
 
     const filteredProjects = activeCategory === 'all'
         ? projects?.data || []
-        : projects?.data?.filter(project => {
-            // Handle both new relationship and old string format for backward compatibility
-            const categoryName = project.category?.name || project.category;
-            return categoryName === activeCategory;
-        }) || []
+        : (projects?.data || []).filter(project => {
+            // New: multiple categories via array of category objects
+            if (Array.isArray(project.categories) && project.categories.length > 0) {
+                return project.categories.some(cat => (cat?.name || '') === activeCategory)
+            }
+            // Backward compatibility: single category object or name string
+            const singleName = project.category?.name || project.category
+            return singleName === activeCategory
+        })
 
     // Initialize displayed projects
     useEffect(() => {
@@ -43,10 +52,13 @@ export default function Projects({ projects, categories = [], selectedCategory =
             // Update displayed projects after fade out
             const newFilteredProjects = categorySlug === 'all'
                 ? projects?.data || []
-                : projects?.data?.filter(project => {
-                    const categoryName = project.category?.name || project.category;
-                    return categoryName === categorySlug;
-                }) || []
+                : (projects?.data || []).filter(project => {
+                    if (Array.isArray(project.categories) && project.categories.length > 0) {
+                        return project.categories.some(cat => (cat?.name || '') === categorySlug)
+                    }
+                    const singleName = project.category?.name || project.category
+                    return singleName === categorySlug
+                })
 
             setDisplayedProjects(newFilteredProjects)
 
@@ -59,7 +71,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
 
     return (
         <>
-            <Head title="Nos projets - A1 atelier" />
+            <Head title="Nos projets - Atelier A1" />
             <div className="min-h-screen bg-white">
                 {/* Navigation */}
                 <nav className="fixed top-0 w-full bg-[#dfdfdf] backdrop-blur-sm border-b border-gray-100 z-40">
@@ -222,12 +234,12 @@ export default function Projects({ projects, categories = [], selectedCategory =
                         ) : viewMode === 'grid' ? (
                             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                                 {displayedProjects.map((project, index) => (
+                                    <Link key={project.id} href={`/projects/${project.id}`}>
                                     <div
-                                        key={project.id}
                                         className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group transform ${isTransitioning
                                                 ? 'opacity-0 scale-95 translate-y-4'
                                                 : 'opacity-100 scale-100 translate-y-0'
-                                            }`}
+                                            } cursor-pointer`}
                                         style={{
                                             transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
                                         }}
@@ -242,29 +254,48 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         </div>
                                         <div className="p-8">
                                             <div className="flex items-center justify-between mb-4">
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="font-medium tracking-wide uppercase text-xs text-white"
-                                                    style={{ backgroundColor: project.category?.color || '#a3845b' }}
-                                                >
-                                                    {project.category?.name || 'Sans catégorie'}
-                                                </Badge>
-                                                <span className="text-sm text-secondary-500 font-light">{project.year}</span>
+                                                <div className="flex items-center gap-2">
+                                                    {(() => {
+                                                        const cats = project.categories || (project.category ? [project.category] : []);
+                                                        const first = cats[0];
+                                                        const remaining = Math.max(0, (cats?.length || 0) - 1);
+                                                        return (
+                                                            <>
+                                                                {first ? (
+                                                                    <Badge
+                                                                        variant="secondary"
+                                                                        className="font-medium tracking-wide uppercase text-xs text-white"
+                                                                        style={{ backgroundColor: first?.color || '#a3845b' }}
+                                                                    >
+                                                                        {first?.name || 'Sans catégorie'}
+                                                                    </Badge>
+                                                                ) : (
+                                                                    <Badge variant="secondary" className="text-white">Sans catégorie</Badge>
+                                                                )}
+                                                                {remaining > 0 && (
+                                                                    <span className="text-xs text-secondary-500">+{remaining}</span>
+                                                                )}
+                                                            </>
+                                                        );
+                                                    })()}
+                                                </div>
+                                                <span className="text-sm text-secondary-500 font-light">{project.end_year || project.year}</span>
                                             </div>
-                                            <h3 className="text-xl font-light text-secondary-950 mb-3 leading-tight line-clamp-1">{project.title}</h3>
+                                            <h3 className="text-base font-light text-secondary-950 mb-3 leading-tight line-clamp-2">{project.title}</h3>
                                             <div className="flex items-center text-secondary-600 text-sm mb-4">
                                                 <MapPin className="h-4 w-4 mr-2 text-primary-600" />
                                                 <span className="font-light">{project.location}</span>
                                             </div>
                                             <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">{project.description}</p>
-                                            <Link href={`/projects/${project.id}`}>
+                                            <div>
                                                 <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
                                                     Voir les détails
                                                     <ArrowRight className="ml-2 h-4 w-4" />
                                                 </Button>
-                                            </Link>
+                                            </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 ))}
                             </div>
                         ) : (
@@ -288,16 +319,20 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                     className="w-full h-64 md:h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="md:w-2/3 p-6">
+                                                <div className="md:w-2/3 p-6">
                                                 <div className="flex items-center justify-between mb-3">
-                                                    <Badge
-                                                        variant="secondary"
-                                                        className="text-white font-medium"
-                                                        style={{ backgroundColor: project.category?.color || '#a3845b' }}
-                                                    >
-                                                        {project.category?.name || project.category || 'Sans catégorie'}
-                                                    </Badge>
-                                                    <span className="text-sm text-gray-500">{project.year}</span>
+                                                    <div className="flex gap-2 flex-wrap">
+                                                        {(project.categories || (project.category ? [project.category] : [])).map((cat, idx) => (
+                                                            <Badge key={idx}
+                                                                variant="secondary"
+                                                                className="text-white font-medium"
+                                                                style={{ backgroundColor: cat?.color || '#a3845b' }}
+                                                            >
+                                                                {cat?.name || 'Sans catégorie'}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                    <span className="text-sm text-gray-500">{project.end_year || project.year}</span>
                                                 </div>
                                                 <h3 className="text-2xl font-semibold text-gray-900 mb-2">{project.title}</h3>
                                                 <div className="flex items-center text-gray-600 text-sm mb-3">
@@ -385,7 +420,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                         </div>
 
                         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} A1 atelier. Tous droits réservés.</p>
+                            <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Atelier A1. Tous droits réservés.</p>
                         </div>
                     </div>
                 </footer>
