@@ -226,7 +226,7 @@ export function DataTable({
                         const firstCat = cats[0];
                         const remaining = Math.max(0, cats.length - 1);
                         return (
-                            <a key={item.id || index} href={`/admin/projects/${item.id}/edit`} className="group block rounded-xl border border-gray-100 overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                            <a key={item.id || index} href={`/admin/projects/${item.id}`} className="group block rounded-xl border border-gray-100 overflow-hidden bg-white hover:shadow-lg transition-shadow">
                                 {/* Image banner */}
                                 <div className="relative">
                                     <img src={item.image_path || '/placeholder.svg'} alt="" className="h-40 w-full object-cover" />

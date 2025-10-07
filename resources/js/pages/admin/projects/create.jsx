@@ -33,9 +33,15 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   const galleryInputRef = useRef(null)
   const pdfInputRef = useRef(null)
 
+  const initialCategoryIds = Array.isArray(project?.category_ids)
+    ? project.category_ids.map((id) => Number(id))
+    : Array.isArray(project?.categories)
+      ? project.categories.map((c) => Number(c.id))
+      : []
+
   const { data, setData, post, put, processing, errors } = useForm({
     title: project?.title || '',
-    category_ids: project?.category_ids || [],
+    category_ids: initialCategoryIds,
     location: project?.location || '',
     year: project?.year || new Date().getFullYear().toString(),
     start_year: project?.start_year || '',
@@ -373,7 +379,8 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {categories.map((category) => {
-                    const checked = (data.category_ids || []).includes(category.id)
+                    const selectedIds = (data.category_ids || []).map((id) => Number(id))
+                    const checked = selectedIds.includes(Number(category.id))
                     return (
                       <label key={category.id} className="flex items-center gap-2 text-sm">
                         <input
@@ -381,9 +388,11 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                           checked={checked}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setData('category_ids', [...(data.category_ids || []), category.id])
+                              const next = [...(data.category_ids || []), Number(category.id)]
+                              setData('category_ids', next)
                             } else {
-                              setData('category_ids', (data.category_ids || []).filter((id) => id !== category.id))
+                              const next = (data.category_ids || []).filter((id) => Number(id) !== Number(category.id))
+                              setData('category_ids', next)
                             }
                           }}
                         />

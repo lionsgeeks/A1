@@ -40,9 +40,28 @@ class ProjectController extends Controller
         }
 
         $projects = $query
-                         ->orderBy('sort_order')
-                         ->orderBy('created_at', 'desc')
-                         ->paginate(12);
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        // Eager-compute category objects per project for the current page
+        $allCategoryIds = collect($projects->items())
+            ->flatMap(function ($project) {
+                return is_array($project->category_ids) ? $project->category_ids : [];
+            })
+            ->unique()
+            ->filter()
+            ->values();
+
+        $categoriesById = \App\Models\Category::whereIn('id', $allCategoryIds)->get()->keyBy('id');
+
+        $projects->getCollection()->transform(function ($project) use ($categoriesById) {
+            $ids = is_array($project->category_ids) ? $project->category_ids : [];
+            $project->categories = collect($ids)
+                ->map(fn ($id) => $categoriesById->get((int) $id))
+                ->filter()
+                ->values();
+            return $project;
+        });
 
         return Inertia::render('admin/projects/index', [
             'projects' => $projects,
@@ -78,8 +97,8 @@ class ProjectController extends Controller
             'duration_months' => 'nullable|integer|min:0',
             'status' => 'in:active,inactive',
             'sort_order' => 'integer|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp',
             'pdf' => 'nullable|mimes:pdf|max:20480',
             'partners' => 'nullable|array',
             'partners.*' => 'string|max:255',
@@ -110,7 +129,7 @@ class ProjectController extends Controller
 
         Project::create($validated);
 
-        return Redirect::route('admin.projects.index');
+        return Redirect::route('admin.projects.index')->with('success', 'Project created successfully');
     }
 
     public function edit(Project $project)
@@ -120,6 +139,20 @@ class ProjectController extends Controller
         return Inertia::render('admin/projects/create', [
             'project' => $project,
             'categories' => $categories
+        ]);
+    }
+
+    public function show(Project $project)
+    {
+        // Eager-load related categories for display convenience
+        $categories = [];
+        if (is_array($project->category_ids) && count($project->category_ids) > 0) {
+            $categories = \App\Models\Category::whereIn('id', $project->category_ids)->get();
+        }
+
+        return Inertia::render('admin/projects/show', [
+            'project' => $project,
+            'categories' => $categories,
         ]);
     }
 
@@ -182,7 +215,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
-        return Redirect::route('admin.projects.index');
+        return Redirect::route('admin.projects.index')->with('success', 'Project updated successfully');
     }
 
     public function destroy(Project $project)
@@ -201,7 +234,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return Redirect::route('admin.projects.index');
+        return Redirect::route('admin.projects.index')->with('success', 'Project deleted successfully');
     }
 
     public function deleteGalleryImage(Project $project, $index)

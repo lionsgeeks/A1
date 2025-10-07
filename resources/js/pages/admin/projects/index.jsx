@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import AppLayout from '@/layouts/app-layout'
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Link, router } from '@inertiajs/react'
 import { useModal } from '@/components/ui/modal'
+import { NotificationContainer, useNotifications } from '@/components/admin'
 import {
   DataTable,
   PageHeader,
@@ -23,6 +24,7 @@ import {
 } from '@/components/admin'
 
 export default function ProjectsIndex({ projects }) {
+  const { props } = usePage()
   const breadcrumbs = [
     { title: 'Admin', href: '/admin' },
     { title: 'Projects', href: '/admin/projects' }
@@ -30,6 +32,11 @@ export default function ProjectsIndex({ projects }) {
   const [selectedProject, setSelectedProject] = useState(null)
   const [showDetails, setShowDetails] = useState(false)
   const { showConfirm, ModalComponent } = useModal()
+  const { success } = useNotifications()
+  // Show flash success if present
+  if (props?.flash?.success) {
+    success(props.flash.success, 'Success')
+  }
 
   // Table columns configuration
   const columns = [
@@ -44,7 +51,7 @@ export default function ProjectsIndex({ projects }) {
       label: 'Title',
       sortable: true,
       render: (value, project) => (
-        <Link href={`/admin/projects/${project.id}/edit`} className="text-gray-900 hover:underline block max-w-[420px]">
+        <Link href={`/admin/projects/${project.id}`} className="text-gray-900 hover:underline block max-w-[420px]">
           <span className="text-base line-clamp-1">{value}</span>
         </Link>
       )
@@ -105,8 +112,7 @@ export default function ProjectsIndex({ projects }) {
       label: 'View Details',
       icon: Eye,
       onClick: (project) => {
-        setSelectedProject(project)
-        setShowDetails(true)
+        router.visit(`/admin/projects/${project.id}`)
       }
     },
     {
@@ -125,7 +131,12 @@ export default function ProjectsIndex({ projects }) {
           'Delete Project',
           `Are you sure you want to delete "${project.title}"? This action cannot be undone.`,
           () => {
-            router.delete(`/admin/projects/${project.id}`)
+            router.delete(`/admin/projects/${project.id}`, {
+              onSuccess: () => {
+                // eslint-disable-next-line no-console
+                console.log('Project deleted successfully')
+              }
+            })
           }
         )
       }
@@ -177,142 +188,13 @@ export default function ProjectsIndex({ projects }) {
             />
           )}
 
-          {/* Project Details Modal */}
-          {showDetails && selectedProject && (
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-30 flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900">Project Details</h3>
-                    <Button variant="ghost" size="sm" onClick={handleCloseDetails}>
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                      <img
-                        src={selectedProject.image_path || '/placeholder.svg'}
-                        alt={selectedProject.title}
-                        className="w-full h-64 object-cover rounded-lg"
-                      />
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Title</h4>
-                        <p className="text-gray-600">{selectedProject.title}</p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Category</h4>
-                        <Badge
-                          className="text-white"
-                          style={{ backgroundColor: selectedProject.category?.color || '#a3845b' }}
-                        >
-                          {selectedProject.category?.name || 'Uncategorized'}
-                        </Badge>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Location</h4>
-                        <p className="text-gray-600 flex items-center">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          {selectedProject.location}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Year</h4>
-                        <p className="text-gray-600 flex items-center">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {selectedProject.year}
-                        </p>
-                      </div>
-
-                      {/* Timeline */}
-                      {(selectedProject.start_year || selectedProject.end_year) && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Timeline</h4>
-                          <p className="text-gray-600">
-                            {selectedProject.start_year || '----'} - {selectedProject.end_year || '----'}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Achievement Status */}
-                      {selectedProject.achievement_status && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Achievement Status</h4>
-                          <Badge className="bg-blue-100 text-blue-800">
-                            {selectedProject.achievement_status}
-                          </Badge>
-                        </div>
-                      )}
-
-                      {/* Surface Area */}
-                      {selectedProject.surface_area && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Surface Area</h4>
-                          <p className="text-gray-600">{selectedProject.surface_area}</p>
-                        </div>
-                      )}
-
-                      {/* Client */}
-                      {selectedProject.client_name && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Client</h4>
-                          <p className="text-gray-600">{selectedProject.client_name}</p>
-                        </div>
-                      )}
-
-                      {/* Project Cost */}
-                      {selectedProject.project_cost && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Project Cost</h4>
-                          <p className="text-gray-600">{selectedProject.project_cost}</p>
-                        </div>
-                      )}
-
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Status</h4>
-                        <Badge className={getStatusColor(selectedProject.status)}>
-                          {selectedProject.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
-                    <p className="text-gray-600 ">{selectedProject.description}</p>
-                  </div>
-
-
-
-                  <div className="flex justify-between items-center pt-6 border-t border-gray-200 mt-6">
-                    <div className="text-sm text-gray-500">
-                      Last updated: {new Date(selectedProject.updated_at).toLocaleDateString()}
-                    </div>
-                    <div className="flex space-x-3">
-                      <Link href={`/admin/projects/${selectedProject.id}/edit`}>
-                        <Button variant="outline" className="text-black border-gray-300 hover:bg-gray-100">
-                          Edit Project
-                        </Button>
-                      </Link>
-                      <Link href={`/projects/${selectedProject.id}`}>
-                        <Button className="bg-black hover:bg-gray-800 text-white">
-                          <Eye className="h-4 w-4 mr-2" />
-                          View Public Page
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+      
         </PageContent>
       </PageContainer>
 
       {/* Modal Component */}
       <ModalComponent />
+      <NotificationContainer />
     </AppLayout>
   )
 }
