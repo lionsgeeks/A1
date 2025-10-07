@@ -165,22 +165,33 @@ export default function MessagesIndex({ messages, filters, stats }) {
           {messages.data?.length === 0 ? (
             <NoMessagesFound />
           ) : (
-            <DataTable
-              data={messages.data || []}
-              columns={columns}
-              actions={actions.filter(action => !action.show || action.show)}
-              searchable={true}
-              filterable={true}
-              sortable={true}
-              viewModes={['list']}
-              onSearch={(term) => {
-                router.get('/admin/messages', {
-                  search: term,
-                  status: selectedStatus !== 'all' ? selectedStatus : undefined
-                })
-              }}
-              emptyState={<NoMessagesFound />}
-            />
+            <div className="space-y-3">
+              {messages.data.map((message) => (
+                <button
+                  key={message.id}
+                  onClick={() => setSelectedMessage(message)}
+                  className="w-full text-left bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-900 truncate">{message.name}</span>
+                        <span className="text-sm text-gray-500 truncate">{message.email}</span>
+                      </div>
+                      <div className="mt-1 text-sm text-gray-700 truncate">{message.subject}</div>
+                    </div>
+                    <div className="flex items-center gap-3 ml-4">
+                      <Badge variant={message.status === 'unread' ? 'default' : 'secondary'}>
+                        {message.status}
+                      </Badge>
+                      <div className="text-xs text-gray-500 whitespace-nowrap">
+                        {new Date(message.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           )}
 
           {/* Message Details Modal */}

@@ -167,16 +167,10 @@ export default function ProjectsIndex({ projects }) {
               data={projects.data || []}
               columns={columns}
               actions={actions}
-              searchable={true}
-              filterable={true}
+              searchable={false}
+              filterable={false}
               sortable={true}
-              viewModes={['grid', 'list']}
-              onSearch={(term) => {
-                router.get('/admin/projects', {
-                  search: term
-                })
-              }}
-              onViewModeChange={() => {}}
+              viewModes={['grid']}
               emptyState={
                 <NoProjectsFound createHref="/admin/projects/create" />
               }

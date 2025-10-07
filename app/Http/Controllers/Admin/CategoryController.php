@@ -184,15 +184,19 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
         // Check if category has projects (via JSON)
         $projectsCount = \App\Models\Project::whereJsonContains('category_ids', (int) $category->id)->count();
 
         if ($projectsCount > 0) {
-            return response()->json([
-                'error' => "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first."
-            ], 422);
+            if ($request->expectsJson() || $request->wantsJson() || $request->ajax() || $request->header('X-Inertia')) {
+                return response()->json([
+                    'success' => false,
+                    'error' => "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first."
+                ], 422);
+            }
+            return Redirect::back()->withErrors(['error' => "Cannot delete category '{$category->name}' because it has {$projectsCount} project(s). Please reassign or delete the projects first."]);
         }
 
         // Delete image if exists
@@ -201,6 +205,10 @@ class CategoryController extends Controller
         }
 
         $category->delete();
+
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax() || $request->header('X-Inertia')) {
+            return response()->json(['success' => true, 'message' => 'Category deleted successfully']);
+        }
 
         return Redirect::route('admin.categories.index');
     }

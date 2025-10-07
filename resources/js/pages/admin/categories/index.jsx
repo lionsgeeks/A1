@@ -9,9 +9,9 @@ import AppLayout from '@/layouts/app-layout'
 import { useModal } from '@/components/ui/modal'
 
 export default function CategoriesIndex({ categories, filters }) {
-  const [search, setSearch] = useState(filters.search || '')
+  // const [search, setSearch] = useState(filters.search || '')
   const [deletingId, setDeletingId] = useState(null)
-  const [searching, setSearching] = useState(false)
+  // const [searching, setSearching] = useState(false)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
   const [editForm, setEditForm] = useState({
@@ -25,15 +25,15 @@ export default function CategoriesIndex({ categories, filters }) {
   const [editLoading, setEditLoading] = useState(false)
   const { showConfirm, showSuccess, showError, ModalComponent } = useModal()
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    setSearching(true)
-    router.get(route('admin.categories.index'), { search }, {
-      preserveState: true,
-      replace: true,
-      onFinish: () => setSearching(false)
-    })
-  }
+  // const handleSearch = (e) => {
+  //   e.preventDefault()
+  //   setSearching(true)
+  //   router.get(route('admin.categories.index'), { search }, {
+  //     preserveState: true,
+  //     replace: true,
+  //     onFinish: () => setSearching(false)
+  //   })
+  // }
 
   const handleEdit = (category) => {
     setEditingCategory(category)
@@ -75,11 +75,22 @@ export default function CategoriesIndex({ categories, filters }) {
     })
 
     try {
-      const response = await fetch(`/admin/categories/${editingCategory.id}/update`, {
+      if (!editingCategory || !editingCategory.id) {
+        throw new Error('Missing category id')
+      }
+
+      // Build URL via Ziggy; fallback to template string if param wasn't injected
+      let url = route('admin.categories.update-with-files', editingCategory.id)
+      if (typeof url === 'string' && url.includes('{category}')) {
+        url = `/admin/categories/${editingCategory.id}/update`
+      }
+
+      const response = await fetch(url, {
         method: 'POST',
         body: formData,
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
       })
@@ -120,26 +131,34 @@ export default function CategoriesIndex({ categories, filters }) {
   const handleDelete = (category) => {
     showConfirm(
       'Delete Category',
-      `Are you sure you want to delete the category "${category.name}"? This action cannot be undone and will affect all projects in this category.`,
-      () => {
-        setDeletingId(category.id)
-        router.delete(route('admin.categories.destroy', category.id), {
-          onSuccess: () => {
-            setDeletingId(null)
-            showSuccess(
-              'Category Deleted!',
-              'The category has been deleted successfully.'
-            )
-          },
-          onError: (errors) => {
-            setDeletingId(null)
-            const errorMessage = errors.error || 'There was an error deleting the category. Please try again.'
-            showError(
-              'Delete Failed',
-              errorMessage
-            )
+      `Are you sure you want to delete the category "${category.name}"? This cannot be undone.`,
+      async () => {
+        try {
+          setDeletingId(category.id)
+          let url = route('admin.categories.destroy', category.id)
+          if (typeof url === 'string' && url.includes('{category}')) {
+            url = `/admin/categories/${category.id}`
           }
-        })
+          const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Accept': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+          })
+          const data = await response.json().catch(() => ({}))
+          if (!response.ok || data?.success === false) {
+            throw new Error(data?.error || `Delete failed with status ${response.status}`)
+          }
+          showSuccess('Category Deleted!', 'The category has been deleted successfully.')
+          router.reload()
+        } catch (err) {
+          const message = err?.message || 'There was an error deleting the category. Please try again.'
+          showError('Delete Failed', message)
+        } finally {
+          setDeletingId(null)
+        }
       }
     )
   }
@@ -168,7 +187,7 @@ export default function CategoriesIndex({ categories, filters }) {
             </div>
 
             {/* Search */}
-            <div className="p-6">
+            {/* <div className="p-6">
               <form onSubmit={handleSearch} className="flex gap-4">
                 <div className="flex-1">
                   <Input
@@ -193,7 +212,7 @@ export default function CategoriesIndex({ categories, filters }) {
                   )}
                 </Button>
               </form>
-            </div>
+            </div> */}
           </div>
 
           {/* Categories Grid */}
@@ -346,7 +365,7 @@ export default function CategoriesIndex({ categories, filters }) {
             <div className="p-6">
               {/* Modal Header */}
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Edit Category</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Update Category</h2>
                 <button
                   onClick={() => setEditModalOpen(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -473,16 +492,16 @@ export default function CategoriesIndex({ categories, filters }) {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 bg-primary-600 hover:bg-primary-700"
+                    className="flex-1 bg-black hover:bg-gray-800 text-white"
                     disabled={editLoading}
                   >
                     {editLoading ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Updating...
+                        Saving...
                       </>
                     ) : (
-                      'Update Category'
+                      'Save Changes'
                     )}
                   </Button>
                 </div>
