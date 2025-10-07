@@ -64,15 +64,7 @@ export default function CategoriesIndex({ categories, filters }) {
       formData.append('image', editForm.image)
     }
 
-    // Debug logging
-    console.log('Form data being sent:', {
-      name: editForm.name,
-      description: editForm.description,
-      color: editForm.color,
-      sort_order: editForm.sort_order,
-      is_active: editForm.is_active,
-      hasImage: !!editForm.image
-    })
+    // removed debug logging
 
     try {
       if (!editingCategory || !editingCategory.id) {
@@ -109,7 +101,6 @@ export default function CategoriesIndex({ categories, filters }) {
       }
 
       const data = await response.json()
-      console.log('Response data:', data)
 
       if (data.success) {
         setEditModalOpen(false)

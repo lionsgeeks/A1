@@ -132,10 +132,7 @@ export default function ProjectsIndex({ projects }) {
           `Are you sure you want to delete "${project.title}"? This action cannot be undone.`,
           () => {
             router.delete(`/admin/projects/${project.id}`, {
-              onSuccess: () => {
-                // eslint-disable-next-line no-console
-                console.log('Project deleted successfully')
-              }
+              onSuccess: () => {}
             })
           }
         )
