@@ -387,6 +387,8 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 <Share2 className="h-4 w-4 mr-2" />
                                                 Partager
                                             </Button>
+                                            {project.pdf_path &&(
+
                                             <a href={project.pdf_path} download>
                                                 <Button
                                                     variant="outline"
@@ -396,6 +398,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                     Télécharger le PDF
                                                 </Button>
                                             </a>
+                                            )}
                                         </div>
                                     </div>
 

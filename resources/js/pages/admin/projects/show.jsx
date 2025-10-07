@@ -6,7 +6,7 @@ import { Calendar, MapPin, Edit, Trash2, ArrowLeft } from 'lucide-react'
 import { useModal } from '@/components/ui/modal'
 
 export default function ProjectShow({ project, categories = [] }) {
-  const { showConfirm } = useModal()
+  const { showConfirm, ModalComponent } = useModal()
 
   const handleDelete = () => {
     showConfirm(
@@ -108,8 +108,8 @@ export default function ProjectShow({ project, categories = [] }) {
           </div>
         </div>
       </div>
+      {/* Modal Component for confirms */}
+      <ModalComponent />
     </AppLayout>
   )
 }
-
-
