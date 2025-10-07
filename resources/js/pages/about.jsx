@@ -104,7 +104,16 @@ export default function About({ milestones = [] }) {
             description: "Du dessin initial au chantier, nous cultivons une rigueur constante afin de garantir la cohérence, la précision et la pérennité de nos réalisations."
         }
     ];
-
+    const sponsors = [
+        { src: lionsgeek, url: "https://lionsgeek.ma/" },
+        { src: casamemoire, url: "https://www.casamemoire.org/" },
+        { src: ksdesign, url: "https://www.ksdesignstudio.com/" },
+        { src: icomos, url: "https://www.icomos.org/" },
+        { src: lionsgeek, url: "https://lionsgeek.ma/" },
+        { src: casamemoire, url: "https://www.casamemoire.org/" },
+        { src: ksdesign, url: "https://www.ksdesignstudio.com/" },
+        { src: icomos, url: "https://www.icomos.org/" },
+    ];
 
 
 
@@ -292,7 +301,7 @@ export default function About({ milestones = [] }) {
                                     </div>
                                 </div>
                             ))}
-{/* 
+                            {/* 
                             {team.slice(2).map((member) => (
                                 <div
                                     key={member.id}
@@ -333,9 +342,23 @@ export default function About({ milestones = [] }) {
                                     onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
                                     onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
                                 >
-                                    {[lionsgeek, casamemoire, ksdesign, icomos, lionsgeek, casamemoire, ksdesign, icomos].map((src, idx) => (
-                                        <div key={`logo-${idx}`} className="h-28 flex items-center justify-center min-w-[200px]">
-                                            <img src={src} alt="sponsor" className="h-20 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                                    {sponsors.map((sponsor, idx) => (
+                                        <div
+                                            key={`logo-${idx}`}
+                                            className="h-28 flex items-center justify-center min-w-[200px]"
+                                        >
+                                            <a
+                                                href={sponsor.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="block"
+                                            >
+                                                <img
+                                                    src={sponsor.src}
+                                                    alt="sponsor"
+                                                    className="h-20 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+                                                />
+                                            </a>
                                         </div>
                                     ))}
                                 </div>
@@ -389,7 +412,7 @@ export default function About({ milestones = [] }) {
                                                             <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
                                                         )}
                                                     </div>
-                                        </div>
+                                                </div>
                                             </>
                                         )}
                                     </div>
@@ -463,7 +486,7 @@ export default function About({ milestones = [] }) {
                                 <ul className="space-y-2 text-gray-300">
                                     <li>+212 5 2247 49 91</li>
                                     <li>info@ateliera1.com </li>
-                                  <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
+                                    <li>217 angle rue fraternité  et bd zerktouni 3 ème étage 20 000 Casablanca</li>
                                 </ul>
                             </div>
                         </div>
