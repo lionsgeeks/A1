@@ -153,9 +153,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         }}
                                     >
                                         {category.name}
-                                        <span className="ml-2 text-xs opacity-75">
-                                            ({category.projects_count})
-                                        </span>
+                                     
                                     </button>
                                 ))}
                             </div>

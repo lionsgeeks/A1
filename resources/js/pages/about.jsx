@@ -21,7 +21,7 @@ export default function About({ milestones = [] }) {
             id: 2,
             name: "KASSOU Abderrahim",
             role: "Architecte Associé",
-            image: "https://media.licdn.com/dms/image/v2/D4E03AQHMq-MGEiee5A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1668290611493?e=1762387200&v=beta&t=bX0_B-6I7acttUsROyAvpSrRs6M5ULfp9r8mfsuvL-I",
+            image: "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/d/9/a/d9a1058910_50163142_elon-musk1.jpg",
             bio: "Fondateur investi dans la société civile, Abderrahim apporte à l’agence une vision élargie, nourrie par ses engagements associatifs et citoyens."
         },
         {
