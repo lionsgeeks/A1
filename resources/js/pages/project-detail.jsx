@@ -8,6 +8,32 @@ import logo from "../../assets/images/A1.png"
 export default function ProjectDetail({ project, relatedProjects = [] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+    const handleShare = async () => {
+        try {
+            const shareData = {
+                title: project.title,
+                text: project.title,
+                url: window.location.href,
+            }
+            if (navigator.share) {
+                await navigator.share(shareData)
+            } else if (navigator.clipboard) {
+                await navigator.clipboard.writeText(shareData.url)
+                alert('Lien copié dans le presse‑papiers')
+            } else {
+                const input = document.createElement('input')
+                input.value = shareData.url
+                document.body.appendChild(input)
+                input.select()
+                document.execCommand('copy')
+                document.body.removeChild(input)
+                alert('Lien copié dans le presse‑papiers')
+            }
+        } catch (e) {
+            console.error('Share failed:', e)
+            alert("Impossible de partager. Essayez de copier le lien.")
+        }
+    }
 
     const allImages = [
         project.image_path,
@@ -357,14 +383,14 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                     <div className="mt-8 pt-6 border-t border-gray-200">
                                         <div className="flex space-x-3">
-                                            <Button className="flex-1 bg-black hover:bg-gray-800 text-white">
+                                            <Button onClick={handleShare} className="flex-1 cursor-pointer bg-black hover:bg-gray-800 text-white">
                                                 <Share2 className="h-4 w-4 mr-2" />
                                                 Partager
                                             </Button>
                                             <a href={project.pdf_path} download>
                                                 <Button
                                                     variant="outline"
-                                                    className="flex-1 text-black border-black hover:bg-black hover:text-white"
+                                                    className="flex-1 text-black cursor-pointer border-black hover:bg-black hover:text-white"
                                                 >
                                                     <FileText className="h-4 w-4 mr-2" />
                                                     Télécharger le PDF
@@ -375,7 +401,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                     <div className="mt-6">
                                         <Link href="/contact">
-                                            <Button className="w-full bg-black hover:bg-gray-800 text-white">
+                                            <Button className="w-full bg-black hover:bg-gray-800 cursor-pointer text-white">
                                                 Démarrer votre projet
                                             </Button>
                                         </Link>

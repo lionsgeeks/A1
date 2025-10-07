@@ -389,7 +389,7 @@ export default function About({ milestones = [] }) {
                                                             <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
                                                         )}
                                                     </div>
-                                                </div>
+                                        </div>
                                             </>
                                         )}
                                     </div>

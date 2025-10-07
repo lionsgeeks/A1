@@ -595,7 +595,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
           </div>
 
           {/* Sponsors Modal Trigger */}
-          <div className="bg-white rounded-lg shadow p-6">
+          {/* <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">Sponsors</h3>
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2">
@@ -636,7 +636,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               </div>
               {errors.sponsors && <p className="text-red-600 text-sm mt-1">{errors.sponsors}</p>}
             </div>
-          </div>
+          </div> */}
 
           {/* Images Section */}
           <div className="bg-white rounded-lg shadow p-6">

@@ -211,8 +211,8 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                     </div>
 
                     <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
-                        <h1 className="text-2xl md:text-6xl font-extralight mb-8 leading-tight tracking-wide">
-                            Façonner des espaces qui révèlent le territoire  <span className=" font-light text-primary-300">et inspirent ceux qui l’habitent.</span>
+                        <h1 className="text-6xl md:text-8xl font-extralight mb-8 leading-tight tracking-wide">
+                            Atelier  <span className=" font-light text-primary-300">A1</span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-12 font-light max-w-3xl mx-auto leading-relaxed text-gray-100">
                             Façonner des espaces qui
@@ -296,168 +296,62 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                             </h2>
                         </div>
 
-                        <div
-                            className="carousel-container  relative overflow-hidden rounded-3xl bg-white p-8"
-                            onMouseEnter={() => setIsCarouselPaused(true)}
-                            onMouseLeave={() => setIsCarouselPaused(false)}
-                        >
-                            {/* Main carousel container */}
+                        <div className="relative group overflow-hidden rounded-3xl bg-white p-8">
+                            <style>{`
+                              @keyframes category-scroll {
+                                0% { transform: translate3d(0,0,0); }
+                                100% { transform: translate3d(-33.3333%,0,0); }
+                              }
+                            `}</style>
                             <div
-                                className={`flex ${isTransitioning ? 'transition-transform duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]' : ''}`}
+                                className="flex items-stretch gap-8"
                                 style={{
-                                    transform: `translateX(-${currentSlide * slideWidth}px)`,
-                                    gap: `${gap}px`,
-                                    willChange: 'transform'
+                                    width: 'max-content',
+                                    animation: 'category-scroll 18s linear infinite',
+                                    willChange: 'transform',
+                                    transform: 'translate3d(0,0,0)'
                                 }}
+                                onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+                                onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
                             >
-                                {extendedHighlights.map((item, index) => (
-                                    <div
-                                        key={`${item.title}-${index}`}
-                                        className="flex-shrink-0 group cursor-pointer carousel-slide"
-                                        style={{ width: `${slideWidth - gap}px` }}
+                                {[...highlights, ...highlights, ...highlights].map((item, idx) => (
+                                    <Link
+                                        key={`${item.slug || item.title}-${idx}`}
+                                        href={item.id ? `/projects?category=${encodeURIComponent(item.slug || item.title)}` : '#'}
+                                        className="min-w-[320px] max-w-[320px] block"
                                     >
-                                        {item.id ? (
-                                            <Link href={`/projects?category=${encodeURIComponent(item.slug || item.title)}`}
-                                                className="block">
-                                                <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
-                                                    {/* Image or Color Background */}
-                                                    {item.hasImage ? (
-                                                        <>
-                                                            <img
-                                                                src={item.image}
-                                                                alt={item.title}
-                                                                className="w-full h-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110"
-                                                            />
-                                                            {/* Gradient overlays for depth with category color */}
-                                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                                                            <div
-                                                                className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"
-                                                                style={{
-                                                                    background: `linear-gradient(to right, ${item.color}20, transparent, ${item.color}20)`
-                                                                }}
-                                                            />
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            {/* Color-based background for categories without images */}
-                                                            <div
-                                                                className="w-full h-full transition-all duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
-                                                                style={{
-                                                                    background: `linear-gradient(135deg, ${item.color}E6, ${item.color}B3, ${item.color}80)`
-                                                                }}
-                                                            />
-                                                            {/* Decorative pattern overlay */}
-                                                            <div className="absolute inset-0 opacity-20">
-                                                                <div className="w-full h-full" style={{
-                                                                    backgroundImage: `radial-gradient(circle at 25% 25%, white 2px, transparent 2px), radial-gradient(circle at 75% 75%, white 2px, transparent 2px)`,
-                                                                    backgroundSize: '60px 60px'
-                                                                }}></div>
-                                                            </div>
-                                                            {/* Subtle gradient overlay */}
-                                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                                                        </>
-                                                    )}
-
-                                                    {/* Content */}
-                                                    <div className="absolute bottom-0 left-0 right-0 p-8">
-                                                        <div className="transform transition-all duration-700 group-hover:translate-y-[-12px]">
-                                                            <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
-                                                                {item.title}
-                                                            </h3>
-                                                            {/* count removed */}
-
-                                                            {/* Decorative line with category color */}
-                                                            <div className="relative mt-6">
-                                                                <div
-                                                                    className="w-20 h-1 rounded-full transform transition-all duration-700 group-hover:w-32"
-                                                                    style={{ backgroundColor: item.color }}
-                                                                ></div>
-                                                                <div
-                                                                    className="absolute top-0 left-0 w-20 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                                                                    style={{
-                                                                        background: `linear-gradient(to right, ${item.color}80, ${item.color})`
-                                                                    }}
-                                                                ></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Hover overlay with category color */}
-                                                    <div
-                                                        className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-transparent opacity-0 transition-all duration-700 group-hover:opacity-100"
-                                                        style={{
-                                                            background: `linear-gradient(to top, ${item.color}20, transparent, transparent)`
-                                                        }}
+                                        <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl group cursor-pointer">
+                                            {item.hasImage ? (
+                                                <>
+                                                    <img
+                                                        src={item.image}
+                                                        alt={item.title}
+                                                        className="w-full h-full object-cover"
+                                                        loading="lazy"
+                                                        decoding="async"
                                                     />
-
-                                                    {/* Corner accent with category color */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                                </>
+                                            ) : (
+                                                <>
                                                     <div
-                                                        className="absolute top-6 right-6 w-12 h-12 border-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:rotate-180"
-                                                        style={{ borderColor: `${item.color}50` }}
-                                                    ></div>
-
-                                                    {/* View Category indicator */}
-                                                    <div className="absolute top-6 left-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2">
-                                                        <span className="text-white text-sm font-medium">Voir tous les projets</span>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        ) : (
-                                            <div className="relative overflow-hidden rounded-3xl aspect-[16/10] shadow-3xl transform transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.03] group-hover:shadow-3xl">
-                                                {/* Fallback content for items without ID */}
-                                                <img
-                                                    src={item.image || "/placeholder.svg"}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110"
+                                                        className="w-full h-full"
+                                                        style={{ background: `linear-gradient(135deg, ${item.color}E6, ${item.color}B3, ${item.color}80)` }}
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                                                </>
+                                            )}
+                                            <div className="absolute bottom-0 left-0 right-0 p-6">
+                                                <h3 className="text-2xl font-bold text-white">{item.title}</h3>
+                                                <div
+                                                    className="mt-3 w-16 h-1 rounded-full"
+                                                    style={{ backgroundColor: item.color }}
                                                 />
-
-                                                {/* Gradient overlays for depth */}
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                                                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
-
-                                                {/* Content */}
-                                                <div className="absolute bottom-0 left-0 right-0 p-8">
-                                                    <div className="transform transition-all duration-700 group-hover:translate-y-[-12px]">
-                                                        <h3 className="text-3xl font-bold mb-3 text-white leading-tight tracking-tight">
-                                                            {item.title}
-                                                        </h3>
-                                                        {/* count removed */}
-
-                                                        {/* Decorative line with animation */}
-                                                        <div className="relative mt-6">
-                                                            <div className="w-20 h-1 bg-primary-600 rounded-full transform transition-all duration-700 group-hover:w-32"></div>
-                                                            <div className="absolute top-0 left-0 w-20 h-1 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Hover overlay with subtle animation */}
-                                                <div className="absolute inset-0 bg-gradient-to-t from-primary-600/20 via-transparent to-transparent opacity-0 transition-all duration-700 group-hover:opacity-100" />
-
-                                                {/* Corner accent */}
-                                                <div className="absolute top-6 right-6 w-12 h-12 border-2 border-white/30 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:rotate-180"></div>
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    </Link>
                                 ))}
                             </div>
-
-                            {/* Enhanced indicators with better styling */}
-                            {/* <div className="flex justify-center mt-16 space-x-4">
-              {highlights.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`carousel-indicator relative transition-all duration-500 transform hover:scale-110 ${
-                    index === ((currentSlide - 2 + highlights.length) % highlights.length)
-                      ? 'w-12 h-4 bg-gradient-to-r from-primary-500 to-primary-700 shadow-lg'
-                      : 'w-4 h-4 bg-gray-400 hover:bg-gray-500 shadow-md'
-                  } rounded-full`}
-                >
-                  <span className="sr-only">Go to slide {index + 1}</span>
-                </button>
-              ))}
-            </div> */}
                         </div>
                     </div>
                 </section>
@@ -577,8 +471,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                             <div>
                                 <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                    Créons
-                                    <span className="block font-bold">quelque chose d’extraordinaire</span>
+                                    Créons <span className="font-bold">quelque chose d’extraordinaire</span>
                                 </h2>
                                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                                     Prêt à donner vie à votre vision architecturale ? Nous serions ravis d’en discuter avec vous et d’explorer comment nous pouvons vous aider à créer quelque chose d’exceptionnel.
@@ -611,7 +504,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                         </div>
                                         <div>
                                             <div className="font-semibold text-gray-900">Adresse</div>
-                                            <div className="text-gray-600">123 Design Street, New York, NY 10001</div>
+                                            <div className="text-gray-600">217 angle rue fraternité et bd zerktouni 3 ème étage 20 000 Casablanca</div>
                                         </div>
                                     </div>
                                 </div>
