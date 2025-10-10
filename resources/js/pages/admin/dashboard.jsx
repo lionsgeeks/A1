@@ -11,7 +11,8 @@ import {
   TrendingUp,
   Calendar,
   Settings,
-  Tags
+  Tags,
+  Images
 } from 'lucide-react'
 import {
   StatsCard,
@@ -30,7 +31,7 @@ export default function AdminDashboard({ stats }) {
     {
       title: 'Total Projects',
       value: stats?.projects?.total || 0,
-      change: stats?.projects?.change || 0,
+    //   change: stats?.projects?.change || 0,
       trend: stats?.projects?.trend || 'up',
       icon: FolderOpen,
       color: 'blue',
@@ -39,7 +40,7 @@ export default function AdminDashboard({ stats }) {
     {
       title: 'Active Projects',
       value: stats?.projects?.active || 0,
-      change: stats?.projects?.activeChange || 0,
+    //   change: stats?.projects?.activeChange || 0,
       trend: stats?.projects?.activeTrend || 'up',
       icon: BarChart3,
       color: 'green',
@@ -48,7 +49,7 @@ export default function AdminDashboard({ stats }) {
     {
       title: 'Contact Messages',
       value: stats?.messages?.total || 0,
-      change: stats?.messages?.change || 0,
+    //   change: stats?.messages?.change || 0,
       trend: stats?.messages?.trend || 'up',
       icon: Mail,
       color: 'yellow',
@@ -57,7 +58,7 @@ export default function AdminDashboard({ stats }) {
     {
       title: 'Unread Messages',
       value: stats?.messages?.unread || 0,
-      change: stats?.messages?.unreadChange || 0,
+    //   change: stats?.messages?.unreadChange || 0,
       trend: stats?.messages?.unreadTrend || 'down',
       icon: Users,
       color: 'red',
@@ -101,6 +102,15 @@ export default function AdminDashboard({ stats }) {
       href: '/admin/categories',
       color: 'bg-indigo-500 hover:bg-indigo-600'
     }
+    ,
+
+    {
+      title: 'Sponsors',
+      description: 'Manage partners shown on About page',
+      icon: Users,
+      href: '/admin/sponsors',
+      color: 'bg-teal-500 hover:bg-teal-600'
+    }
   ]
 
   return (
@@ -129,7 +139,7 @@ export default function AdminDashboard({ stats }) {
 
         <PageContent>
           {/* Stats Grid */}
-          <StatsGrid stats={dashboardStats} />
+          <StatsGrid stats={dashboardStats} />:
 
           {/* Quick Actions */}
           <div className="mt-8">

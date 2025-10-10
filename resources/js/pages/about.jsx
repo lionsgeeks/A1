@@ -4,12 +4,9 @@ import { ArrowRight, Mail, Phone, MapPin, Users, Award, Calendar, Target, Lightb
 import { Head, Link } from '@inertiajs/react'
 import SiteNav from '@/components/site-nav'
 import SiteFooter from '@/components/site-footer'
-const lionsgeek = "/img/sponsors/lionsgeek.png"
-const casamemoire = "/img/sponsors/casamemoire.png"
-const ksdesign = "/img/sponsors/ksdesign.png"
-const icomos = "/img/sponsors/icomos.png"
+// DB-powered sponsors are provided by the server; defaults removed
 
-export default function About({ milestones = [] }) {
+export default function About({ milestones = [], sponsors = [] }) {
     const team = [
         {
             id: 1,
@@ -105,16 +102,9 @@ export default function About({ milestones = [] }) {
             description: "Du dessin initial au chantier, nous cultivons une rigueur constante afin de garantir la cohérence, la précision et la pérennité de nos réalisations."
         }
     ];
-    const sponsors = [
-        { src: lionsgeek, url: "https://lionsgeek.ma/" },
-        { src: casamemoire, url: "https://www.casamemoire.org/" },
-        { src: ksdesign, url: "https://www.ksdesignstudio.com/" },
-        { src: icomos, url: "https://www.icomos.org/" },
-        { src: lionsgeek, url: "https://lionsgeek.ma/" },
-        { src: casamemoire, url: "https://www.casamemoire.org/" },
-        { src: ksdesign, url: "https://www.ksdesignstudio.com/" },
-        { src: icomos, url: "https://www.icomos.org/" },
-    ];
+    const sponsorLogos = (sponsors && sponsors.length > 0)
+        ? sponsors.map(s => ({ src: s.logo_path, url: s.url || '#' }))
+        : [];
 
 
 
@@ -316,7 +306,7 @@ export default function About({ milestones = [] }) {
                                     onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
                                     onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
                                 >
-                                    {sponsors.map((sponsor, idx) => (
+                                    {[...sponsorLogos, ...sponsorLogos].map((sponsor, idx) => (
                                         <div
                                             key={`logo-${idx}`}
                                             className="h-28 flex items-center justify-center min-w-[200px]"

@@ -56,7 +56,9 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     sort_order: project?.sort_order || 0,
     image: null,
     pdf: null,
-    gallery_images: []
+    gallery_images: [],
+    sponsors: project?.sponsors || [],
+    sponsors_text: Array.isArray(project?.sponsors) ? project.sponsors.join(', ') : ''
   })
 
   // Modal states
@@ -504,7 +506,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
               </div>
             </div>
 
-            {/* Client and Project Cost */}
+            {/* Client, Cost, and Sponsors */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div>
                 <label htmlFor="client_name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -535,6 +537,30 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 />
                 {errors.project_cost && <p className="text-red-600 text-sm mt-1">{errors.project_cost}</p>}
               </div>
+            </div>
+
+            {/* Sponsors */}
+            <div className="mt-6">
+              <label htmlFor="sponsors" className="block text-sm font-medium text-gray-700 mb-2">
+                Sponsors
+              </label>
+              <input
+                type="text"
+                id="sponsors"
+                value={data.sponsors_text}
+                onChange={(e) => {
+                  const text = e.target.value
+                  setData('sponsors_text', text)
+                  const arr = text
+                    .split(',')
+                    .map(s => s.trim())
+                    .filter(Boolean)
+                  setData('sponsors', arr)
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                placeholder="Ex: LionsGeek, Casa Mémoire, KS Design"
+              />
+              {errors.sponsors && <p className="text-red-600 text-sm mt-1">{errors.sponsors}</p>}
             </div>
 
             {/* Duration */}

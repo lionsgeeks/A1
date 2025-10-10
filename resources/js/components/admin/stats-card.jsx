@@ -3,10 +3,10 @@ import { Button } from '@/components/ui/button'
 import { TrendingUp, TrendingDown, Minus, ArrowUpRight } from 'lucide-react'
 import { Link } from '@inertiajs/react'
 
-export function StatsCard({ 
-  title, 
-  value, 
-  icon: Icon, 
+export function StatsCard({
+  title,
+  value,
+  icon: Icon,
   color = 'bg-blue-500',
   change,
   changeType = 'neutral',
@@ -56,15 +56,15 @@ export function StatsCard({
     <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <div className={`${color} p-3 rounded-lg`}>
+          {/* <div className={`${color} p-3 rounded-lg`}>
             <Icon className="h-6 w-6 text-white" />
-          </div>
+          </div> */}
           <div>
             <p className="text-sm font-medium text-gray-600">{title}</p>
             <p className="text-2xl font-bold text-gray-900">{value}</p>
           </div>
         </div>
-        
+
         {href && (
           <Button variant="ghost" size="sm" className="text-gray-400 hover:text-gray-600">
             <ArrowUpRight className="h-4 w-4" />
@@ -81,7 +81,7 @@ export function StatsCard({
             </Badge>
           </div>
         )}
-        
+
         {description && (
           <p className="text-xs text-gray-500 text-right">{description}</p>
         )}
@@ -114,10 +114,10 @@ export function StatsGrid({ stats = [], loading = false, className = '' }) {
   )
 }
 
-export function MiniStatsCard({ 
-  title, 
-  value, 
-  icon: Icon, 
+export function MiniStatsCard({
+  title,
+  value,
+  icon: Icon,
   color = 'text-blue-600',
   href,
   className = ''

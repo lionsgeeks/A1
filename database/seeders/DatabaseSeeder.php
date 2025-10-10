@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // UpdateCategoriesSeeder::class,
             // Adminseeder::class,
-            MilestoneSeeder::class
+            // MilestoneSeeder::class,
+            SponsorsSeeder::class
 
 
         ]);

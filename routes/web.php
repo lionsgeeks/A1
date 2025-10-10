@@ -16,16 +16,20 @@ Route::get('/', function () {
         ->take(5)
         ->get();
 
+    // Hero slides from DB
+
     return Inertia::render('architectural-website', [
-        'featuredCategories' => $featuredCategories->values(), // Reset array keys
-        'featuredProjects' => $featuredProjects
+        'featuredCategories' => $featuredCategories->values(),
+        'featuredProjects' => $featuredProjects,
     ]);
 })->name('home');
 
 Route::get('/about', function () {
     $milestones = \App\Models\Milestone::active()->ordered()->get();
+    $sponsors = \App\Models\Sponsor::active()->ordered()->get();
     return Inertia::render('about', [
-        'milestones' => $milestones
+        'milestones' => $milestones,
+        'sponsors' => $sponsors
     ]);
 })->name('about');
 
@@ -80,6 +84,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Timeline milestones CRUD
     Route::resource('milestones', App\Http\Controllers\Admin\MilestoneController::class);
+
+    // Hero slides CRUD
+
+    // Sponsors CRUD
+    Route::resource('sponsors', App\Http\Controllers\Admin\SponsorController::class);
 
     // Categories CRUD
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);

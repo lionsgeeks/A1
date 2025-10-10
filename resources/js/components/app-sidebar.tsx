@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, FolderOpen, MessageSquare, Milestone, Tags } from 'lucide-react';
+import { LayoutGrid, FolderOpen, MessageSquare, Milestone, Tags, Images, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 // const mainNavItems: NavItem[] = [
@@ -40,6 +40,12 @@ const adminNavItems: NavItem[] = [
         title: 'Milestones',
         href: '/admin/milestones',
         icon: Milestone,
+    },
+
+    {
+        title: 'Sponsors',
+        href: '/admin/sponsors',
+        icon: Users,
     },
 
 ];
