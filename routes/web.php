@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::get('/about', function () {
     $milestones = \App\Models\Milestone::active()->ordered()->get();
-    $sponsors = \App\Models\Sponsor::active()->ordered()->get();
+    $sponsors = \App\Models\Sponsor::all();
     return Inertia::render('about', [
         'milestones' => $milestones,
         'sponsors' => $sponsors

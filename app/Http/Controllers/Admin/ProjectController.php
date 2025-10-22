@@ -118,12 +118,12 @@ class ProjectController extends Controller
         }
 
         // Upload main image
-        $imagePath = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 92, 2560);
+        $imagePath = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 95, 4000);
         $validated['image_path'] = $imagePath;
 
         // Upload gallery images if provided
         if ($request->hasFile('gallery_images')) {
-            $galleryPaths = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'), 'projects', 92, 2560);
+            $galleryPaths = $this->imageUploadService->uploadMultipleWithThumbnails($request->file('gallery_images'), 'projects');
             $validated['gallery_images'] = $galleryPaths;
         }
 
@@ -205,12 +205,16 @@ class ProjectController extends Controller
             if ($project->image_path) {
                 $this->imageUploadService->deleteImage($project->image_path);
             }
-            $validated['image_path'] = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 92, 2560);
+            $validated['image_path'] = $this->imageUploadService->uploadImage($request->file('image'), 'projects', 95, 4000);
         }
 
-        // Upload new gallery images if provided (only for create mode, not edit mode)
-        if ($request->hasFile('gallery_images') && !$project->gallery_images) {
-            $validated['gallery_images'] = $this->imageUploadService->uploadMultipleImages($request->file('gallery_images'), 'projects', 92, 2560);
+        // Upload new gallery images if provided (replace existing ones)
+        if ($request->hasFile('gallery_images')) {
+            // Delete old gallery images
+            if ($project->gallery_images) {
+                $this->imageUploadService->deleteMultipleImages($project->gallery_images);
+            }
+            $validated['gallery_images'] = $this->imageUploadService->uploadMultipleWithThumbnails($request->file('gallery_images'), 'projects');
         }
 
         $project->update($validated);
@@ -242,23 +246,35 @@ class ProjectController extends Controller
         try {
             $galleryImages = $project->gallery_images ?? [];
 
-            if (isset($galleryImages[$index])) {
-                // Delete the image file
-                $this->imageUploadService->deleteImage($galleryImages[$index]);
-
-                // Remove from array
-                unset($galleryImages[$index]);
-
-                // Reindex array to maintain proper indexing
-                $galleryImages = array_values($galleryImages);
-
-                // Update project
-                $project->update(['gallery_images' => $galleryImages]);
-
-                return response()->json(['success' => true, 'message' => 'Gallery image deleted successfully!']);
+            if (!is_array($galleryImages) || !isset($galleryImages[$index])) {
+                return response()->json(['success' => false, 'message' => 'Image not found!'], 404);
             }
 
-            return response()->json(['success' => false, 'message' => 'Image not found!'], 404);
+            $imageToDelete = $galleryImages[$index];
+
+            // Delete the image files (full and thumbnail)
+            if (is_array($imageToDelete) && isset($imageToDelete['full']) && isset($imageToDelete['thumb'])) {
+                $this->imageUploadService->deleteImage($imageToDelete['full']);
+                $this->imageUploadService->deleteImage($imageToDelete['thumb']);
+            } else {
+                // Fallback for old format if any exist
+                $this->imageUploadService->deleteImage($imageToDelete);
+            }
+
+            // Remove from array
+            unset($galleryImages[$index]);
+
+            // Reindex array to maintain proper indexing
+            $galleryImages = array_values($galleryImages);
+
+            // Update project
+            $project->update(['gallery_images' => $galleryImages]);
+
+            return response()->json([
+                'success' => true, 
+                'message' => 'Gallery image deleted successfully!',
+                'gallery_images' => $galleryImages
+            ]);
         } catch (\Exception $e) {
             Log::error('Error deleting gallery image: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Error deleting image: ' . $e->getMessage()], 500);
@@ -269,16 +285,28 @@ class ProjectController extends Controller
     {
         try {
             $request->validate([
-                'gallery_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                'gallery_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             ]);
 
             $galleryImages = $project->gallery_images ?? [];
+            
+            // Ensure it's an array
+            if (!is_array($galleryImages)) {
+                $galleryImages = [];
+            }
 
-            // Upload new image
-            $newImagePath = $this->imageUploadService->uploadImage($request->file('gallery_image'));
+            // Upload new image with compression and thumbnail
+            $newImageData = $this->imageUploadService->uploadWithThumbnail(
+                $request->file('gallery_image'),
+                'projects',
+                90,     // full quality
+                2000,   // full max size
+                75,     // thumb quality
+                200     // thumb size
+            );
 
             // Add to gallery
-            $galleryImages[] = $newImagePath;
+            $galleryImages[] = $newImageData;
 
             // Update project
             $project->update(['gallery_images' => $galleryImages]);
@@ -286,7 +314,7 @@ class ProjectController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Gallery image added successfully!',
-                'image_path' => $newImagePath,
+                'image_data' => $newImageData,
                 'gallery_images' => $galleryImages
             ]);
         } catch (\Exception $e) {

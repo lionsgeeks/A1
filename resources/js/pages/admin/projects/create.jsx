@@ -10,7 +10,8 @@ import {
     Image as ImageIcon,
     FileText,
     AlertTriangle,
-    CheckCircle
+    CheckCircle,
+    Loader2
 } from 'lucide-react'
 import { Link, router, useForm } from '@inertiajs/react'
 
@@ -22,11 +23,24 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     { title: isEditing ? 'Edit Project' : 'Create Project', href: '#' }
   ]
   const [imagePreview, setImagePreview] = useState(project?.image_path || null)
-  const [galleryPreviews, setGalleryPreviews] = useState(project?.gallery_images || [])
+  const [galleryPreviews, setGalleryPreviews] = useState(() => {
+    // Initialize with thumbnails if available, otherwise use full images
+    if (project?.gallery_images) {
+      return project.gallery_images.map(img => {
+        if (typeof img === 'object' && img.thumb) {
+          return img.thumb; // Use thumbnail for fast preview
+        }
+        return img; // Fallback to full image
+      });
+    }
+    return [];
+  })
   const [existingGalleryImages, setExistingGalleryImages] = useState(project?.gallery_images || [])
   const [newGalleryImages, setNewGalleryImages] = useState([])
   const [isDraggingMain, setIsDraggingMain] = useState(false)
   const [isDraggingGallery, setIsDraggingGallery] = useState(false)
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false)
+  const [isDeletingImage, setIsDeletingImage] = useState(null) // Track which image is being deleted
 
   // Refs for file inputs
   const mainImageInputRef = useRef(null)
@@ -215,6 +229,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   const removeGalleryImage = async (index) => {
     if (isEditing && index < existingGalleryImages.length) {
       // Removing an existing image - call API to delete from server
+      setIsDeletingImage(index)
       try {
         const response = await fetch(`/admin/projects/${project.id}/gallery/${index}`, {
           method: 'DELETE',
@@ -227,13 +242,17 @@ export default function ProjectCreate({ project = null, categories = [] }) {
         })
 
         if (response.ok) {
-          // Remove from existing images
-          const newExistingImages = existingGalleryImages.filter((_, i) => i !== index)
-          setExistingGalleryImages(newExistingImages)
-
-          // Update previews
-          const newPreviews = galleryPreviews.filter((_, i) => i !== index)
-          setGalleryPreviews(newPreviews)
+          const result = await response.json()
+          // Update existing gallery images
+          setExistingGalleryImages(result.gallery_images)
+          // Update previews with thumbnails
+          const thumbPreviews = result.gallery_images.map(img => {
+            if (typeof img === 'object' && img.thumb) {
+              return img.thumb;
+            }
+            return img;
+          });
+          setGalleryPreviews(thumbPreviews)
         } else {
           const errorData = await response.json()
           showModalDialog('error', 'Delete Failed', `Failed to delete image: ${errorData.message || 'Unknown error'}`)
@@ -241,6 +260,8 @@ export default function ProjectCreate({ project = null, categories = [] }) {
       } catch (error) {
         console.error('Error deleting image:', error)
         showModalDialog('error', 'Delete Failed', 'Failed to delete image')
+      } finally {
+        setIsDeletingImage(null)
       }
     } else {
       // Removing a new image (not yet uploaded)
@@ -261,6 +282,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
   const addGalleryImage = async (file) => {
     if (!isEditing) return
 
+    setIsUploadingGallery(true)
     const formData = new FormData()
     formData.append('gallery_image', file)
 
@@ -279,7 +301,14 @@ export default function ProjectCreate({ project = null, categories = [] }) {
         const result = await response.json()
         // Update existing gallery images
         setExistingGalleryImages(result.gallery_images)
-        setGalleryPreviews(result.gallery_images)
+        // Update previews with thumbnails
+        const thumbPreviews = result.gallery_images.map(img => {
+          if (typeof img === 'object' && img.thumb) {
+            return img.thumb;
+          }
+          return img;
+        });
+        setGalleryPreviews(thumbPreviews)
       } else {
         const errorData = await response.json()
         showModalDialog('error', 'Upload Failed', `Failed to upload image: ${errorData.message || 'Unknown error'}`)
@@ -287,6 +316,8 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     } catch (error) {
       console.error('Error uploading image:', error)
       showModalDialog('error', 'Upload Failed', 'Failed to upload image')
+    } finally {
+      setIsUploadingGallery(false)
     }
   }
 
@@ -778,13 +809,15 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                 className={`border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors ${
                   isDraggingGallery
                     ? 'border-blue-400 bg-blue-50'
+                    : isUploadingGallery
+                    ? 'border-gray-300 bg-gray-50 cursor-not-allowed'
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
-                onClick={handleGalleryAreaClick}
-                onDragOver={handleGalleryDragOver}
-                onDragEnter={handleGalleryDragEnter}
-                onDragLeave={handleGalleryDragLeave}
-                onDrop={handleGalleryDrop}
+                onClick={isUploadingGallery ? undefined : handleGalleryAreaClick}
+                onDragOver={isUploadingGallery ? undefined : handleGalleryDragOver}
+                onDragEnter={isUploadingGallery ? undefined : handleGalleryDragEnter}
+                onDragLeave={isUploadingGallery ? undefined : handleGalleryDragLeave}
+                onDrop={isUploadingGallery ? undefined : handleGalleryDrop}
               >
                 {galleryPreviews.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -801,20 +834,40 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                             e.stopPropagation()
                             removeGalleryImage(index)
                           }}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                          disabled={isDeletingImage === index}
+                          className={`absolute top-1 right-1 rounded-full p-1 ${
+                            isDeletingImage === index 
+                              ? 'bg-gray-400 cursor-not-allowed' 
+                              : 'bg-red-500 hover:bg-red-600'
+                          } text-white`}
                         >
-                          <X className="h-3 w-3" />
+                          {isDeletingImage === index ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <X className="h-3 w-3" />
+                          )}
                         </button>
                       </div>
                     ))}
                   </div>
                 ) : null}
                 <div className="text-center">
-                  <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <div className="text-sm text-gray-600">
-                    <p className="font-medium text-gray-900">Upload gallery images</p>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">Multiple files allowed</p>
+                  {isUploadingGallery ? (
+                    <div className="flex flex-col items-center">
+                      <Loader2 className="h-8 w-8 text-gray-400 mx-auto mb-2 animate-spin" />
+                      <div className="text-sm text-gray-600">
+                        <p className="font-medium text-gray-900">Uploading image...</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                      <div className="text-sm text-gray-600">
+                        <p className="font-medium text-gray-900">Upload gallery images</p>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">Multiple files allowed</p>
+                    </>
+                  )}
                 </div>
                 <input
                   ref={galleryInputRef}

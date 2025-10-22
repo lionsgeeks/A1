@@ -14,10 +14,10 @@ class SponsorsSeeder extends Seeder
         }
 
         $seed = [
-            ['name' => 'LionsGeek', 'url' => 'https://lionsgeek.ma/', 'logo_path' => '/img/sponsors/lionsgeek.png'],
-            ['name' => 'Casa Mémoire', 'url' => 'https://www.casamemoire.org/', 'logo_path' => '/img/sponsors/casamemoire.png'],
-            ['name' => 'KS Design', 'url' => 'https://www.ksdesignstudio.com/', 'logo_path' => '/img/sponsors/ksdesign.png'],
-            ['name' => 'ICOMOS', 'url' => 'https://www.icomos.org/', 'logo_path' => '/img/sponsors/icomos.png'],
+            ['name' => 'LionsGeek', 'url' => 'https://lionsgeek.ma/', 'logo_path' => '/sponsors/lionsgeek.png'],
+            ['name' => 'Casa Mémoire', 'url' => 'https://www.casamemoire.org/', 'logo_path' => '/sponsors/casamemoire.png'],
+            ['name' => 'KS Design', 'url' => 'https://www.ksdesignstudio.com/', 'logo_path' => '/sponsors/ksdesign.png'],
+            ['name' => 'ICOMOS', 'url' => 'https://www.icomos.org/', 'logo_path' => '/sponsors/icomos.png'],
         ];
 
         foreach ($seed as $s) {

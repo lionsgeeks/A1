@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target, FileText, Instagram, Twitter, Linkedin } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Share2, Download, ChevronLeft, ChevronRight, X, User, Building, Ruler, Clock, Award, Target, FileText, Instagram, Twitter, Linkedin, Loader2 } from "lucide-react"
 import { Head, Link } from '@inertiajs/react';
 import SiteNav from '@/components/site-nav'
 import SiteFooter from '@/components/site-footer'
@@ -9,6 +9,7 @@ import SiteFooter from '@/components/site-footer'
 export default function ProjectDetail({ project, relatedProjects = [] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+    const [isDownloadingPdf, setIsDownloadingPdf] = useState(false)
     const handleShare = async () => {
         try {
             const shareData = {
@@ -38,7 +39,14 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
     const allImages = [
         project.image_path,
-        ...(project.gallery_images || [])
+        ...(project.gallery_images || []).map(img => {
+            // Handle new format with thumbnails
+            if (typeof img === 'object' && img.full) {
+                return img.full;
+            }
+            // Handle old format (single path)
+            return img;
+        })
     ].filter(Boolean)
 
     const nextImage = () => {
@@ -55,23 +63,48 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
     }
 
     const handleDownloadPdf = async () => {
+        setIsDownloadingPdf(true)
         try {
+            console.log('Starting PDF download for project:', project.id)
             const res = await fetch(`/projects/${project.id}/download-pdf`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                headers: { 
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/pdf'
+                },
             })
-            if (!res.ok) throw new Error('Failed to generate PDF')
+            
+            console.log('Response status:', res.status)
+            console.log('Response headers:', res.headers)
+            
+            if (!res.ok) {
+                const errorText = await res.text()
+                console.error('Server error:', errorText)
+                throw new Error(`Failed to generate PDF: ${res.status} ${res.statusText}`)
+            }
+            
             const blob = await res.blob()
+            console.log('Blob size:', blob.size, 'bytes')
+            console.log('Blob type:', blob.type)
+            
+            if (blob.size === 0) {
+                throw new Error('Generated PDF is empty')
+            }
+            
             const url = window.URL.createObjectURL(blob)
             const link = document.createElement('a')
             link.href = url
-            link.download = `${project.title.replace(/[^A-Za-z0-9-]+/g, '-')}.pdf`
+            link.download = `Projet-${project.title.replace(/[^A-Za-z0-9-]+/g, '-')}.pdf`
             document.body.appendChild(link)
             link.click()
             link.remove()
             window.URL.revokeObjectURL(url)
+            
+            console.log('PDF download completed successfully')
         } catch (e) {
-            console.error(e)
-            alert('Impossible de télécharger le PDF pour le moment.')
+            console.error('PDF download error:', e)
+            alert(`Impossible de télécharger le PDF: ${e.message}`)
+        } finally {
+            setIsDownloadingPdf(false)
         }
     }
 
@@ -396,14 +429,19 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 <Share2 className="h-4 w-4 mr-2" />
                                                 Partager
                                             </Button>
-                                            {/* <Button
+                                            <Button
                                                 onClick={handleDownloadPdf}
                                                 variant="outline"
                                                 className="flex-1 text-black cursor-pointer border-black hover:bg-black hover:text-white"
+                                                disabled={isDownloadingPdf}
                                             >
-                                                <FileText className="h-4 w-4 mr-2" />
-                                                Télécharger le PDF
-                                            </Button> */}
+                                                {isDownloadingPdf ? (
+                                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                                ) : (
+                                                    <FileText className="h-4 w-4 mr-2" />
+                                                )}
+                                                {isDownloadingPdf ? 'Génération...' : 'Télécharger le PDF'}
+                                            </Button>
                                         </div>
                                     </div>
 

@@ -76,7 +76,13 @@ class ProjectController extends Controller
         }
         if (is_array($project->gallery_images)) {
             foreach ($project->gallery_images as $img) {
-                $imageUrls[] = url($img);
+                // Handle new format with thumbnails
+                if (is_array($img) && isset($img['full'])) {
+                    $imageUrls[] = url($img['full']);
+                } else {
+                    // Handle old format (single path)
+                    $imageUrls[] = url($img);
+                }
             }
         }
 

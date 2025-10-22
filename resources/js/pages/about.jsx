@@ -6,7 +6,7 @@ import SiteNav from '@/components/site-nav'
 import SiteFooter from '@/components/site-footer'
 // DB-powered sponsors are provided by the server; defaults removed
 
-export default function About({ milestones = [], sponsors = [] }) {
+export default function About({ milestones = [], sponsors }) {
     const team = [
         {
             id: 1,
@@ -102,9 +102,8 @@ export default function About({ milestones = [], sponsors = [] }) {
             description: "Du dessin initial au chantier, nous cultivons une rigueur constante afin de garantir la cohérence, la précision et la pérennité de nos réalisations."
         }
     ];
-    const sponsorLogos = (sponsors && sponsors.length > 0)
-        ? sponsors.map(s => ({ src: s.logo_path, url: s.url || '#' }))
-        : [];
+
+console.log(sponsors);
 
 
 
@@ -265,7 +264,7 @@ export default function About({ milestones = [], sponsors = [] }) {
                                     </div>
                                 </div>
                             ))}
-                            {/* 
+                            {/*
                             {team.slice(2).map((member) => (
                                 <div
                                     key={member.id}
@@ -306,7 +305,7 @@ export default function About({ milestones = [], sponsors = [] }) {
                                     onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
                                     onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
                                 >
-                                    {[...sponsorLogos, ...sponsorLogos].map((sponsor, idx) => (
+                                    {[...sponsors, ...sponsors].map((sponsor, idx) => (
                                         <div
                                             key={`logo-${idx}`}
                                             className="h-28 flex items-center justify-center min-w-[200px]"
@@ -318,10 +317,11 @@ export default function About({ milestones = [], sponsors = [] }) {
                                                 className="block"
                                             >
                                                 <img
-                                                    src={sponsor.src}
+                                                    src={`/storage/${sponsor.logo_path}`}
                                                     alt="sponsor"
                                                     className="h-20 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
                                                 />
+
                                             </a>
                                         </div>
                                     ))}
