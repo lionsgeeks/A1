@@ -179,7 +179,9 @@ export default function ProjectCreate({ project = null, categories = [] }) {
     const imageFiles = files.filter(file => file.type.startsWith('image/'))
 
     if (imageFiles.length > 0) {
-      setData('gallery_images', imageFiles)
+      const existingFiles = Array.from(data.gallery_images || [])
+      const appended = [...existingFiles, ...imageFiles]
+      setData('gallery_images', appended)
 
       const newPreviews = []
       imageFiles.forEach((file) => {
@@ -205,17 +207,19 @@ export default function ProjectCreate({ project = null, categories = [] }) {
         await addGalleryImage(file)
       }
     } else {
-      // For creating, handle as before
-      setData('gallery_images', files)
+      // For creating, append to any existing selection rather than replacing
+      const existingFiles = Array.from(data.gallery_images || [])
+      const appended = [...existingFiles, ...files]
+      setData('gallery_images', appended)
 
-      // Create previews for new files
+      // Create previews for new files and append to existing previews
       const previews = []
       files.forEach(file => {
         const reader = new FileReader()
         reader.onload = (e) => {
           previews.push(e.target.result)
           if (previews.length === files.length) {
-            setGalleryPreviews(previews)
+            setGalleryPreviews([...galleryPreviews, ...previews])
           }
         }
         reader.readAsDataURL(file)

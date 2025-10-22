@@ -108,8 +108,8 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                 <button
                                     onClick={() => handleCategoryChange('all')}
                                     className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase ${activeCategory === 'all'
-                                            ? 'bg-primary-600 text-white shadow-lg'
-                                            : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
+                                        ? 'bg-primary-600 text-white shadow-lg'
+                                        : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
                                         }`}
                                 >
                                     Tous les projets
@@ -121,8 +121,8 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         key={category.id}
                                         onClick={() => handleCategoryChange(category.name)}
                                         className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 tracking-wide uppercase relative ${activeCategory === category.name
-                                                ? 'text-white shadow-lg'
-                                                : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
+                                            ? 'text-white shadow-lg'
+                                            : 'bg-white text-secondary-700 hover:bg-primary-100 hover:text-primary-700 shadow-sm'
                                             }`}
                                         style={{
                                             backgroundColor: activeCategory === category.name ? category.color : undefined
@@ -209,66 +209,74 @@ export default function Projects({ projects, categories = [], selectedCategory =
                             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                                 {displayedProjects.map((project, index) => (
                                     <Link key={project.id} href={`/projects/${project.id}`}>
-                                    <div
-                                        className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group transform ${isTransitioning
+                                        <div
+                                            className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group transform ${isTransitioning
                                                 ? 'opacity-0 scale-95 translate-y-4'
                                                 : 'opacity-100 scale-100 translate-y-0'
-                                            } cursor-pointer`}
-                                        style={{
-                                            transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
-                                        }}
-                                    >
-                                        <div className="relative overflow-hidden">
-                                            <img
-                                                src={project.image_path || '/placeholder.svg'}
-                                                alt={project.title}
-                                                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                            <div className="absolute inset-0 bg-secondary-950/20 group-hover:bg-secondary-950/10 transition-all duration-300"></div>
-                                        </div>
-                                        <div className="p-8">
-                                            <div className="flex items-center justify-between mb-4">
-                                                <div className="flex items-center gap-2">
-                                                    {(() => {
-                                                        const cats = project.categories || (project.category ? [project.category] : []);
-                                                        const first = cats[0];
-                                                        const remaining = Math.max(0, (cats?.length || 0) - 1);
-                                                        return (
-                                                            <>
-                                                                {first ? (
-                                                                    <Badge
-                                                                        variant="secondary"
-                                                                        className="font-medium tracking-wide uppercase text-xs text-white"
-                                                                        style={{ backgroundColor: first?.color || '#a3845b' }}
-                                                                    >
-                                                                        {first?.name || 'Sans catégorie'}
-                                                                    </Badge>
-                                                                ) : (
-                                                                    <Badge variant="secondary" className="text-white">Sans catégorie</Badge>
-                                                                )}
-                                                                {remaining > 0 && (
-                                                                    <span className="text-xs text-secondary-500">+{remaining}</span>
-                                                                )}
-                                                            </>
-                                                        );
-                                                    })()}
+                                                } cursor-pointer`}
+                                            style={{
+                                                transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
+                                            }}
+                                        >
+                                            <div className="relative overflow-hidden">
+                                                <img
+                                                    src={project.image_path || '/placeholder.svg'}
+                                                    alt={project.title}
+                                                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                />
+                                                <div className="absolute inset-0 bg-secondary-950/20 group-hover:bg-secondary-950/10 transition-all duration-300"></div>
+                                            </div>
+                                            <div className="p-8">
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <div className="flex items-center gap-2">
+                                                        {(() => {
+                                                            const cats = project.categories || (project.category ? [project.category] : []);
+                                                            const first = cats[0];
+                                                            const remaining = Math.max(0, (cats?.length || 0) - 1);
+                                                            return (
+                                                                <>
+                                                                    {first ? (
+                                                                        <Badge
+                                                                            variant="secondary"
+                                                                            className="font-medium tracking-wide uppercase text-xs text-white truncate"
+                                                                            style={{
+                                                                                backgroundColor: first?.color || '#a3845b',
+                                                                                display: 'inline-block',
+                                                                                whiteSpace: 'nowrap',
+                                                                                overflow: 'hidden',
+                                                                                textOverflow: 'ellipsis',
+                                                                            }}
+                                                                        >
+                                                                            {(first?.name?.split('+')[0]?.trim()) || 'Sans catégorie'}
+                                                                        </Badge>
+
+
+                                                                    ) : (
+                                                                        <Badge variant="secondary" className="text-white">Sans catégorie</Badge>
+                                                                    )}
+                                                                    {remaining > 0 && (
+                                                                        <span className="text-xs text-secondary-500">+{remaining}</span>
+                                                                    )}
+                                                                </>
+                                                            );
+                                                        })()}
+                                                    </div>
+                                                    <span className="text-sm text-secondary-500 font-light">{project.end_year || project.year}</span>
                                                 </div>
-                                                <span className="text-sm text-secondary-500 font-light">{project.end_year || project.year}</span>
-                                            </div>
-                                            <h3 className="text-base font-light text-secondary-950 mb-3 leading-tight line-clamp-2">{project.title}</h3>
-                                            <div className="flex items-center text-secondary-600 text-sm mb-4">
-                                                <MapPin className="h-4 w-4 mr-2 text-primary-600" />
-                                                <span className="font-light">{project.location}</span>
-                                            </div>
-                                            <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">{project.description}</p>
-                                            <div>
-                                                <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
-                                                    Voir les détails
-                                                    <ArrowRight className="ml-2 h-4 w-4" />
-                                                </Button>
+                                                <h3 className="text-base font-light text-secondary-950 mb-3 leading-tight line-clamp-1">{project.title}</h3>
+                                                <div className="flex items-center text-secondary-600 text-sm mb-4">
+                                                    <MapPin className="h-4 w-4 mr-2 text-primary-600" />
+                                                    <span className="font-light">{project.location}</span>
+                                                </div>
+                                                <p className="text-secondary-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">{project.description}</p>
+                                                <div>
+                                                    <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium tracking-wide transition-all duration-300">
+                                                        Voir les détails
+                                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </Link>
                                 ))}
                             </div>
@@ -278,8 +286,8 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                     <div
                                         key={project.id}
                                         className={`bg-white rounded-lg h-full shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform ${isTransitioning
-                                                ? 'opacity-0 scale-95 translate-y-4'
-                                                : 'opacity-100 scale-100 translate-y-0'
+                                            ? 'opacity-0 scale-95 translate-y-4'
+                                            : 'opacity-100 scale-100 translate-y-0'
                                             }`}
                                         style={{
                                             transitionDelay: isTransitioning ? '0ms' : `${index * 50}ms`
@@ -293,7 +301,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                     className="w-full h-64 md:h-full object-cover"
                                                 />
                                             </div>
-                                                <div className="md:w-2/3 p-6">
+                                            <div className="md:w-2/3 p-6">
                                                 <div className="flex items-center justify-between mb-3">
                                                     <div className="flex gap-2 flex-wrap">
                                                         {(project.categories || (project.category ? [project.category] : [])).map((cat, idx) => (
