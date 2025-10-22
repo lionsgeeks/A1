@@ -54,6 +54,27 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
         setIsGalleryOpen(true)
     }
 
+    const handleDownloadPdf = async () => {
+        try {
+            const res = await fetch(`/projects/${project.id}/download-pdf`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            if (!res.ok) throw new Error('Failed to generate PDF')
+            const blob = await res.blob()
+            const url = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = `${project.title.replace(/[^A-Za-z0-9-]+/g, '-')}.pdf`
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+            window.URL.revokeObjectURL(url)
+        } catch (e) {
+            console.error(e)
+            alert('Impossible de télécharger le PDF pour le moment.')
+        }
+    }
+
     return (
         <>
             <Head title={`${project.title} - Atelier A1`} />
@@ -251,6 +272,18 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                             </div>
                                         )}
 
+                                        {project.sponsors && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-black mb-1">Sponsors</label>
+                                                <p className="text-black">
+                                                    {project.sponsors.map((sponsor, index) => (
+                                                        <span key={index} className="mr-2">{sponsor}</span>
+                                                    ))}
+                                                </p>
+
+                                            </div>
+                                        )}
+
                                         {project.year && (
                                             <div>
                                                 <label className="block text-sm font-medium text-black mb-1">Année</label>
@@ -363,18 +396,14 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 <Share2 className="h-4 w-4 mr-2" />
                                                 Partager
                                             </Button>
-                                            {project.pdf_path &&(
-
-                                            <a href={project.pdf_path} download>
-                                                <Button
-                                                    variant="outline"
-                                                    className="flex-1 text-black cursor-pointer border-black hover:bg-black hover:text-white"
-                                                >
-                                                    <FileText className="h-4 w-4 mr-2" />
-                                                    Télécharger le PDF
-                                                </Button>
-                                            </a>
-                                            )}
+                                            {/* <Button
+                                                onClick={handleDownloadPdf}
+                                                variant="outline"
+                                                className="flex-1 text-black cursor-pointer border-black hover:bg-black hover:text-white"
+                                            >
+                                                <FileText className="h-4 w-4 mr-2" />
+                                                Télécharger le PDF
+                                            </Button> */}
                                         </div>
                                     </div>
 
@@ -414,7 +443,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
                                                 >
                                                     {relatedProject.category?.name || relatedProject.category || 'Sans catégorie'}
                                                 </Badge>
-                                                <h3 className="text-xl font-semibold text-black mb-2">{relatedProject.title}</h3>
+                                                <h3 className="text-xl font-semibold text-black mb-2 line-clamp-1">{relatedProject.title}</h3>
                                                 <div className="flex items-center text-black text-sm mb-3">
                                                     <MapPin className="h-4 w-4 mr-1" />
                                                     <span>{relatedProject.location}</span>

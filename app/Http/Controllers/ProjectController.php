@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProjectController extends Controller
 {
@@ -64,5 +65,42 @@ class ProjectController extends Controller
             'project' => $project,
             'relatedProjects' => $relatedProjects
         ]);
+    }
+
+    public function downloadPdf(Project $project)
+    {
+        // Build absolute URLs for images so DomPDF can load them
+        $imageUrls = [];
+        if ($project->image_path) {
+            $imageUrls[] = url($project->image_path);
+        }
+        if (is_array($project->gallery_images)) {
+            foreach ($project->gallery_images as $img) {
+                $imageUrls[] = url($img);
+            }
+        }
+
+        // Embed logo as base64 (resources/assets/images/@A1.png)
+        $logoDataUri = null;
+        $logoPath = resource_path('assets/images/@A1.png');
+        if (file_exists($logoPath)) {
+            $logoData = base64_encode(file_get_contents($logoPath));
+            $logoDataUri = 'data:image/png;base64,' . $logoData;
+        }
+
+        $pdf = Pdf::setOptions([
+                'isRemoteEnabled' => true,
+                'isHtml5ParserEnabled' => true,
+            ])
+            ->loadView('pdf.project', [
+                'project' => $project,
+                'images' => $imageUrls,
+                'logoDataUri' => $logoDataUri,
+            ])
+            ->setPaper('a4');
+
+        $filename = 'Projet-' . preg_replace('/[^A-Za-z0-9\-]+/', '-', $project->title) . '.pdf';
+
+        return $pdf->download($filename);
     }
 }

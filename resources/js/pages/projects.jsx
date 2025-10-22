@@ -129,7 +129,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                         }}
                                     >
                                         {category.name}
-                                     
+
                                     </button>
                                 ))}
                             </div>
@@ -313,7 +313,7 @@ export default function Projects({ projects, categories = [], selectedCategory =
                                                     <MapPin className="h-4 w-4 mr-1" />
                                                     <span>{project.location}</span>
                                                 </div>
-                                                <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
+                                                <p className="text-gray-600 leading-relaxed mb-4 line-clamp-5">{project.description}</p>
                                                 <Link href={`/projects/${project.id}`}>
                                                     <Button className="bg-gray-900 hover:bg-gray-800 text-white">
                                                         Voir les détails

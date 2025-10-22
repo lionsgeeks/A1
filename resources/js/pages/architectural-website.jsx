@@ -395,7 +395,7 @@ export default function ArchitecturalWebsite({ featuredCategories = [], featured
                                                 <span className="mx-4">•</span>
                                                 <span>{project.year}</span>
                                             </div>
-                                            <p className="text-white/90 text-lg mb-8 leading-relaxed">
+                                            <p className="text-white/90 text-lg mb-8 leading-relaxed line-clamp-5">
                                                 {project.description}
                                             </p>
                                             <Link href={`/projects/${project.id}`}>
