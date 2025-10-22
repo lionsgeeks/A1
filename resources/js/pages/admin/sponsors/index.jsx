@@ -30,7 +30,7 @@ export default function SponsorsIndex({ sponsors = [] }) {
                 {sponsors.map((sponsor) => (
                   <tr key={sponsor.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={sponsor.logo_path?.startsWith('/') ? sponsor.logo_path : `/${sponsor.logo_path}`} alt="logo" className="h-12 w-24 object-contain" />
+                      <img src={`/storage/${sponsor.logo_path}`} alt="logo" className="h-12 w-24 object-contain" />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{sponsor.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{sponsor.url || '-'}</td>
