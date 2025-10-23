@@ -33,7 +33,17 @@ export default function SiteFooter() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-          <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Atelier A1. Tous droits réservés.</p>
+          <p className="text-gray-400 text-sm text-center">
+            © {new Date().getFullYear()} Atelier A1. Tous droits réservés.  Site réalisé par{' '}
+            <a
+              href="https://lionsgeek.ma/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              LionsGeek
+            </a>
+          </p>
         </div>
       </div>
     </footer>

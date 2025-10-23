@@ -25,7 +25,7 @@
     text-align: center;
     margin-bottom: 25px;
     padding: 25px 0;
-    border-bottom: 4px solid #3498db;
+    border-bottom: 4px solid #a3845b;
     background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
     color: #2c3e50;
 }
@@ -70,7 +70,7 @@
 }
 
         .chip {
-            background: #3498db;
+            background: #a3845b;
             color: white;
             padding: 6px 12px;
             font-size: 11px;
@@ -125,7 +125,7 @@
         .technical-section {
             background: #f8f9fa;
             border-radius: 8px;
-            border-left: 5px solid #3498db;
+            border-left: 5px solid #a3845b;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
@@ -177,7 +177,7 @@
     text-align: center;
     color: #2c3e50; /* Darker for readability */
     padding: 10px;
-    border-top: 3px solid #3498db;
+    border-top: 3px solid #a3845b;
     background: #f1f3f4;
     font-weight: 700;
     letter-spacing: 0.3px;
