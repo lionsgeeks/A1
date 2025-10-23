@@ -22,42 +22,58 @@
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px 0;
-            border-bottom: 3px solid #3498db;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 25px 0;
+    border-bottom: 4px solid #3498db;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #2c3e50;
+}
 
-        .brand {
-            font-size: 20px;
-            font-weight: 800;
-            color: #2c3e50;
-            letter-spacing: 3px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
+.brand {
+    font-size: 34px; /* Bigger */
+    font-weight: 900;
+    color: #2c3e50;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
 
-        .title {
-            font-size: 24px;
-            font-weight: 900;
-            color: #2c3e50;
-            margin: 10px 0;
-            line-height: 1.1;
-        }
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 12px;
+}
 
-        .meta {
-            font-size: 11px;
-            color: #7f8c8d;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
+.logo {
+    height: 55px; /* Bigger logo */
+    width: auto;
+}
+
+.title {
+    font-size: 36px; /* Bigger title */
+    font-weight: 900;
+    color: #2c3e50;
+    margin: 12px 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.meta {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
 
         .chip {
             background: #3498db;
             color: white;
-            padding: 5px 10px;
-            font-size: 9px;
+            padding: 6px 12px;
+            font-size: 11px;
             border-radius: 15px;
             margin-right: 6px;
             font-weight: 700;
@@ -77,7 +93,7 @@
 
         .hero img {
             width: 100%;
-            height: 380px; /* Increased height for a bigger image */
+            height: 450px;
             object-fit: cover;
             object-position: center;
             display: block;
@@ -106,27 +122,26 @@
         }
 
         .description-section,
-        .technical-section,
-        .gallery-section {
+        .technical-section {
             background: #f8f9fa;
             border-radius: 8px;
             border-left: 5px solid #3498db;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .section-title {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 800;
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .paragraph {
-            font-size: 11px;
-            line-height: 1.6;
+            font-size: 13px;
+            line-height: 1.7;
             color: #34495e;
             text-align: justify;
         }
@@ -138,7 +153,7 @@
         }
 
         .kv-label {
-            font-size: 9px;
+            font-size: 11px;
             color: #7f8c8d;
             font-weight: 700;
             text-transform: uppercase;
@@ -146,59 +161,45 @@
         }
 
         .kv-value {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
             color: #2c3e50;
             margin-top: 3px;
         }
 
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
-        }
-
-        .gallery img {
-            width: 65px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-            border: 2px solid #fff;
-        }
 
         .footer {
-            position: fixed;
-            bottom: 14mm;
-            left: 8mm;
-            right: 8mm;
-            font-size: 9px;
-            text-align: center;
-            color: #95a5a6;
-            padding: 8px;
-            border-top: 2px solid #ecf0f1;
-            background: #f8f9fa;
-            font-weight: 600;
-        }
+    position: fixed;
+    bottom: 18mm;
+    left: 8mm;
+    right: 8mm;
+    font-size: 14px; /* Increased from 12px */
+    text-align: center;
+    color: #2c3e50; /* Darker for readability */
+    padding: 10px;
+    border-top: 3px solid #3498db;
+    background: #f1f3f4;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
 
-        .contact-info {
-            position: fixed;
-            bottom: 3mm;
-            left: 8mm;
-            right: 8mm;
-            text-align: center;
-            font-size: 9px;
-            color: #2c3e50;
-            font-weight: 600;
-            line-height: 1.4;
-        }
+.contact-info {
+    position: fixed;
+    bottom: 5mm;
+    left: 8mm;
+    right: 8mm;
+    text-align: center;
+    font-size: 13px; /* Increased from 11px */
+    color: #34495e;
+    font-weight: 700;
+    line-height: 1.6;
+}
 
-        .contact-info span {
-            display: inline-block;
-            margin: 0 8px;
-        }
+.contact-info span {
+    display: inline-block;
+    margin: 0 10px;
+}
+
 
         .content-wrapper {
             margin-bottom: 25mm;
@@ -208,7 +209,12 @@
 <body>
     <div class="content-wrapper">
         <div class="header">
-            <div class="brand">ATELIER A1</div>
+            <div class="logo-section">
+                @if($logoDataUri)
+                    <img src="{{ $logoDataUri }}" alt="Atelier A1" class="logo" />
+                @endif
+                <div class="brand">ATELIER A1</div>
+            </div>
             <div class="title">{{ $project->title }}</div>
             <div class="meta">
                 @if($project->location) {{ $project->location }} @endif
@@ -338,17 +344,6 @@
             </div>
         </div>
 
-        @if(count($images) > 1)
-            <div class="gallery-section">
-                <div class="section-title">Galerie d'Images</div>
-                <div class="gallery">
-                    @php $galleryImages = collect($images)->where('type', 'gallery'); @endphp
-                    @foreach($galleryImages as $img)
-                        <img src="{{ $img['data'] }}" alt="{{ $project->title }}"/>
-                    @endforeach
-                </div>
-            </div>
-        @endif
     </div>
 
     <div class="footer">
