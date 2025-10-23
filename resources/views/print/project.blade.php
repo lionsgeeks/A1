@@ -77,7 +77,7 @@
 
         .hero img {
             width: 100%;
-            height: 250px;
+            height: 380px; /* Increased height for a bigger image */
             object-fit: cover;
             object-position: center;
             display: block;
@@ -105,15 +105,9 @@
             padding-left: 15px;
         }
 
-        .description-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 5px solid #3498db;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .technical-section {
+        .description-section,
+        .technical-section,
+        .gallery-section {
             background: #f8f9fa;
             border-radius: 8px;
             border-left: 5px solid #3498db;
@@ -158,15 +152,6 @@
             margin-top: 3px;
         }
 
-        .gallery-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 5px solid #3498db;
-            padding: 15px;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -186,7 +171,7 @@
 
         .footer {
             position: fixed;
-            bottom: 6mm;
+            bottom: 14mm;
             left: 8mm;
             right: 8mm;
             font-size: 9px;
@@ -198,8 +183,25 @@
             font-weight: 600;
         }
 
+        .contact-info {
+            position: fixed;
+            bottom: 3mm;
+            left: 8mm;
+            right: 8mm;
+            text-align: center;
+            font-size: 9px;
+            color: #2c3e50;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .contact-info span {
+            display: inline-block;
+            margin: 0 8px;
+        }
+
         .content-wrapper {
-            margin-bottom: 20mm;
+            margin-bottom: 25mm;
         }
     </style>
 </head>
@@ -239,27 +241,100 @@
             </div>
             
             <div class="content-right">
-                <div class="technical-section">
-                    <div class="section-title">Informations Techniques</div>
-                    @if($project->client_name)
-                        <div class="kv"><div class="kv-label">Maître d'Ouvrage</div><div class="kv-value">{{ $project->client_name }}</div></div>
-                    @endif
-                    @if($project->surface_area)
-                        <div class="kv"><div class="kv-label">Surface</div><div class="kv-value">{{ $project->surface_area }}</div></div>
-                    @endif
-                    @if($project->project_cost)
-                        <div class="kv"><div class="kv-label">Montant des Travaux</div><div class="kv-value">{{ $project->project_cost }}</div></div>
-                    @endif
-                    @if($project->start_year || $project->end_year)
-                        <div class="kv"><div class="kv-label">Période de Réalisation</div><div class="kv-value">{{ $project->start_year ?? '----' }} - {{ $project->end_year ?? '----' }}</div></div>
-                    @endif
-                    @if($project->duration_months)
-                        <div class="kv"><div class="kv-label">Durée</div><div class="kv-value">{{ $project->duration_months }} mois</div></div>
-                    @endif
-                    @if($project->status)
-                        <div class="kv"><div class="kv-label">Statut</div><div class="kv-value">{{ $project->status }}</div></div>
-                    @endif
-                </div>
+            <div class="technical-section">
+    <div class="section-title">Informations Techniques</div>
+
+    @if($project->client_name)
+        <div class="kv">
+            <div class="kv-label">Maître d'Ouvrage</div>
+            <div class="kv-value">{{ $project->client_name }}</div>
+        </div>
+    @endif
+
+    @if($project->architect)
+        <div class="kv">
+            <div class="kv-label">Architecte Principal</div>
+            <div class="kv-value">{{ $project->architect }}</div>
+        </div>
+    @endif
+
+    @if($project->contractor)
+        <div class="kv">
+            <div class="kv-label">Entrepreneur</div>
+            <div class="kv-value">{{ $project->contractor }}</div>
+        </div>
+    @endif
+
+    @if($project->sponsors)
+        <div class="kv">
+            <div class="kv-label">Sponsors</div>
+            <div class="kv-value">
+                @foreach($project->sponsors as $sponsor)
+                    <span>{{ $sponsor }}</span>@if(!$loop->last), @endif
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if($project->surface_area)
+        <div class="kv">
+            <div class="kv-label">Surface</div>
+            <div class="kv-value">{{ $project->surface_area }}</div>
+        </div>
+    @endif
+
+    @if($project->project_cost)
+        <div class="kv">
+            <div class="kv-label">Montant des Travaux</div>
+            <div class="kv-value">{{ $project->project_cost }}</div>
+        </div>
+    @endif
+
+    @if($project->start_year || $project->end_year)
+        <div class="kv">
+            <div class="kv-label">Période de Réalisation</div>
+            <div class="kv-value">
+                {{ $project->start_year ?? '----' }} - {{ $project->end_year ?? '----' }}
+            </div>
+        </div>
+    @endif
+
+    @if($project->completion_date)
+        <div class="kv">
+            <div class="kv-label">Date d’Achèvement</div>
+            <div class="kv-value">{{ $project->completion_date }}</div>
+        </div>
+    @endif
+
+    @if($project->duration_months)
+        <div class="kv">
+            <div class="kv-label">Durée</div>
+            <div class="kv-value">{{ $project->duration_months }} mois</div>
+        </div>
+    @endif
+
+    @if($project->year)
+        <div class="kv">
+            <div class="kv-label">Année</div>
+            <div class="kv-value">{{ $project->year }}</div>
+        </div>
+    @endif
+
+    @if($project->achievement_status)
+        <div class="kv">
+            <div class="kv-label">Statut d’Achèvement</div>
+            <div class="kv-value">{{ $project->achievement_status }}</div>
+        </div>
+    @endif
+
+    @if($project->status)
+        <div class="kv">
+            <div class="kv-label">Statut</div>
+            <div class="kv-value">{{ ucfirst($project->status) }}</div>
+        </div>
+    @endif
+</div>
+
             </div>
         </div>
 
@@ -280,5 +355,10 @@
         © {{ date('Y') }} Atelier A1 - Architecture & Design | {{ config('app.url') }}
     </div>
 
+    <div class="contact-info">
+        <span> +212 5 22 47 49 91</span>
+        <span> info@ateliera1.com</span>
+        <span> 217 angle rue Fraternité et bd Zerktouni, 3ᵉ étage, 20 000 Casablanca</span>
+    </div>
 </body>
 </html>
