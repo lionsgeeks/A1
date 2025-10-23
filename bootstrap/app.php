@@ -23,5 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if ($e->getStatusCode() === 404) {
+                return \Inertia\Inertia::render('errors/404')->toResponse($request)->setStatusCode(404);
+            }
+        });
     })->create();

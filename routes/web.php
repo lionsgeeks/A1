@@ -63,8 +63,12 @@ Route::get('/admin-test', function () {
 // Project detail route
 Route::get('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'show'])->name('projects.show');
 
+// Project print route
+Route::get('/projects/{project}/print', [App\Http\Controllers\ProjectController::class, 'print'])->name('projects.print');
+
 // Project PDF download
 Route::get('/projects/{project}/download-pdf', [App\Http\Controllers\ProjectController::class, 'downloadPdf'])->name('projects.pdf');
+
 
 // Contact form submission
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');

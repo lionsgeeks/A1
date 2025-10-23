@@ -67,9 +67,9 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function downloadPdf(Project $project)
+    public function print(Project $project)
     {
-        // Build absolute URLs for images so DomPDF can load them
+        // Build absolute URLs for images so they work in print too
         $imageUrls = [];
         if ($project->image_path) {
             $imageUrls[] = url($project->image_path);
@@ -94,19 +94,69 @@ class ProjectController extends Controller
             $logoDataUri = 'data:image/png;base64,' . $logoData;
         }
 
+        return view('print.project', [
+            'project' => $project,
+            'images' => $imageUrls,
+            'logoDataUri' => $logoDataUri,
+        ]);
+    }
+
+    public function downloadPdf(Project $project)
+    {
+        // Convert images to base64 for PDF embedding
+        $imageData = [];
+        
+        // Process main image
+        if ($project->image_path) {
+            $imagePath = public_path($project->image_path);
+            if (file_exists($imagePath)) {
+                $imageData[] = [
+                    'data' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($imagePath)),
+                    'type' => 'main'
+                ];
+            }
+        }
+        
+        // Process gallery images (show all images)
+        if (is_array($project->gallery_images)) {
+            foreach ($project->gallery_images as $img) {
+                $imagePath = null;
+                if (is_array($img) && isset($img['full'])) {
+                    $imagePath = public_path($img['full']);
+                } else {
+                    $imagePath = public_path($img);
+                }
+                
+                if ($imagePath && file_exists($imagePath)) {
+                    $imageData[] = [
+                        'data' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($imagePath)),
+                        'type' => 'gallery'
+                    ];
+                }
+            }
+        }
+
+        // Skip logo processing for maximum speed
+        $logoDataUri = null;
+
         $pdf = Pdf::setOptions([
-                'isRemoteEnabled' => true,
-                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => false, // Disable remote loading since we're using base64
+                'isHtml5ParserEnabled' => false,
+                'isPhpEnabled' => false,
+                'isFontSubsettingEnabled' => false,
+                'isJavascriptEnabled' => false,
             ])
-            ->loadView('pdf.project', [
+            ->loadView('print.project', [
                 'project' => $project,
-                'images' => $imageUrls,
+                'images' => $imageData,
                 'logoDataUri' => $logoDataUri,
             ])
-            ->setPaper('a4');
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['dpi' => 150]);
 
         $filename = 'Projet-' . preg_replace('/[^A-Za-z0-9\-]+/', '-', $project->title) . '.pdf';
 
         return $pdf->download($filename);
     }
+
 }

@@ -74,7 +74,6 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
             })
             
             console.log('Response status:', res.status)
-            console.log('Response headers:', res.headers)
             
             if (!res.ok) {
                 const errorText = await res.text()
@@ -84,19 +83,20 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
             
             const blob = await res.blob()
             console.log('Blob size:', blob.size, 'bytes')
-            console.log('Blob type:', blob.type)
             
             if (blob.size === 0) {
                 throw new Error('Generated PDF is empty')
             }
             
+            // Create download link and trigger download immediately
             const url = window.URL.createObjectURL(blob)
             const link = document.createElement('a')
             link.href = url
             link.download = `Projet-${project.title.replace(/[^A-Za-z0-9-]+/g, '-')}.pdf`
+            link.style.display = 'none'
             document.body.appendChild(link)
             link.click()
-            link.remove()
+            document.body.removeChild(link)
             window.URL.revokeObjectURL(url)
             
             console.log('PDF download completed successfully')
