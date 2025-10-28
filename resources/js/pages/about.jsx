@@ -103,7 +103,7 @@ export default function About({ milestones = [], sponsors }) {
         }
     ];
 
-console.log(sponsors);
+    console.log(sponsors);
 
 
 
@@ -331,63 +331,71 @@ console.log(sponsors);
                     </div>
                 </section>
 
-                {/* Timeline Section - alternating left/right */}
+                {/* Timeline Section - horizontal like the reference image */}
                 <section className="py-24">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
-                                NOTRE <span className=" font-bold">PARCOURS</span>
+                    <div className=" mx-auto px-6">
+                        {/* Heading */}
+                        <div className="text-center mb-6">
+                            <h2 className="text-4xl md:text-5xl tracking-wide text-gray-900">
+                                <span className="font-light">NOTRE </span>
+                                <span className="font-bold">PARCOURS</span>
                             </h2>
-                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                Depuis ses origines, l’Atelier s’est construit au fil de rencontres, de
-                                projets et d’engagements qui ont façonné sa trajectoire.
+                            <p className="mt-4 text-gray-700 max-w-3xl mx-auto">
+                                Depuis ses origines, l’Atelier s’est construit au fil de rencontres, de projets et d’engagements qui ont façonné sa trajectoire.
                             </p>
                         </div>
 
-                        <div className="relative">
-                            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-900"></div>
+                        {/* Horizontal timeline */}
+                        <div className="relative w-full py-20">
+                            {/* Main horizontal black line */}
+                            <div className="absolute top-[19.5%] left-1/2 -translate-x-1/2 w-[95%] h-[3px] bg-black rounded" />
 
-                            {milestones && milestones.length > 0 ? (
-                                milestones.map((milestone, index) => (
-                                    <div key={milestone.id || index} className={`relative flex items-start mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                                        {index % 2 === 0 ? (
-                                            <>
-                                                <div className="w-1/2 pr-8 text-right">
-                                                    <div className="bg-white p-6 rounded-lg shadow">
-                                                        <div className="text-sm uppercase tracking-widest text-gray-700 font-semibold mb-2">{milestone.year}</div>
-                                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{milestone.title}</h3>
-                                                        {milestone.description && (
-                                                            <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
-                                                        )}
+                            <div className="relative flex justify-between items-start w-[95%] ">
+                                {milestones
+                                    .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+                                    .map((m, idx) => (
+                                        <div key={idx} className="relative flex flex-col items-center text-center w-[35.6%]">
+                                            {/* Rotated year above the dot */}
+                                            <div className="-translate-y-6 rotate-[-45deg] text-[18px] font-semibold text-gray-800 tracking-wide select-none mb-6">
+                                                {m.year}
+                                            </div>
+
+                                            {/* Dot */}
+                                            <div className="w-7 h-7 bg-black rounded-full border-[6px] border-white z-10" />
+
+                                            {/* Dashed guide line */}
+                                            <div
+                                                className={`border-l border-dashed border-gray-400 mt-[-2px] ${idx % 2 === 0 ? "h-[100px]" : "h-[170px]"
+                                                    }`}
+                                            />
+
+
+                                            {/* Content */}
+                                            <div className="text-center px-2 mt-4">
+                                                {idx === 1 ? (
+                                                    <div>
+                                                        <h2 className="text-[20px] md:text-[22px] font-extrabold text-[#a3845b] uppercase leading-tight mb-2 tracking-wide">
+                                                            CRÉATION<br />D’ATELIER A1
+                                                        </h2>
                                                     </div>
-                                                </div>
-                                                <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-gray-900 rounded-full border-4 border-white"></div>
-                                                <div className="w-1/2"></div>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <div className="w-1/2"></div>
-                                                <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-gray-900 rounded-full border-4 border-white"></div>
-                                                <div className="w-1/2 pl-8 text-left">
-                                                    <div className="bg-white p-6 rounded-lg shadow">
-                                                        <div className="text-sm uppercase tracking-widest text-gray-700 font-semibold mb-2">{milestone.year}</div>
-                                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{milestone.title}</h3>
-                                                        {milestone.description && (
-                                                            <div className="text-gray-700 text-sm leading-6 whitespace-pre-line">{milestone.description}</div>
+                                                ) : (
+                                                    <>
+                                                        <h3 className="text-[10px] md:text-[16px] font-semibold text-gray-900 leading-snug mb-2">
+                                                            {m.title}
+                                                        </h3>
+                                                        {m.description && (
+                                                            <p className="text-[10px] md:text-[12px] leading-7 text-gray-800 font-serif max-w-[260px] mx-auto">
+                                                                {m.description}
+                                                            </p>
                                                         )}
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="text-center py-12">
-                                    <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                                    <p className="text-gray-600">Aucune étape disponible pour le moment.</p>
-                                </div>
-                            )}
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
+
                     </div>
                 </section>
 
