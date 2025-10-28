@@ -49,14 +49,14 @@ export default function MilestonesIndex({ milestones }) {
             label: 'Title',
             sortable: true,
             render: (value) => (
-                <div className="font-medium text-gray-900">{value}</div>
+                <div className="w-[18vw] truncate text-gray-900">{value}</div>
             )
         },
         {
             key: 'description',
             label: 'Description',
             render: (value) => (
-                <div className="max-w-xs truncate text-gray-600">{value}</div>
+                <div className="w-[18vw] truncate text-gray-600">{value}</div>
             )
         },
         {
@@ -206,7 +206,7 @@ export default function MilestonesIndex({ milestones }) {
 
                                         <div>
                                             <h4 className="font-semibold text-gray-900 mb-2">Title</h4>
-                                            <p className="text-gray-600">{selectedMilestone.title}</p>
+                                            <p className="text-gray-600 whitespace-pre-wrap">{selectedMilestone.title}</p>
                                         </div>
 
                                         <div>
