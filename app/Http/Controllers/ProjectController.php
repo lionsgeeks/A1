@@ -11,30 +11,18 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Project::query()->where('status', 'active');
-
-        // Filter by category if provided
-        if ($request->category) {
-            $categoryParam = $request->category;
-            $categoryId = \App\Models\Category::where('slug', $categoryParam)->orWhere('name', $categoryParam)->value('id');
-            if ($categoryId) {
-                $query->whereRaw("json_valid(category_ids) AND exists (select 1 from json_each(category_ids) where json_each.value = ?)", [(int) $categoryId]);
-            } else {
-                $query->whereRaw('1=0');
-            }
-        }
-
-        $projects = $query->orderBy('sort_order')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Get all categories (no counts)
+        $query = \App\Models\Project::query()
+            ->where('status', 'active')
+            ->orderBy('sort_order')
+            ->orderBy('created_at', 'desc');
+        
+        $perPage = 9;
+        $projects = $query->paginate($perPage)->withQueryString();
+        
         $categories = \App\Models\Category::active()->ordered()->get();
 
         return Inertia::render('projects', [
-            'projects' => [
-                'data' => $projects
-            ],
+            'projects' => $projects,
             'categories' => $categories,
             'selectedCategory' => $request->category
         ]);
@@ -105,7 +93,7 @@ class ProjectController extends Controller
     {
         // Convert images to base64 for PDF embedding
         $imageData = [];
-        
+
         // Process main image
         if ($project->image_path) {
             $imagePath = public_path($project->image_path);
@@ -116,7 +104,7 @@ class ProjectController extends Controller
                 ];
             }
         }
-        
+
         // Process gallery images (show all images)
         if (is_array($project->gallery_images)) {
             foreach ($project->gallery_images as $img) {
@@ -126,7 +114,7 @@ class ProjectController extends Controller
                 } else {
                     $imagePath = public_path($img);
                 }
-                
+
                 if ($imagePath && file_exists($imagePath)) {
                     $imageData[] = [
                         'data' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($imagePath)),

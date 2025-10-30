@@ -521,6 +521,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                   <option value="EN COURS">EN COURS</option>
                   <option value="EN PROJET">EN PROJET</option>
                   <option value="SUSPENDU">SUSPENDU</option>
+                  <option value="Concours non primé">Concours non primé</option>
                 </select>
                 {errors.achievement_status && <p className="text-red-600 text-sm mt-1">{errors.achievement_status}</p>}
               </div>
@@ -577,7 +578,7 @@ export default function ProjectCreate({ project = null, categories = [] }) {
             {/* Sponsors */}
             <div className="mt-6">
               <label htmlFor="sponsors" className="block text-sm font-medium text-gray-700 mb-2">
-                Sponsors
+                partenaires
               </label>
               <input
                 type="text"
@@ -840,8 +841,8 @@ export default function ProjectCreate({ project = null, categories = [] }) {
                           }}
                           disabled={isDeletingImage === index}
                           className={`absolute top-1 right-1 rounded-full p-1 ${
-                            isDeletingImage === index 
-                              ? 'bg-gray-400 cursor-not-allowed' 
+                            isDeletingImage === index
+                              ? 'bg-gray-400 cursor-not-allowed'
                               : 'bg-red-500 hover:bg-red-600'
                           } text-white`}
                         >

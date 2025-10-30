@@ -43,7 +43,7 @@ const adminNavItems: NavItem[] = [
     },
 
     {
-        title: 'Sponsors',
+        title: 'partenaires',
         href: '/admin/sponsors',
         icon: Users,
     },

@@ -67,27 +67,27 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
         try {
             console.log('Starting PDF download for project:', project.id)
             const res = await fetch(`/projects/${project.id}/download-pdf`, {
-                headers: { 
+                headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/pdf'
                 },
             })
-            
+
             console.log('Response status:', res.status)
-            
+
             if (!res.ok) {
                 const errorText = await res.text()
                 console.error('Server error:', errorText)
                 throw new Error(`Failed to generate PDF: ${res.status} ${res.statusText}`)
             }
-            
+
             const blob = await res.blob()
             console.log('Blob size:', blob.size, 'bytes')
-            
+
             if (blob.size === 0) {
                 throw new Error('Generated PDF is empty')
             }
-            
+
             // Create download link and trigger download immediately
             const url = window.URL.createObjectURL(blob)
             const link = document.createElement('a')
@@ -98,7 +98,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
             link.click()
             document.body.removeChild(link)
             window.URL.revokeObjectURL(url)
-            
+
             console.log('PDF download completed successfully')
         } catch (e) {
             console.error('PDF download error:', e)
@@ -307,7 +307,7 @@ export default function ProjectDetail({ project, relatedProjects = [] }) {
 
                                         {project.sponsors && (
                                             <div>
-                                                <label className="block text-sm font-medium text-black mb-1">Sponsors</label>
+                                                <label className="block text-sm font-medium text-black mb-1">partenaires</label>
                                                 <p className="text-black">
                                                     {project.sponsors.map((sponsor, index) => (
                                                         <span key={index} className="mr-2">{sponsor}</span>

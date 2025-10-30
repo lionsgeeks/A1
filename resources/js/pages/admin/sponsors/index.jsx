@@ -6,13 +6,13 @@ import { route } from 'ziggy-js'
 export default function SponsorsIndex({ sponsors = [] }) {
   return (
     <AppLayout>
-      <Head title="Sponsors" />
+      <Head title="partenaires" />
       <div className="py-12">
         <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">Sponsors</h1>
+            <h1 className="text-2xl font-bold">partenaires</h1>
             <Link href={'/admin/sponsors/create'}>
-              <Button className="bg-primary-600 hover:bg-primary-700">New Sponsor</Button>
+              <Button className="bg-primary-600 hover:bg-primary-700">New partenaire</Button>
             </Link>
           </div>
 

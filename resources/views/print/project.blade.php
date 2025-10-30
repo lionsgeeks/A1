@@ -245,7 +245,7 @@
                     <div class="paragraph">{{ $project->description ?? 'Aucune description disponible.' }}</div>
                 </div>
             </div>
-            
+
             <div class="content-right">
             <div class="technical-section">
     <div class="section-title">Informations Techniques</div>
@@ -273,7 +273,7 @@
 
     @if($project->sponsors)
         <div class="kv">
-            <div class="kv-label">Sponsors</div>
+            <div class="kv-label">partenaires</div>
             <div class="kv-value">
                 @foreach($project->sponsors as $sponsor)
                     <span>{{ $sponsor }}</span>@if(!$loop->last), @endif

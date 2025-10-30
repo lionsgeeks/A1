@@ -23,27 +23,11 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        $query = Project::query();
+        $perPage = 12;
+        $projectQuery = \App\Models\Project::orderBy('created_at', 'desc');
+        $projects = $projectQuery->paginate($perPage)->withQueryString();
 
-        if ($request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->category) {
-            $categoryId = \App\Models\Category::where('name', $request->category)->value('id');
-            if ($categoryId) {
-                $query->whereJsonContains('category_ids', (int) $categoryId);
-            } else {
-                $query->whereRaw('1=0');
-            }
-        }
-
-        $projects = $query
-            ->orderBy('created_at', 'desc')
-            ->paginate(12);
-
-        // Eager-compute category objects per project for the current page
+        // Eager-load categories *after* pagination for efficiency
         $allCategoryIds = collect($projects->items())
             ->flatMap(function ($project) {
                 return is_array($project->category_ids) ? $project->category_ids : [];
@@ -54,6 +38,7 @@ class ProjectController extends Controller
 
         $categoriesById = \App\Models\Category::whereIn('id', $allCategoryIds)->get()->keyBy('id');
 
+        // Append 'categories' attribute to each project item in the paginator
         $projects->getCollection()->transform(function ($project) use ($categoriesById) {
             $ids = is_array($project->category_ids) ? $project->category_ids : [];
             $project->categories = collect($ids)
@@ -271,7 +256,7 @@ class ProjectController extends Controller
             $project->update(['gallery_images' => $galleryImages]);
 
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Gallery image deleted successfully!',
                 'gallery_images' => $galleryImages
             ]);
@@ -289,7 +274,7 @@ class ProjectController extends Controller
             ]);
 
             $galleryImages = $project->gallery_images ?? [];
-            
+
             // Ensure it's an array
             if (!is_array($galleryImages)) {
                 $galleryImages = [];

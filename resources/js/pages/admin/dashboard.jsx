@@ -105,7 +105,7 @@ export default function AdminDashboard({ stats }) {
     ,
 
     {
-      title: 'Sponsors',
+      title: 'partenaires',
       description: 'Manage partners shown on About page',
       icon: Users,
       href: '/admin/sponsors',

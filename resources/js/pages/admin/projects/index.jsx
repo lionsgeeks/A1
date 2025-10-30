@@ -184,9 +184,39 @@ export default function ProjectsIndex({ projects }) {
               }
             />
           )}
-
-      
         </PageContent>
+        {/* Pagination section (restyled, moved up) */}
+        {projects.links && projects.links.length > 3 && (
+          <nav className="flex justify-center mb-16" aria-label="Pagination">
+            <ul className="inline-flex items-center space-x-2">
+              {projects.links.map((link, idx) => {
+                const isActive = link.active;
+                const isDisabled = !link.url;
+                const isNumber = /^\d+$/.test(link.label.trim());
+                return (
+                  <li key={idx}>
+                    <Link
+                      href={link.url || '#'}
+                      className={
+                        `px-4 py-2 min-w-[40px] inline-flex justify-center items-center text-base transition font-medium rounded-full focus:outline-none ${
+                          isActive
+                            ? 'bg-primary-600 text-white shadow-lg'
+                            : isDisabled
+                            ? 'text-secondary-400 bg-secondary-100 cursor-not-allowed'
+                            : 'text-secondary-800 bg-white hover:bg-primary-100 hover:text-primary-700 border border-secondary-200'
+                        }
+                        ${isNumber ? 'font-bold' : 'font-normal'}`
+                      }
+                      tabIndex={isDisabled ? -1 : 0}
+                      aria-current={isActive ? 'page' : undefined}
+                      dangerouslySetInnerHTML={{ __html: link.label }}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        )}
       </PageContainer>
 
       {/* Modal Component */}
